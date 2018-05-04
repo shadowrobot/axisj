@@ -1,6 +1,19 @@
-[![axisj-contributed](https://img.shields.io/badge/AXISJ.com-Contributed-green.svg)](https://github.com/axisj) ![](https://img.shields.io/badge/Seowoo-Mondo&Thomas-red.svg)
+## [주의!] 이 프로젝트는 더 이상 추가개발/개선작업을 진행하지 않습니다. 앞으로는 AX5UI를 이용해주세요.
+> This Project will not proceed further development. Please use AX5UI in the future.
 
+[![AX5UI](https://avatars1.githubusercontent.com/u/16002119?v=3&s=100)](http://ax5.io/)
 
+- https://github.com/ax5ui
+- https://github.com/ax5ui/ax5ui-kernel
+- https://github.com/ax5ui/ax5core
+- https://github.com/ax5ui/ax5ui-grid
+- https://github.com/ax5ui/ax5ui-uploader
+- 등등등 ...
+
+현재까지 배포된 버전에 대한 이용에는 문제가 없고, 각종 링크 CDN등은 현재와 동일하게 유지 됩니다.   
+단, 유지보수/하자보수 계약이 된 경우를 위한 버그 픽스는 진행됩니다.
+
+---
 
 # AXISJ
 ###Full-Stack Open-source Javascript UI Framework
@@ -16,6 +29,7 @@ In terms of the development method, the collision issue between components has b
 ### link
 - Demonstration (http://dev.axisj.com)
 - Documentation (http://jdoc.axisj.com)
+- Guide (http://axisj.github.io/axisj-about/docs/)
 - Website (https://www.axisj.com)
 - Facebook (http://facebook.com/axisj)
 - Google+ (http://google.com/+axisj)
@@ -36,18 +50,22 @@ $ bower install axisj
 
 
 ## Install
-**AXISJ CDN**
+**CDN**
 ```html
-<link rel="stylesheet" type="text/css" href="http://cdn.axisj.com/axisj/ui/arongi/AXJ.min.css" />
-<script type="text/javascript" src="http://cdn.axisj.com/axisj/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="http://cdn.axisj.com/axisj/dist/AXJ.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/axisj/axisj/master/ui/arongi/AXJ.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/1.12.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/axisj/axisj/master/dist/AXJ.min.js"></script>
 ```
-**HTTPS Url**
-```html
-<link rel="stylesheet" type="text/css" href="https://d3alcypgpxy1qk.cloudfront.net/axisj/ui/arongi/AXJ.min.css" />
-<script type="text/javascript" src="https://d3alcypgpxy1qk.cloudfront.net/axisj/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="https://d3alcypgpxy1qk.cloudfront.net/axisj/dist/AXJ.min.js"></script>
+
+**CDN Theme**
 ```
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/axisj/axisj/master/ui/arongi/AXJ.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/axisj/axisj/master/ui/bulldog/AXJ.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/axisj/axisj/master/ui/cocker/AXJ.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/axisj/axisj/master/ui/flybasket/AXJ.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/axisj/axisj/master/ui/kakao/AXJ.min.css">
+```
+
 
 Installing AXISJ is simple and easy.
 Copy and paste the downloaded file of AXISJ in an appropriate location of your project. (In this sample, the file was put in the project root / 'axisj' folder.)
@@ -58,17 +76,9 @@ Then, if needed, load CSS and JS files of some components of UI. This sample sho
 <html lang="ko">
 <head>
     <!-- 공통요소 -->
-    <link rel="stylesheet" type="text/css" href="/axisj/ui/arongi/AXJ.css" />
-    <script type="text/javascript" src="/axisj/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/axisj/lib/AXJ.js"></script>
-
-    <!-- 추가하는 UI 요소 -->
-    <link rel="stylesheet" type="text/css" href="/axisj/ui/arongi/AXInput.css" />
-    <link rel="stylesheet" type="text/css" href="/axisj/ui/arongi/AXSelect.css" />
-    <link rel="stylesheet" type="text/css" href="/axisj/ui/arongi/AXGrid.css" />
-    <script type="text/javascript" src="/axisj/lib/AXInput.js"></script>
-    <script type="text/javascript" src="/axisj/lib/AXSelect.js"></script>
-    <script type="text/javascript" src="/axisj/lib/AXGrid.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/axisj/axisj/master/ui/arongi/AXJ.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/1.12.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/axisj/axisj/master/dist/AXJ.min.js"></script>
 </head>
 ```
 Define the id of HTML element where you want to put the UI component. The id will be used in UI configuration for later.

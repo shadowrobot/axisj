@@ -28,7 +28,7 @@
                     'lib/AXMobileMenu.js',
                     'lib/AXTopDownMenu.js'
                 ],
-                dest: 'dist/<%= pkg.name %>.tiny.js'
+                dest: 'dist/AXJ.tiny.js'
             },
             extras: {
                 src: [
@@ -62,7 +62,25 @@
                     'lib/AXValidator.js',
                     'lib/AXWaterfall.js'
                 ],
-                dest: 'dist/<%= pkg.name %>.all.js'
+                dest: 'dist/AXJ.all.js'
+            },
+            dlogis: {
+                src: [
+                    'lib/AXJ.js',
+                    'lib/AXInput.js',
+                    'lib/AXInputPro.js',
+                    'lib/AXSelect.js',
+                    'lib/AXMobileMenu.js',
+                    'lib/AXTopDownMenu.js',
+                    'lib/AXModal.js',
+                    'lib/AXSearch.js',
+                    'lib/AXSelect.js',
+                    'lib/AXTab.js',
+                    'lib/AXMultiSelector.js',
+                    'lib/AXProgress.js',
+                    'lib/AXUpload5.js'
+                ],
+                dest: 'dist/AXJ.dlogis.js'
             }
         },
         uglify: {
@@ -72,9 +90,10 @@
             },
             my_target: {
                 files: {
-                    'dist/<%= pkg.name %>.min.js': ['dist/<%= pkg.name %>.all.js'],
-                    'dist/<%= pkg.name %>.tinymin.js': ['dist/<%= pkg.name %>.tiny.js'],
-                    'dist/<%= pkg.name %>.coremin.js': ['lib/AXJ.js']
+                    'dist/AXJ.min.js': ['dist/AXJ.all.js'],
+                    'dist/AXJ.tinymin.js': ['dist/AXJ.tiny.js'],
+                    'dist/AXJ.dlogismin.js': ['dist/AXJ.dlogis.js'],
+                    'dist/AXJ.coremin.js': ['lib/AXJ.js']
                 }
             }
         },
@@ -172,6 +191,13 @@
                     ]
                 }
             }
+        },
+        copy: {
+            main: {expand: true, src: ['samples/**'], dest: 'docs/'},
+            ui: {expand: true, src: ['ui/**'], dest: 'docs/'},
+            jquery: {expand: true, src: ['jquery/**'], dest: 'docs/'},
+            dist: {expand: true, src: ['dist/**'], dest: 'docs/'},
+            index: {expand: false, src: ['index.html'], dest: 'docs/'}
         }
     });
 
@@ -180,8 +206,10 @@
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('js-concat', ['concat']);
     grunt.registerTask('js', ['concat', 'uglify']);
     grunt.registerTask('css', ['less', 'cssmin']);
+    grunt.registerTask('sample-copy', ['copy']);
 };
