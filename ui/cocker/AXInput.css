@@ -17,8 +17,8 @@
 }
 .AXTextarea {
   border: 1px solid #b6b6b6;
-  background: #ffffff;
-  color: #333333;
+  background: #fff;
+  color: #333;
   box-shadow: inset 0px 1px 2px #dddddd;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -42,8 +42,8 @@
 }
 .AXInput {
   border: 1px solid #b6b6b6;
-  background: #ffffff;
-  color: #333333;
+  background: #fff;
+  color: #333;
   box-shadow: inset 0px 1px 2px #dddddd;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -62,12 +62,12 @@
   border: 1px solid #949fa8;
   box-shadow: inset 0px 0px 3px #949fa8;
   outline: none;
-  color: #222222;
+  color: #222;
 }
 .AXInput[disabled] {
   background: url('images/dx-default-regular.png') repeat-x;
   background-position: 0px -78px;
-  color: #ffffff;
+  color: #fff;
   text-shadow: 0px -1px #b7b7b7;
   box-shadow: inset 0px 1px 2px #b1b1b1;
 }
@@ -78,13 +78,13 @@
   box-shadow: inset 0px 1px 2px #b1b1b1;
 }
 .AXInput::-webkit-input-placeholder {
-  color: #bbbbbb;
+  color: #bbb;
 }
 .AXInput::-moz-placeholder {
-  color: #bbbbbb;
+  color: #bbb;
 }
 .AXInput:-ms-input-placeholder {
-  color: #bbbbbb;
+  color: #bbb;
 }
 .AXInput.Round {
   -webkit-border-radius: 15px 15px 15px 15px;
@@ -93,8 +93,8 @@
 }
 .AXInputSmall {
   border: 1px solid #b6b6b6;
-  background: #ffffff;
-  color: #333333;
+  background: #fff;
+  color: #333;
   box-shadow: inset 0px 1px 1px #dddddd;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -114,12 +114,12 @@
   border: 1px solid #949fa8;
   box-shadow: inset 0px 0px 3px #949fa8;
   outline: none;
-  color: #222222;
+  color: #222;
 }
 .AXInputSmall[disabled] {
   background: url('images/dx-default-small.png') repeat-x;
   background-position: 0px -60px;
-  color: #ffffff;
+  color: #fff;
   text-shadow: 0px -1px #b7b7b7;
   box-shadow: inset 0px 1px 2px #b1b1b1;
 }
@@ -130,13 +130,13 @@
   box-shadow: inset 0px 1px 2px #b1b1b1;
 }
 .AXInputSmall::-webkit-input-placeholder {
-  color: #bbbbbb;
+  color: #bbb;
 }
 .AXInputSmall::-moz-placeholder {
-  color: #bbbbbb;
+  color: #bbb;
 }
 .AXInputSmall:-ms-input-placeholder {
-  color: #bbbbbb;
+  color: #bbb;
 }
 .AXInputSmall.Round {
   -webkit-border-radius: 15px 15px 15px 15px;
@@ -235,7 +235,7 @@
 .AXInputLabel SPAN {
   line-height: 24px;
   font-size: 12px;
-  color: #444444;
+  color: #444;
   padding: 0px 3px;
 }
 .AXInputLabel SPAN.block {
@@ -365,6 +365,8 @@
   /* Standard syntax */
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#e8e8e8, endColorstr=#e8e8e8);
   /*For IE7-8-9*/
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#e8e8e8, endColorstr=#e8e8e8);
+  /*For IE7-8-9*/
   border: 1px solid #b9babc;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -394,6 +396,8 @@
   background: linear-gradient(#e8e8e8, #e8e8e8);
   /* Standard syntax */
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#e8e8e8, endColorstr=#e8e8e8);
+  /*For IE7-8-9*/
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#e8e8e8, endColorstr=#e8e8e8);
   /*For IE7-8-9*/
   border: 1px solid #b9babc;
 }
@@ -516,7 +520,7 @@
   bottom: -22px;
   display: block;
   text-decoration: none;
-  color: #444444;
+  color: #444;
   text-align: center;
   font-size: 11px;
   font-family: "Nanum Gothic";
@@ -588,7 +592,7 @@
   top: 0px;
   height: 22px;
   border: 1px solid #b6b6b6;
-  background: #ffffff;
+  background: #fff;
   box-shadow: inset 0px 1px 2px #dddddd;
   border-radius: 14px;
   padding: 0px;
@@ -632,7 +636,7 @@
   padding-left: 0px;
   padding-right: 18px;
   font-size: 11px;
-  color: #ffffff;
+  color: #fff;
   text-shadow: 0px -1px #8b969d;
   white-space: nowrap;
   overflow: hidden;
@@ -680,6 +684,8 @@
   /* Standard syntax */
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#e8e8e8, endColorstr=#e8e8e8);
   /*For IE7-8-9*/
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#e8e8e8, endColorstr=#e8e8e8);
+  /*For IE7-8-9*/
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -696,6 +702,8 @@
   background: linear-gradient(#c7cfd4, #c7cfd4);
   /* Standard syntax */
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#c7cfd4, endColorstr=#c7cfd4);
+  /*For IE7-8-9*/
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#c7cfd4, endColorstr=#c7cfd4);
   /*For IE7-8-9*/
   text-shadow: 0px 1px #fff;
 }
@@ -719,6 +727,8 @@
   background: linear-gradient(#b1b1b1, #b1b1b1);
   /* Standard syntax */
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#b1b1b1, endColorstr=#b1b1b1);
+  /*For IE7-8-9*/
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#b1b1b1, endColorstr=#b1b1b1);
   /*For IE7-8-9*/
   color: #fff;
   text-shadow: none;
@@ -758,6 +768,8 @@
   /* Standard syntax */
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#b1bec7, endColorstr=#919ea7);
   /*For IE7-8-9*/
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#b1bec7, endColorstr=#919ea7);
+  /*For IE7-8-9*/
   border: 1px solid #7f8d9c;
 }
 .AXbindDateExpandBox .dateControlBox .prevbutton {
@@ -793,7 +805,7 @@
   left: 55px;
   top: 0px;
   text-decoration: none;
-  color: #ffffff;
+  color: #fff;
   line-height: 26px;
   font-family: Arial;
   font-size: 12px;
@@ -804,14 +816,14 @@
   left: 100px;
   top: 0px;
   text-decoration: none;
-  color: #ffffff;
+  color: #fff;
   line-height: 26px;
   font-family: Arial;
   font-size: 12px;
   text-shadow: 0px -1px #869198;
 }
 .AXbindDateExpandBox .dateDisplayBox {
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #b9babc;
   border-top: 0px none;
   width: 181px;
@@ -870,7 +882,7 @@
   left: 55px;
   top: 0px;
   text-decoration: none;
-  color: #ffffff;
+  color: #fff;
   line-height: 26px;
   font-family: Arial;
   font-size: 12px;
@@ -881,14 +893,14 @@
   left: 100px;
   top: 0px;
   text-decoration: none;
-  color: #ffffff;
+  color: #fff;
   line-height: 26px;
   font-family: Arial;
   font-size: 12px;
   text-shadow: 0px -1px #869198;
 }
 .AXbindTwinDateExpandBox .dateDisplayBox {
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #b9babc;
   border-top: 0px none;
   width: 181px;

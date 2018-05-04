@@ -1,8 +1,8 @@
 /*! 
-AXJ - v1.0.19 - 2015-09-01 
+axisj - v1.1.2 - 2016-04-16 
 */
 /*! 
-AXJ - v1.0.19 - 2015-09-01 
+axisj - v1.1.2 - 2016-04-16 
 */
 
 if(!window.AXConfig){
@@ -11,7 +11,7 @@ if(!window.AXConfig){
  * @namespace {Object} AXConfig
  * @example
  ```json
- AXconfig.weekDays = [{label:""},..];
+ AXConfig.weekDays = [{label:""},..];
  AXConfig.AXReq.contentType = "";
  // 처럼 기본값을 수정할 수 있습니다.
  // .net 에서 webMethod를 이용하여 개발할 때는 다음의 설정을 권장합니다.
@@ -103,7 +103,7 @@ if(!window.AXConfig){
 		AXGrid: {
 			passiveMode: false,
 			passiveRemoveHide: false,
-			fitToWidthRightMargin: 10,
+			fitToWidthRightMargin: 11,
 			fitToWidth: false,
 			pageSize: 10,
 			pageHeight: 400,
@@ -365,77 +365,82 @@ if(!window.AXConfig){
 }
 /* ---------------------------- */
 var axf = AXUtil = {
-	async: true,
-	ajaxOkCode: "ok",
-	ajaxResponseType: "",
-	ajaxDataType: "",
-	gridPassiveMode: false,
-	gridPassiveRemoveHide: false,
-	gridFitToWidthRightMargin: 10,
+    async: true,
+    ajaxOkCode: "ok",
+    ajaxResponseType: "",
+    ajaxDataType: "",
+    gridPassiveMode: false,
+    gridPassiveRemoveHide: false,
+    gridFitToWidthRightMargin: 10,
 
-	uniqueSeq: 0,
+    uniqueSeq: 0,
 
-	/**
-	 * 현재페이지에서 고유한 순번을 반환합니다.
-	 * @method axf.getUniqueId
-	 * @returns {Number} uniqueSeq
-	 * @example
-	 * ```js
-	 * trace( axf.getUniqueId() );
-	 * ```
-	 */
-	getUniqueId: function(){ return (axf.uniqueSeq += 1); },
+    /**
+     * 현재페이지에서 고유한 순번을 반환합니다.
+     * @method axf.getUniqueId
+     * @returns {Number} uniqueSeq
+     * @example
+     * ```js
+     * trace( axf.getUniqueId() );
+     * ```
+     */
+    getUniqueId: function () {
+        return (axf.uniqueSeq += 1);
+    },
 
-	/**
-	 * document.getElementById(id) 와 같습니다. 아이디가 같은 엘리먼트를 반환합니다.
-	 * @method axf.getId
-	 * @param {String} id
-	 * @returns {HtmlElement}
-	 * @example
-	 * ```js
-	 * if(axf.getId("myele_id")){
+    /**
+     * document.getElementById(id) 와 같습니다. 아이디가 같은 엘리먼트를 반환합니다.
+     * @method axf.getId
+     * @param {String} id
+     * @returns {HtmlElement}
+     * @example
+     * ```js
+     * if(axf.getId("myele_id")){
 	 *    $("#myele_id").css({...});
 	 * }
-	 * ```
-	 */
-	getId: function(id) { return document.getElementById(id);  },
+     * ```
+     */
+    getId: function (id) {
+        return document.getElementById(id);
+    },
 
-	/**
-	 * @method axf.each
-	 * @param {Array|Object} obj
-	 * @param {Function} callback
-	 * @description Array 또는 Object의 아이템만큰 callback 함수를 call합니다.
-	 * @example
-	 * ```js
-	 * var new_array = [];
-	 * axf.each([0, 1, 2], function(){
+    /**
+     * @method axf.each
+     * @param {Array|Object} obj
+     * @param {Function} callback
+     * @description Array 또는 Object의 아이템만큰 callback 함수를 call합니다.
+     * @example
+     * ```js
+     * var new_array = [];
+     * axf.each([0, 1, 2], function(){
 	 * 	new_array.push(this*2);
 	 * });
-	 * var new_object = {};
-	 * axf.each({a:1, b:2, c:3}, function(k, v){
+     * var new_object = {};
+     * axf.each({a:1, b:2, c:3}, function(k, v){
 	 * 	new_object[k] = v*2;
 	 * });
-	 * ```
-	 */
-	each:  function(obj, callback){
-		if(obj){
-			var name, i = 0, length = obj.length,
-				isObj = length === undefined || Object.isFunction( obj );
-			if ( isObj ) {
-				for ( name in obj ) {
-					if ( callback.call( obj[ name ], name, obj[ name ] ) === false ) {
-						break;
-					}
-				}
-			} else {
-				for ( ; i < length; ) {
-					if ( callback.call( obj[ i ], i, obj[ i++ ] ) === false ) {
-						break;
-					}
-				}
-			}
-		}
-	},
+     * ```
+     */
+    each: function (obj, callback) {
+        if (obj) {
+            var name, i = 0, length = obj.length,
+                isObj = length === undefined || Object.isFunction(obj);
+            if (isObj) {
+                for (name in obj) {
+                    if (callback.call(obj[name], name, obj[name]) === false) {
+                        break;
+                    }
+                }
+            }
+            else {
+                for (; i < length;) {
+                    if (callback.call(obj[i], i, obj[i++]) === false) {
+                        break;
+                    }
+                }
+            }
+        }
+    },
     /**
      * 브라우저의 이름과 버전 모바일여부
      *
@@ -449,147 +454,152 @@ var axf = AXUtil = {
      *}
      * ```
      */
-	browser: (function () {
-		var ua = navigator.userAgent.toLowerCase();
-		var mobile = (ua.search(/mobile/g) != -1);
-		if (ua.search(/iphone/g) != -1) {
-			return { name: "iphone", version: 0, mobile: true }
-		} else if (ua.search(/ipad/g) != -1) {
-			return { name: "ipad", version: 0, mobile: true }
-		} else if (ua.search(/android/g) != -1) {
-			var match = /(android)[ \/]([\w.]+)/.exec(ua) || [];
-			var browserVersion = (match[2] || "0");
-			return { name: "android", version: browserVersion, mobile: mobile }
-		} else {
-			var match = /(msie) ([\w.]+)/.exec(ua) ||
-				/(trident)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
-				/(opera|opr)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
-				/(chrome)[ \/]([\w.]+)/.exec(ua) ||
-				/(webkit)[ \/]([\w.]+)/.exec(ua) ||
-				ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
-				[];
+    browser: (function () {
+        var ua = navigator.userAgent.toLowerCase();
+        var mobile = (ua.search(/mobile/g) != -1);
+        if (ua.search(/iphone/g) != -1) {
+            return {name: "iphone", version: 0, mobile: true}
+        }
+        else if (ua.search(/ipad/g) != -1) {
+            return {name: "ipad", version: 0, mobile: true}
+        }
+        else if (ua.search(/android/g) != -1) {
+            var match = /(android)[ \/]([\w.]+)/.exec(ua) || [];
+            var browserVersion = (match[2] || "0");
+            return {name: "android", version: browserVersion, mobile: mobile}
+        }
+        else {
+            var match = /(msie) ([\w.]+)/.exec(ua) ||
+                /(trident)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
+                /(opera|opr)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
+                /(chrome)[ \/]([\w.]+)/.exec(ua) ||
+                /(webkit)[ \/]([\w.]+)/.exec(ua) ||
+                ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
+                [];
 
-			var browser = (match[1] || "");
-			var browserVersion = (match[2] || "0");
+            var browser = (match[1] || "");
+            var browserVersion = (match[2] || "0");
 
-			var browserName = {
-				"msie"   : "ie",
-				"trident": "ie",
-				"opr"    : "opera"
-			};
-			if (browser in browserName) browser = browserName[browser];
+            var browserName = {
+                "msie": "ie",
+                "trident": "ie",
+                "opr": "opera"
+            };
+            if (browser in browserName) browser = browserName[browser];
 
-			return {
-				name: browser,
-				version: browserVersion,
-				mobile: mobile
-			}
-		}
-	})(),
-	/**
-	 * 호환성보기 여부
-	 * @member {String} axf.docTD
-	 * @example
-	 * ```js
-	 * axf.docTD = (Q|S)
-	 * ```
-	 */
-	docTD: (function () {
-		if (!document.compatMode || document.compatMode == 'BackCompat') return "Q";
-		else return "S";
-	})(),
-	/**
-	 * @method axf.timekey
-	 * @returns {String} timeKey
-	 * @description 밀리세컨드까지 조합한 문자열을 반환합니다.
-	 * @example
-	 * ```js
-	 * trace(axf.timeKey()); // A004222760
-	 * ```
-	 */
-	timekey: function () {
-		var d = new Date();
-		return ("A" + d.getHours().setDigit(2) + d.getMinutes().setDigit(2) + d.getSeconds().setDigit(2) + d.getMilliseconds());
-	},
-	/**
-	 * @method axf.overwriteObject
-	 * @param {Object} tg - 덮어쓰기 대상 오브젝트
-	 * @param {Object} obj - 덮어쓰기 할 오브젝트
-	 * @param {Boolean} [rewirte=false] - 덮어쓰기 모드
-	 * @returns {Object} 덮어쓰기된 tg
-	 * @description 덮어쓰기 대상 오브젝트에 덮어쓰기 할 오브젝트를 덮어쓰기 합니다.
-	 * @example
-	 * ```js
-	 * axf.overwriteObject({a:1}, {b:1});
-	 * // {a:1, b:1}
-	 * axf.overwriteObject({a:1}, {a:2}, true);
-	 * // {a:2}
-	 * // rewirte : false 이면 {a:1} 로 유지 됩니다. 대상오브젝트에 키가 없는 경우에만 덮어쓰기 합니다.
-	 * ```
-	 */
-	overwriteObject: function (tg, obj, rewrite) {
-		if (rewrite == undefined) rewrite = true;
-		//trace(tg[k]);
-		if (obj) AXUtil.each(obj, function (k, v) {
-			if (rewrite) { tg[k] = v; }
-			else {
-				//trace(tg[k]);
-				if (tg[k] == undefined) tg[k] = v;
-			}
-		});
-		return tg;
-	},
-	/**
-	 * @method axf.copyObject
-	 * @param {Object} obj - 복제할 오브젝트
-	 * @returns {Object} 복제된 오브젝트
-	 * @description 오브젝트를 복제하여 새로운 참조를 리턴합니다.
-	 * @example
-	 * ```js
-	 * axf.copyObject({a:1});
-	 * // 내부코드가 Object.toJSON(obj).object(); 이므로 상황에 맞게 사용해야 합니다.
-	 * ```
-	 */
-	copyObject: function (obj) {
-		//return Object.clone(obj);
-		return Object.toJSON(obj).object();
-	},
-	consonantKR: function (cword) {
-		var cons = [
-			{ c: "ㄱ", re: "[가-깋]" }, { c: "ㄲ", re: "[까-낗]" }, { c: "ㄴ", re: "[나-닣]" }, { c: "ㄷ", re: "[다-딯]" }, { c: "ㄸ", re: "[따-띻]" }, { c: "ㄹ", re: "[라-맇]" },
-			{ c: "ㅁ", re: "[마-밓]" }, { c: "ㅂ", re: "[바-빟]" }, { c: "ㅃ", re: "[빠-삫]" }, { c: "ㅅ", re: "[사-싷]" }, { c: "ㅆ", re: "[싸-앃]" }, { c: "ㅇ", re: "[아-잏]" }, { c: "ㅈ", re: "[자-짛]" },
-			{ c: "ㅉ", re: "[짜-찧]" }, { c: "ㅊ", re: "[차-칳]" }, { c: "ㅋ", re: "[카-킿]" }, { c: "ㅌ", re: "[타-팋]" }, { c: "ㅍ", re: "[파-핗]" }, { c: "ㅎ", re: "[하-힣]" },
-			{ c: "(", re:"\\(" }, { c: ")", re:"\\)" }, { c: "[", re:"\\[" }, { c: "]", re:"\\]" }
-		];
-		var rword = "";
-		var cwords = cword.split("");
-		for(var i= 0,l=cwords.length;i<l;i++){
-			var fos = cons.searchObject(function () {
-				return this.item.c == cwords[i];
-			});
-			var fo = fos.first();
-			if (fo) rword += fo.re;
-			else rword += cwords[i];
-		}
-		return rword;
-	},
-	/**
-	 * @method axf.setCookie
-	 * @param {String} name
-	 * @param {String} value
-	 * @param {Number} [expiredays]
-	 * @param {Object} options
-	 * @description 쿠키에 값을 지정합니다.
-	 * @example
-	 * ```js
-	 * axf.setCookie("myname", "tomas", 10, {
+            return {
+                name: browser,
+                version: browserVersion,
+                mobile: mobile
+            }
+        }
+    })(),
+    /**
+     * 호환성보기 여부
+     * @member {String} axf.docTD
+     * @example
+     * ```js
+     * axf.docTD = (Q|S)
+     * ```
+     */
+    docTD: (function () {
+        if (!document.compatMode || document.compatMode == 'BackCompat') return "Q";
+        else return "S";
+    })(),
+    /**
+     * @method axf.timekey
+     * @returns {String} timeKey
+     * @description 밀리세컨드까지 조합한 문자열을 반환합니다.
+     * @example
+     * ```js
+     * trace(axf.timeKey()); // A004222760
+     * ```
+     */
+    timekey: function () {
+        var d = new Date();
+        return ("A" + d.getHours().setDigit(2) + d.getMinutes().setDigit(2) + d.getSeconds().setDigit(2) + d.getMilliseconds());
+    },
+    /**
+     * @method axf.overwriteObject
+     * @param {Object} tg - 덮어쓰기 대상 오브젝트
+     * @param {Object} obj - 덮어쓰기 할 오브젝트
+     * @param {Boolean} [rewirte=false] - 덮어쓰기 모드
+     * @returns {Object} 덮어쓰기된 tg
+     * @description 덮어쓰기 대상 오브젝트에 덮어쓰기 할 오브젝트를 덮어쓰기 합니다.
+     * @example
+     * ```js
+     * axf.overwriteObject({a:1}, {b:1});
+     * // {a:1, b:1}
+     * axf.overwriteObject({a:1}, {a:2}, true);
+     * // {a:2}
+     * // rewirte : false 이면 {a:1} 로 유지 됩니다. 대상오브젝트에 키가 없는 경우에만 덮어쓰기 합니다.
+     * ```
+     */
+    overwriteObject: function (tg, obj, rewrite) {
+        if (rewrite == undefined) rewrite = true;
+        //trace(tg[k]);
+        if (obj) AXUtil.each(obj, function (k, v) {
+            if (rewrite) {
+                tg[k] = v;
+            }
+            else {
+                //trace(tg[k]);
+                if (tg[k] == undefined) tg[k] = v;
+            }
+        });
+        return tg;
+    },
+    /**
+     * @method axf.copyObject
+     * @param {Object} obj - 복제할 오브젝트
+     * @returns {Object} 복제된 오브젝트
+     * @description 오브젝트를 복제하여 새로운 참조를 리턴합니다.
+     * @example
+     * ```js
+     * axf.copyObject({a:1});
+     * // 내부코드가 Object.toJSON(obj).object(); 이므로 상황에 맞게 사용해야 합니다.
+     * ```
+     */
+    copyObject: function (obj) {
+        //return Object.clone(obj);
+        return Object.toJSON(obj).object();
+    },
+    consonantKR: function (cword) {
+        var cons = [
+            {c: "ㄱ", re: "[가-깋]"}, {c: "ㄲ", re: "[까-낗]"}, {c: "ㄴ", re: "[나-닣]"}, {c: "ㄷ", re: "[다-딯]"}, {c: "ㄸ", re: "[따-띻]"}, {c: "ㄹ", re: "[라-맇]"},
+            {c: "ㅁ", re: "[마-밓]"}, {c: "ㅂ", re: "[바-빟]"}, {c: "ㅃ", re: "[빠-삫]"}, {c: "ㅅ", re: "[사-싷]"}, {c: "ㅆ", re: "[싸-앃]"}, {c: "ㅇ", re: "[아-잏]"}, {c: "ㅈ", re: "[자-짛]"},
+            {c: "ㅉ", re: "[짜-찧]"}, {c: "ㅊ", re: "[차-칳]"}, {c: "ㅋ", re: "[카-킿]"}, {c: "ㅌ", re: "[타-팋]"}, {c: "ㅍ", re: "[파-핗]"}, {c: "ㅎ", re: "[하-힣]"},
+            {c: "(", re: "\\("}, {c: ")", re: "\\)"}, {c: "[", re: "\\["}, {c: "]", re: "\\]"}
+        ];
+        var rword = "";
+        var cwords = cword.split("");
+        for (var i = 0, l = cwords.length; i < l; i++) {
+            var fos = cons.searchObject(function () {
+                return this.item.c == cwords[i];
+            });
+            var fo = fos.first();
+            if (fo) rword += fo.re;
+            else rword += cwords[i];
+        }
+        return rword;
+    },
+    /**
+     * @method axf.setCookie
+     * @param {String} name
+     * @param {String} value
+     * @param {Number} [expiredays]
+     * @param {Object} options
+     * @description 쿠키에 값을 지정합니다.
+     * @example
+     * ```js
+     * axf.setCookie("myname", "tomas", 10, {
 	 *     path  : "/",             // {String} [현재 페이지의 path]
 	 *     domain: "www.axisj.com", // {String} [현재 사이트의 domain]
 	 *     secure: true             // {Boolean} [false]
 	 * });
-	 * ```
-	 */
-	setCookie: function (name, value, expiredays, options) {
+     * ```
+     */
+    setCookie: function (name, value, expiredays, options) {
         var expireDate;
         if (typeof expiredays === "number") {
             expireDate = new Date();
@@ -600,23 +610,23 @@ var axf = AXUtil = {
 
         return (document.cookie = [
             encodeURIComponent(name), '=', String(value),
-            expireDate      ? "; expires=" + expireDate.toUTCString() : "", // use expires attribute, max-age is not supported by IE
-            options.path    ? "; path=" + options.path : "",
-            options.domain  ? "; domain=" + options.domain : "",
-            options.secure  ? "; secure" : ""
+            expireDate ? "; expires=" + expireDate.toUTCString() : "", // use expires attribute, max-age is not supported by IE
+            options.path ? "; path=" + options.path : "",
+            options.domain ? "; domain=" + options.domain : "",
+            options.secure ? "; secure" : ""
         ].join(""));
     },
-	/**
-	 * @method axf.getCookie
-	 * @param {String} name
-	 * @description 쿠키에서 값을 읽어들입니다
-	 * @example
-	 * ```js
-	 * trace( axf.getCookie("myname") );
-	 * // tomas
-	 * ```
-	 */
-	getCookie: function (name) {
+    /**
+     * @method axf.getCookie
+     * @param {String} name
+     * @description 쿠키에서 값을 읽어들입니다
+     * @example
+     * ```js
+     * trace( axf.getCookie("myname") );
+     * // tomas
+     * ```
+     */
+    getCookie: function (name) {
         var nameOfCookie = name + "=";
         var x = 0;
         while (x <= document.cookie.length) {
@@ -630,75 +640,95 @@ var axf = AXUtil = {
         }
         return "";
     },
-	JSONFilter: /^\/\*-secure-([\s\S]*)\*\/\s*$/,
-	/**
-	 * @method axf.dayLen
-	 * @param {Number} year
-	 * @param {Number} month
-	 * @returns {Number} end of daynum
-	 * @description 지정한 년도와 월의 날자수를 반환합니다.
-	 * @example
-	 * ```js
-	 * trace( axf.dayLen(2013, 1) );
-	 * // 28
-	 * // 주의 Data.getMonth() 의 반환값을 그대로 사용 하므로 1월은 0 으로 전달 해야 합니다. 0~11 까지의 값을 사용할 수 있습니다.
-	 * ```
-	 */
-	dayLen: function (y, m) { if ([3, 5, 8, 10].has(function () { return this.item == m; })) { return 30; } else if (m == 1) { return (((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0)) ? 29 : 28; } else { return 31; } },
-	/**
-	 * @method  axf.clientHeight
-	 * @returns {Number} clientHeight
-	 * @description 브라우저 clientHeight 반환합니다. window 창 높이와 같습니다.
-	 * @example
-	 * ```js
-	 * axf.clientHeight();
-	 * ```
-	 */
-	clientHeight: function () { return (AXUtil.docTD == "Q") ? document.body.clientHeight : document.documentElement.clientHeight; },
-	/**
-	 * @method  axf.scrollHeight
-	 * @returns {Number} scrollHeight
-	 * @description HTML scrollHeight 반환합니다.
-	 * @example
-	 * ```js
-	 * axf.scrollHeight();
-	 * ```
-	 */
-	scrollHeight: function () { return (AXUtil.docTD == "Q") ? document.body.scrollHeight : document.documentElement.scrollHeight; },
-	/**
-	 * @method  axf.clientWidth
-	 * @returns {Number} clientWidth
-	 * @description 브라우저 clientWidth 반환합니다. window 창 너비와 같습니다.
-	 * @example
-	 * ```js
-	 * axf.clientWidth();
-	 * ```
-	 */
-	clientWidth: function () { return (AXUtil.docTD == "Q") ? document.body.clientWidth : document.documentElement.clientWidth; },
-	/**
-	 * @method  axf.scrollWidth
-	 * @returns {Number} scrollWidth
-	 * @description HTML scrollWidth 반환합니다.
-	 * @example
-	 * ```js
-	 * axf.scrollWidth();
-	 * ```
-	 */
-	scrollWidth: function () { return (AXUtil.docTD == "Q") ? document.body.scrollWidth : document.documentElement.scrollWidth; },
-	scrollTop: function(){
-		return (document.documentElement && document.documentElement.scrollTop) ||
-			document.body.scrollTop;
-	},
-	scrollLeft: function(){
-		return (document.documentElement && document.documentElement.scrollLeft) ||
-			document.body.scrollLeft;
-	},
-	/**
-	 * @member {Object} axf.Event
-	 * @description Event.keyCode 모음 ref => https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
-	 * @example
-	 * ```js
-	 *Event: {
+    JSONFilter: /^\/\*-secure-([\s\S]*)\*\/\s*$/,
+    /**
+     * @method axf.dayLen
+     * @param {Number} year
+     * @param {Number} month
+     * @returns {Number} end of daynum
+     * @description 지정한 년도와 월의 날자수를 반환합니다.
+     * @example
+     * ```js
+     * trace( axf.dayLen(2013, 1) );
+     * // 28
+     * // 주의 Data.getMonth() 의 반환값을 그대로 사용 하므로 1월은 0 으로 전달 해야 합니다. 0~11 까지의 값을 사용할 수 있습니다.
+     * ```
+     */
+    dayLen: function (y, m) {
+        if ([3, 5, 8, 10].has(function () {
+                return this.item == m;
+            })) {
+            return 30;
+        }
+        else if (m == 1) {
+            return (((y % 4 == 0) && (y % 100 != 0)) || (y % 400 == 0)) ? 29 : 28;
+        }
+        else {
+            return 31;
+        }
+    },
+    /**
+     * @method  axf.clientHeight
+     * @returns {Number} clientHeight
+     * @description 브라우저 clientHeight 반환합니다. window 창 높이와 같습니다.
+     * @example
+     * ```js
+     * axf.clientHeight();
+     * ```
+     */
+    clientHeight: function () {
+        return (AXUtil.docTD == "Q") ? document.body.clientHeight : document.documentElement.clientHeight;
+    },
+    /**
+     * @method  axf.scrollHeight
+     * @returns {Number} scrollHeight
+     * @description HTML scrollHeight 반환합니다.
+     * @example
+     * ```js
+     * axf.scrollHeight();
+     * ```
+     */
+    scrollHeight: function () {
+        return (AXUtil.docTD == "Q") ? document.body.scrollHeight : document.documentElement.scrollHeight;
+    },
+    /**
+     * @method  axf.clientWidth
+     * @returns {Number} clientWidth
+     * @description 브라우저 clientWidth 반환합니다. window 창 너비와 같습니다.
+     * @example
+     * ```js
+     * axf.clientWidth();
+     * ```
+     */
+    clientWidth: function () {
+        return (AXUtil.docTD == "Q") ? document.body.clientWidth : document.documentElement.clientWidth;
+    },
+    /**
+     * @method  axf.scrollWidth
+     * @returns {Number} scrollWidth
+     * @description HTML scrollWidth 반환합니다.
+     * @example
+     * ```js
+     * axf.scrollWidth();
+     * ```
+     */
+    scrollWidth: function () {
+        return (AXUtil.docTD == "Q") ? document.body.scrollWidth : document.documentElement.scrollWidth;
+    },
+    scrollTop: function () {
+        return (document.documentElement && document.documentElement.scrollTop) ||
+            document.body.scrollTop;
+    },
+    scrollLeft: function () {
+        return (document.documentElement && document.documentElement.scrollLeft) ||
+            document.body.scrollLeft;
+    },
+    /**
+     * @member {Object} axf.Event
+     * @description Event.keyCode 모음 ref => https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+     * @example
+     * ```js
+     *Event: {
 	 *    KEY_BACKSPACE: 8,
 	 *    KEY_TAB      : 9,
 	 *    KEY_RETURN   : 13,
@@ -730,210 +760,224 @@ var axf = AXUtil = {
 	 *    NUMPAD_COMMA   : 194,
 	 *    cache: {}
 	 *}
-	 * ```
-	 */
-	Event: {
-		KEY_BACKSPACE: 8,
-		KEY_TAB      : 9,
-		KEY_RETURN   : 13,
-		KEY_SHIFT    : 16,
-		KEY_CONTROL  : 17,
-		KEY_ALT      : 18,
-		KEY_ESC      : 27,
-		KEY_SPACE    : 32,
-		KEY_PAGEUP   : 33,
-		KEY_PAGEDOWN : 34,
-		KEY_END      : 35,
-		KEY_HOME     : 36,
-		KEY_LEFT     : 37,
-		KEY_UP       : 38,
-		KEY_RIGHT    : 39,
-		KEY_DOWN     : 40,
-		KEY_INSERT   : 45,
-		KEY_DELETE   : 46,
-		KEY_WINDOW   : 91,
-		KEY_EQUAL    : 187,
-		KEY_MINUS    : 189,
-		KEY_PERIOD   : 190,
-		NUMPAD_EQUAL   : 12,
-		NUMPAD_MULTIPLY: 106,
-		NUMPAD_ADD     : 107,
-		NUMPAD_SUBTRACT: 109,
-		NUMPAD_DECIMAL : 110,
-		NUMPAD_DIVIDE  : 111,
-		NUMPAD_COMMA   : 194,
-		cache: {}
-	},
-	/**
-	 * @method axf.console
-	 * @param {String|Object|Array} obj
-	 * @description 브라우저 console 에 메세지를 출력하여 줍니다. trace 와 같습니다.
-	 * @example
-	 * ```js
-	 * axf.console("AXISJ");
-	 * // AXISJ
-	 *
-	 * axf.console(1234);
-	 * // 1234
-	 *
-	 * var myObj = {name:"AXISJ", url:"http://www.axisj.com"};
-	 * axf.console(myObj);
-	 * // {"name":"AXISJ", "url":"http://www.axisj.com"}
-	 * ```
-	 */
-	console: function (obj) {
-		var po = "";
-		if (arguments.length > 1) {
-			for (i = 0; i < arguments.length; i++) {
-				var obji = arguments[i];
-				var objStr = "";
-				var type = (typeof obji).toLowerCase();
-				if (type == "undefined" || type == "function") {
-					objStr = type;
-				} else if (type == "boolean" || type == "number" || type == "string") {
-					objStr = obji;
-				} else if (type == "object") {
-					objStr = Object.toJSON(obji);
-				}
-				if (po != "") po += ", ";
-				po += "arg[" + i + "] : " + objStr;
-			}
-		} else {
-			var type = (typeof obj).toLowerCase();
-			if (type == "undefined" || type == "function") {
-				po = type;
-			} else if (type == "boolean" || type == "number" || type == "string") {
-				po = obj;
-			} else if (type == "object") {
-				po = Object.toJSON(obj);
-			}
-		}
-
-		if(axf.mobileConsole){
-			axf.mobileConsole.prepend("<div>" + po + "</div>");
-		}else{
-			if (window.console == undefined) {
-			} else {
-				try {
-					console.log( po );
-					//+ ":" + axf.console.caller.name
-				} catch (e) {
-					alert(e);
-				}
-			}
-		}
-	},
-	/**
-	 * @method  axf.alert
-	 * @param {String|Object|Array} obj
-	 * @description window.alert 를 확장하여 JSObject 구조를 출력 합니다.
-	 * @example
-	 * ```js
-	 * axf.alert("AXISJ");
-	 * // AXISJ
-	 *
-	 * axf.alert(1234);
-	 * // 1234
-	 *
-	 * var myObj = {name:"AXISJ", url:"http://www.axisj.com"};
-	 * axf.alert(myObj);
-	 * // {"name":"AXISJ", "url":"http://www.axisj.com"}
-	 * ```
-	 */
-	alert: function (obj) {
-		var po = "";
-		if (arguments.length > 1) {
-			for (i = 0; i < arguments.length; i++) {
-				var obji = arguments[i];
-				var objStr = "";
-				var type = (typeof obji).toLowerCase();
-				if (type == "undefined" || type == "function") {
-					objStr = type;
-				} else if (type == "boolean" || type == "number" || type == "string") {
-					objStr = obji;
-				} else if (type == "object") {
-					objStr = Object.toJSON(obji);
-				}
-				if (po != "") po += ", ";
-				po += "arguments[" + i + "] : " + objStr;
-			}
-		} else {
-			var type = (typeof obj).toLowerCase();
-			if (type == "undefined" || type == "function") {
-				po = type;
-			} else if (type == "boolean" || type == "number" || type == "string") {
-				po = obj;
-			} else if (type == "object") {
-				po = Object.toJSON(obj);
-			}
-		}
-		alert(po);
-	},
-	/**
-	 * @method  axf.confirm
-	 * @param {String|Object|Array} obj
-	 * @description window.confirm 를 확장하여 JSObject 구조를 출력 합니다.
-	 * @example
-	 * ```js
-	 * axf.confirm("AXISJ");
-	 * // AXISJ
+     * ```
+     */
+    Event: {
+        KEY_BACKSPACE: 8,
+        KEY_TAB: 9,
+        KEY_RETURN: 13,
+        KEY_SHIFT: 16,
+        KEY_CONTROL: 17,
+        KEY_ALT: 18,
+        KEY_ESC: 27,
+        KEY_SPACE: 32,
+        KEY_PAGEUP: 33,
+        KEY_PAGEDOWN: 34,
+        KEY_END: 35,
+        KEY_HOME: 36,
+        KEY_LEFT: 37,
+        KEY_UP: 38,
+        KEY_RIGHT: 39,
+        KEY_DOWN: 40,
+        KEY_INSERT: 45,
+        KEY_DELETE: 46,
+        KEY_WINDOW: 91,
+        KEY_EQUAL: 187,
+        KEY_MINUS: 189,
+        KEY_PERIOD: 190,
+        NUMPAD_EQUAL: 12,
+        NUMPAD_MULTIPLY: 106,
+        NUMPAD_ADD: 107,
+        NUMPAD_SUBTRACT: 109,
+        NUMPAD_DECIMAL: 110,
+        NUMPAD_DIVIDE: 111,
+        NUMPAD_COMMA: 194,
+        cache: {}
+    },
+    /**
+     * @method axf.console
+     * @param {String|Object|Array} obj
+     * @description 브라우저 console 에 메세지를 출력하여 줍니다. trace 와 같습니다.
+     * @example
+     * ```js
+     * axf.console("AXISJ");
+     * // AXISJ
      *
-	 * axf.confirm(1234);
-	 * // 1234
+     * axf.console(1234);
+     * // 1234
      *
-	 * var myObj = {name:"AXISJ", url:"http://www.axisj.com"};
-	 * axf.confirm(myObj);
-	 * // {"name":"AXISJ", "url":"http://www.axisj.com"}
-	 * ```
-	 */
-	confirm: function (obj) {
-		var po = "";
-		var type = (typeof obj).toLowerCase();
-		if (type == "undefined" || type == "function") {
-			po = type;
-		} else if (type == "boolean" || type == "number" || type == "string") {
-			po = obj;
-		} else if (type == "object") {
-			po = Object.toJSON(obj);
-		}
-		var result = confirm(po);
-		return result;
-	},
-	importJS: function (src) {
-		var scriptElement = document.createElement("script");
-		scriptElement.setAttribute("src", src);
-		scriptElement.setAttribute("type", "text/javascript");
-		document.getElementsByTagName("head")[0].appendChild(scriptElement);
-	},
-	bindPlaceholder: function () {
+     * var myObj = {name:"AXISJ", url:"http://www.axisj.com"};
+     * axf.console(myObj);
+     * // {"name":"AXISJ", "url":"http://www.axisj.com"}
+     * ```
+     */
+    console: function (obj) {
+        var po = "";
+        if (arguments.length > 1) {
+            for (i = 0; i < arguments.length; i++) {
+                var obji = arguments[i];
+                var objStr = "";
+                var type = (typeof obji).toLowerCase();
+                if (type == "undefined" || type == "function") {
+                    objStr = type;
+                }
+                else if (type == "boolean" || type == "number" || type == "string") {
+                    objStr = obji;
+                }
+                else if (type == "object") {
+                    objStr = Object.toJSON(obji);
+                }
+                if (po != "") po += ", ";
+                po += "arg[" + i + "] : " + objStr;
+            }
+        }
+        else {
+            var type = (typeof obj).toLowerCase();
+            if (type == "undefined" || type == "function") {
+                po = type;
+            }
+            else if (type == "boolean" || type == "number" || type == "string") {
+                po = obj;
+            }
+            else if (type == "object") {
+                po = Object.toJSON(obj);
+            }
+        }
 
-	},
-	/**
-	 * @method axf.isEmpty
-	 * @param {obj} obj
-	 * @returns {Boolean}
-	 * @description 대상 개체가 undefined, null, "" 인지 체크 합니다.
-	 * @example
-	 * ```js
-	 * trace( axf.isEmpty("AXISJ") );
-	 * // false
-	 * trace( axf.isEmpty("") );
-	 * // true
-	 * trace( axf.isEmpty(undefined) );
-	 * // true
-	 * ```
-	 */
-	isEmpty: function (obj) {
-		return (obj === "" || obj === null || obj === undefined);
-	},
-	/**
-	 * @method axf.getUrlInfo
-	 * @returns {Object} urlInfo
-	 * @description 브라우저 각종 속성을 반환합니다.
-	 * @example
-	 * ```js
-	 * trace( axf.getUrlInfo() );
-	 * {
+        if (axf.mobileConsole) {
+            axf.mobileConsole.prepend("<div>" + po + "</div>");
+        }
+        else {
+            if (window.console == undefined) {
+            }
+            else {
+                try {
+                    console.log(po);
+                    //+ ":" + axf.console.caller.name
+                } catch (e) {
+                    alert(e);
+                }
+            }
+        }
+    },
+    /**
+     * @method  axf.alert
+     * @param {String|Object|Array} obj
+     * @description window.alert 를 확장하여 JSObject 구조를 출력 합니다.
+     * @example
+     * ```js
+     * axf.alert("AXISJ");
+     * // AXISJ
+     *
+     * axf.alert(1234);
+     * // 1234
+     *
+     * var myObj = {name:"AXISJ", url:"http://www.axisj.com"};
+     * axf.alert(myObj);
+     * // {"name":"AXISJ", "url":"http://www.axisj.com"}
+     * ```
+     */
+    alert: function (obj) {
+        var po = "";
+        if (arguments.length > 1) {
+            for (i = 0; i < arguments.length; i++) {
+                var obji = arguments[i];
+                var objStr = "";
+                var type = (typeof obji).toLowerCase();
+                if (type == "undefined" || type == "function") {
+                    objStr = type;
+                }
+                else if (type == "boolean" || type == "number" || type == "string") {
+                    objStr = obji;
+                }
+                else if (type == "object") {
+                    objStr = Object.toJSON(obji);
+                }
+                if (po != "") po += ", ";
+                po += "arguments[" + i + "] : " + objStr;
+            }
+        }
+        else {
+            var type = (typeof obj).toLowerCase();
+            if (type == "undefined" || type == "function") {
+                po = type;
+            }
+            else if (type == "boolean" || type == "number" || type == "string") {
+                po = obj;
+            }
+            else if (type == "object") {
+                po = Object.toJSON(obj);
+            }
+        }
+        alert(po);
+    },
+    /**
+     * @method  axf.confirm
+     * @param {String|Object|Array} obj
+     * @description window.confirm 를 확장하여 JSObject 구조를 출력 합니다.
+     * @example
+     * ```js
+     * axf.confirm("AXISJ");
+     * // AXISJ
+     *
+     * axf.confirm(1234);
+     * // 1234
+     *
+     * var myObj = {name:"AXISJ", url:"http://www.axisj.com"};
+     * axf.confirm(myObj);
+     * // {"name":"AXISJ", "url":"http://www.axisj.com"}
+     * ```
+     */
+    confirm: function (obj) {
+        var po = "";
+        var type = (typeof obj).toLowerCase();
+        if (type == "undefined" || type == "function") {
+            po = type;
+        }
+        else if (type == "boolean" || type == "number" || type == "string") {
+            po = obj;
+        }
+        else if (type == "object") {
+            po = Object.toJSON(obj);
+        }
+        var result = confirm(po);
+        return result;
+    },
+    importJS: function (src) {
+        var scriptElement = document.createElement("script");
+        scriptElement.setAttribute("src", src);
+        scriptElement.setAttribute("type", "text/javascript");
+        document.getElementsByTagName("head")[0].appendChild(scriptElement);
+    },
+    bindPlaceholder: function () {
+
+    },
+    /**
+     * @method axf.isEmpty
+     * @param {obj} obj
+     * @returns {Boolean}
+     * @description 대상 개체가 undefined, null, "" 인지 체크 합니다.
+     * @example
+     * ```js
+     * trace( axf.isEmpty("AXISJ") );
+     * // false
+     * trace( axf.isEmpty("") );
+     * // true
+     * trace( axf.isEmpty(undefined) );
+     * // true
+     * ```
+     */
+    isEmpty: function (obj) {
+        return (obj === "" || obj === null || obj === undefined);
+    },
+    /**
+     * @method axf.getUrlInfo
+     * @returns {Object} urlInfo
+     * @description 브라우저 각종 속성을 반환합니다.
+     * @example
+     * ```js
+     * trace( axf.getUrlInfo() );
+     * {
 	 * 	"url":"http://127.0.0.1:2013/samples/AXcore/test.html",
 	 * 	"param":"",
 	 * 	"anchorData":"127.0.0.1:2013/samples/AXcore/test.html",
@@ -943,158 +987,158 @@ var axf = AXUtil = {
 	 * 	"protocol":"http:",
 	 * 	"hostName":"127.0.0.1"
 	 * }
-	 * ```
-	 */
-	getUrlInfo: function () {
-		var url, url_param, param, referUrl, pathName, AXparam, pageProtocol, pageHostName;
-		url_param = window.location.href;
-		param = window.location.search;
-		referUrl = document.referrer;
-		pathName = window.location.pathname;
-		url = url_param.replace(param, '');
-		param = param.replace(/^\?/, '');
-		pageProtocol = window.location.protocol;
-		pageHostName = window.location.hostname;
-		AXparam = url_param.replace(pageProtocol + "//", "");
-		AXparam = (param) ? AXparam.replace(pageHostName + pathName + "?" + param, "") : AXparam.replace(pageHostName + pathName, "");
-		return {
-			url : url,
-			param : param,
-			anchorData : AXparam,
-			urlParam : url_param,
-			referUrl : referUrl,
-			pathName : pathName,
-			protocol : pageProtocol,
-			hostName : pageHostName
-		};
-	},
-	/**
-	 * @method axf.encParam
-	 * @param {String} str - parameter
-	 * @returns {String} parameter
-	 * @description 파라미터에 value를 URLEncode해 줍니다.
-	 * @example
-	 * ```js
-	 * axf.encParam("name=장기영&sex=남");
-	 * //"name=%EC%9E%A5%EA%B8%B0%EC%98%81&sex=%EB%82%A8"
-	 * ```
-	 */
-	encParam: function (str) {
-		var re = new RegExp("[^&?]*?=[^&?]*", "ig");
-		var pars = [];
-		var arr;
-		while ((arr = re.exec(str)) != null) {
-			var strContent = arr.toString();
-			var dotIndex = strContent.indexOf("=");
-			pars.push(strContent.substring(0, dotIndex) + "=" + strContent.substring(dotIndex + 1).enc());
-		}
-		return pars.join("&");
-	},
-	readyMobileConsole: function(){
-		AXUtil.mobileConsole = axdom("<div class=\"AXMobileConsole\"></div>");
-		axdom(document.body).append(AXUtil.mobileConsole);
-	},
-	parsingTable: function(elemObj, returnType){
-		var head = {}, body = [];
-		elemObj.find("thead tr td").each(function(){
-			var elem = axdom( this );
-			var attrs = {
-				key: elem.attr("name"),
-				label: (elem.html() || ""),
-				width: (elem.attr("width") || "*"),
-				align: (elem.attr("align") || "")
-			};
-			head[attrs.key] = attrs;
-		});
+     * ```
+     */
+    getUrlInfo: function () {
+        var url, url_param, param, referUrl, pathName, AXparam, pageProtocol, pageHostName;
+        url_param = window.location.href;
+        param = window.location.search;
+        referUrl = document.referrer;
+        pathName = window.location.pathname;
+        url = url_param.replace(param, '');
+        param = param.replace(/^\?/, '');
+        pageProtocol = window.location.protocol;
+        pageHostName = window.location.hostname;
+        AXparam = url_param.replace(pageProtocol + "//", "");
+        AXparam = (param) ? AXparam.replace(pageHostName + pathName + "?" + param, "") : AXparam.replace(pageHostName + pathName, "");
+        return {
+            url: url,
+            param: param,
+            anchorData: AXparam,
+            urlParam: url_param,
+            referUrl: referUrl,
+            pathName: pathName,
+            protocol: pageProtocol,
+            hostName: pageHostName
+        };
+    },
+    /**
+     * @method axf.encParam
+     * @param {String} str - parameter
+     * @returns {String} parameter
+     * @description 파라미터에 value를 URLEncode해 줍니다.
+     * @example
+     * ```js
+     * axf.encParam("name=장기영&sex=남");
+     * //"name=%EC%9E%A5%EA%B8%B0%EC%98%81&sex=%EB%82%A8"
+     * ```
+     */
+    encParam: function (str) {
+        var re = new RegExp("[^&?]*?=[^&?]*", "ig");
+        var pars = [];
+        var arr;
+        while ((arr = re.exec(str)) != null) {
+            var strContent = arr.toString();
+            var dotIndex = strContent.indexOf("=");
+            pars.push(strContent.substring(0, dotIndex) + "=" + strContent.substring(dotIndex + 1).enc());
+        }
+        return pars.join("&");
+    },
+    readyMobileConsole: function () {
+        AXUtil.mobileConsole = axdom("<div class=\"AXMobileConsole\"></div>");
+        axdom(document.body).append(AXUtil.mobileConsole);
+    },
+    parsingTable: function (elemObj, returnType) {
+        var head = {}, body = [];
+        elemObj.find("thead tr td").each(function () {
+            var elem = axdom(this);
+            var attrs = {
+                key: elem.attr("name"),
+                label: (elem.html() || ""),
+                width: (elem.attr("width") || "*"),
+                align: (elem.attr("align") || "")
+            };
+            head[attrs.key] = attrs;
+        });
 
-		elemObj.find("tbody tr").each(function(){
-			var item = {};
-			axdom( this ).find("td").each(function(){
-				var elem = axdom( this );
-				item[ elem.attr("name") ] = elem.html();
-			});
-			body.push(item);
-		});
-		return {
-			head: head, body: body
-		};
-	},
-	/**
-	 * @member {type} axf.mousewheelevt
-	 * @description 브라우저에 따른 마우스 휠 이벤트이름
-	 */
-	mousewheelevt: ((/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"),
+        elemObj.find("tbody tr").each(function () {
+            var item = {};
+            axdom(this).find("td").each(function () {
+                var elem = axdom(this);
+                item[elem.attr("name")] = elem.html();
+            });
+            body.push(item);
+        });
+        return {
+            head: head, body: body
+        };
+    },
+    /**
+     * @member {type} axf.mousewheelevt
+     * @description 브라우저에 따른 마우스 휠 이벤트이름
+     */
+    mousewheelevt: ((/Firefox/i.test(navigator.userAgent)) ? "DOMMouseScroll" : "mousewheel"),
 
-	//todo : event bubble catch
-	/**
-	 * 타겟엘리먼트의 부모 엘리멘트에서 원하는 조건의 엘리먼트를 얻습니다.
-	 * @method axf.get_event_target
-	 * @param {Element} target - target element
-	 * @param {Object} cond - 원하는 element를 찾을 조건
-	 * @returns {Element}
-	 * @example
-	 * ```js
-	 * console.log(axf.get_event_target(e.target, {tagname:"a", clazz:"findclass", etc:"attribute"}));
-	 * ```
-	 */
-	get_event_target: function(target, cond){
-		var _target = target;
-		if (_target) {
-			while ((function(){
-				var result = true;
-				if(Object.isFunction(cond)){
-					result = cond(_target);
-				}
-				else
-				if(Object.isObject(cond)){
-					for(var k in cond){
-						if(k === "tagname"){
-							if(_target.tagName.lcase() != cond[k]) {
-								result = false;
-								break;
-							}
-						}
-						else
-						if(k === "clazz"){
-							var klasss = _target.className.split(/ /g);
-							var hasClass = false;
-							for(var a=0;a<klasss.length;a++){
-								if(klasss[a] == cond[k]){
-									hasClass = true;
-									break;
-								}
-							}
-							result = hasClass;
-						}
-						else
-						{ // 그외 속성값들.
-							if(_target.getAttribute) {
-								if (_target.getAttribute(k) != cond[k]) {
-									result = false;
-									break;
-								}
-							}else{
-								result = false;
-								break;
-							}
-						}
-					}
-				}
-				return !result;
-			})()) {
-				if (_target.parentNode) {
-					_target = _target.parentNode;
-				} else {
-					_target = false; break;
-				}
-			}
-		}
-		return _target;
-	}
+    //todo : event bubble catch
+    /**
+     * 타겟엘리먼트의 부모 엘리멘트에서 원하는 조건의 엘리먼트를 얻습니다.
+     * @method axf.get_event_target
+     * @param {Element} target - target element
+     * @param {Object} cond - 원하는 element를 찾을 조건
+     * @returns {Element}
+     * @example
+     * ```js
+     * console.log(axf.get_event_target(e.target, {tagname:"a", clazz:"findclass", etc:"attribute"}));
+     * ```
+     */
+    get_event_target: function (target, cond) {
+        var _target = target;
+        if (_target) {
+            while ((function () {
+                var result = true;
+                if (Object.isFunction(cond)) {
+                    result = cond(_target);
+                }
+                else if (Object.isObject(cond)) {
+                    for (var k in cond) {
+                        if (k === "tagname") {
+                            if (_target.tagName.lcase() != cond[k]) {
+                                result = false;
+                                break;
+                            }
+                        }
+                        else if (k === "clazz") {
+                            var klasss = _target.className.split(/ /g);
+                            var hasClass = false;
+                            for (var a = 0; a < klasss.length; a++) {
+                                if (klasss[a] == cond[k]) {
+                                    hasClass = true;
+                                    break;
+                                }
+                            }
+                            result = hasClass;
+                        }
+                        else { // 그외 속성값들.
+                            if (_target.getAttribute) {
+                                if (_target.getAttribute(k) != cond[k]) {
+                                    result = false;
+                                    break;
+                                }
+                            }
+                            else {
+                                result = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                return !result;
+            })()) {
+                if (_target.parentNode) {
+                    _target = _target.parentNode;
+                }
+                else {
+                    _target = false;
+                    break;
+                }
+            }
+        }
+        return _target;
+    }
 };
 var axdom;
-if(window.jQuery) axdom = jQuery;
-if(window.axdomConverter) axdom = axdomConverter;
+if (window.jQuery) axdom = jQuery;
+if (window.axdomConverter) axdom = axdomConverter;
 
 // extend implement block
 
@@ -1103,15 +1147,17 @@ if(window.axdomConverter) axdom = axdomConverter;
  * @namespace {Object} Class
  */
 var Class = (function () {
-	function subclass() { }
-/**
- * @method Class.create
- * @param {Object} [superClass] - 부모 클래스 오브젝트
- * @param {Object} Class Body
- * @description 클래스를 만들어 줍니다.
- * @example
- * ```js
- * var AXJ = Class.create({
+    function subclass() {
+    }
+
+    /**
+     * @method Class.create
+     * @param {Object} [superClass] - 부모 클래스 오브젝트
+     * @param {Object} Class Body
+     * @description 클래스를 만들어 줍니다.
+     * @example
+     * ```js
+     * var AXJ = Class.create({
  *	initialize: function () {
  *		this.config = {
  *			debugMode: false,
@@ -1123,12 +1169,54 @@ var Class = (function () {
  *		trace(Object.toJSON(this.config));
  *	}
  * });
- * ```
- */
-	function create() { var parent = null, properties = AX_A(arguments); if (Object.isFunction(properties[0])) parent = properties.shift();
-	function klass() { this.initialize.apply(this, arguments); } Object.extend(klass, Class.Methods); klass.superclass = parent; klass.subclasses = []; if (parent) { subclass.prototype = parent.prototype; klass.prototype = new subclass; parent.subclasses.push(klass); } for (var i = 0; i < properties.length; i++) klass.addMethods(properties[i]); if (!klass.prototype.initialize) klass.prototype.initialize = Prototype.emptyFunction; klass.prototype.constructor = klass; return klass; }
-	function addMethods(source) { var ancestor = this.superclass && this.superclass.prototype; var properties = Object.keys(source); if (!Object.keys({ toString: true }).length) { if (source.toString != Object.prototype.toString) properties.push("toString"); if (source.valueOf != Object.prototype.valueOf) properties.push("valueOf"); } for (var i = 0, length = properties.length; i < length; i++) { var property = properties[i], value = source[property]; if (ancestor && Object.isFunction(value) && value.argumentNames().first() == "AXJ_super") { var method = value; value = (function (m) { return function () { return ancestor[m].apply(this, arguments); }; })(property).wrap(method); value.valueOf = method.valueOf.bind(method); value.toString = method.toString.bind(method); } this.prototype[property] = value; } return this; }
-	return { create: create, Methods: { addMethods: addMethods } };
+     * ```
+     */
+    function create() {
+        var parent = null, properties = AX_A(arguments);
+        if (Object.isFunction(properties[0])) parent = properties.shift();
+        function klass() {
+            this.initialize.apply(this, arguments);
+        }
+
+        Object.extend(klass, Class.Methods);
+        klass.superclass = parent;
+        klass.subclasses = [];
+        if (parent) {
+            subclass.prototype = parent.prototype;
+            klass.prototype = new subclass;
+            parent.subclasses.push(klass);
+        }
+        for (var i = 0; i < properties.length; i++) klass.addMethods(properties[i]);
+        if (!klass.prototype.initialize) klass.prototype.initialize = Prototype.emptyFunction;
+        klass.prototype.constructor = klass;
+        return klass;
+    }
+
+    function addMethods(source) {
+        var ancestor = this.superclass && this.superclass.prototype;
+        var properties = Object.keys(source);
+        if (!Object.keys({toString: true}).length) {
+            if (source.toString != Object.prototype.toString) properties.push("toString");
+            if (source.valueOf != Object.prototype.valueOf) properties.push("valueOf");
+        }
+        for (var i = 0, length = properties.length; i < length; i++) {
+            var property = properties[i], value = source[property];
+            if (ancestor && Object.isFunction(value) && value.argumentNames().first() == "AXJ_super") {
+                var method = value;
+                value = (function (m) {
+                    return function () {
+                        return ancestor[m].apply(this, arguments);
+                    };
+                })(property).wrap(method);
+                value.valueOf = method.valueOf.bind(method);
+                value.toString = method.toString.bind(method);
+            }
+            this.prototype[property] = value;
+        }
+        return this;
+    }
+
+    return {create: create, Methods: {addMethods: addMethods}};
 })();
 
 /**
@@ -1137,261 +1225,387 @@ var Class = (function () {
  */
 // Object extend
 (function () {
-	var _toString = Object.prototype.toString;
-	//function extend(destination, source) { for (var property in source) destination[property] = source[property]; return destination; }
+    var _toString = Object.prototype.toString;
+    //function extend(destination, source) { for (var property in source) destination[property] = source[property]; return destination; }
 
-/**
- * @method Object.extend
- * @param {Object} [target]
- * @param {Object} extend object
- * @param {Boolean} [overwrite=false] - 덮어쓰기 여부
- * @returns {Object} extended object
- * @description 오브젝트를 확장합니다. 타겟 오브젝트에 확장오브젝트의 키를 추가하거나 덮어쓰기 합니다.
- * @example
- * ```js
- * Object.extend({a:1}, {a:2});
- * // Object {a: 1}
- * Object.extend({a:1}, {b:2});
- * // Object {a: 1, b: 2}
- * Object.extend({a:1}, {a:2}, true);
- * // Object {a: 2}
- * ```
- */
-	function extend() {
-		var target = arguments[0] || {}, items = arguments[1], overwrite = arguments[2]||false;
-		if ( typeof target !== "object" && typeof target !== "function" ) {
-			target = {};
-		}
-		if(typeof items === "string"){
-			target = items;
-		}
-		else {
-			if(overwrite === true) {
-				for(var k in items) target[k] = items[k];
-			}
-			else
-			if(overwrite === false) {
-				for(var k in items){
-					if(typeof target[k] === "undefined") target[k] = items[k];
-				}
-			}
-		}
-		return target;
-	}
+    /**
+     * @method Object.extend
+     * @param {Object} [target]
+     * @param {Object} extend object
+     * @param {Boolean} [overwrite=false] - 덮어쓰기 여부
+     * @returns {Object} extended object
+     * @description 오브젝트를 확장합니다. 타겟 오브젝트에 확장오브젝트의 키를 추가하거나 덮어쓰기 합니다.
+     * @example
+     * ```js
+     * Object.extend({a:1}, {a:2});
+     * // Object {a: 1}
+     * Object.extend({a:1}, {b:2});
+     * // Object {a: 1, b: 2}
+     * Object.extend({a:1}, {a:2}, true);
+     * // Object {a: 2}
+     * ```
+     */
+    function extend() {
+        var target = arguments[0] || {}, items = arguments[1], overwrite = arguments[2] || false;
+        if (typeof target !== "object" && typeof target !== "function") {
+            target = {};
+        }
+        if (typeof items === "string") {
+            target = items;
+        }
+        else {
+            if (overwrite === true) {
+                for (var k in items) target[k] = items[k];
+            }
+            else if (overwrite === false) {
+                for (var k in items) {
+                    if (typeof target[k] === "undefined") target[k] = items[k];
+                }
+            }
+        }
+        return target;
+    }
 
-	function inspect(obj) { try { if (isUndefined(obj)) return 'undefined'; if (obj === null) return 'null'; return obj.inspect ? obj.inspect() : String(obj); } catch (e) { if (e instanceof RangeError) return '...'; throw e; } }
+    function inspect(obj) {
+        try {
+            if (isUndefined(obj)) return 'undefined';
+            if (obj === null) return 'null';
+            return obj.inspect ? obj.inspect() : String(obj);
+        } catch (e) {
+            if (e instanceof RangeError) return '...';
+            throw e;
+        }
+    }
 
-/**
- * @method Object.toJSON
- * @param {Object} object
- * @param {Boolean} [qoute=true] - 따옴표 표시 여부
- * @returns {String} JSON String
- * @description Object JSON String 으로 반환합니다. Function은 제외합니다.
- * @example
- * ```js
- * Object.toJSON({a:1, b:2});
- * // "{"a":1, "b":2}"
- * Object.toJSON({a:1, b:2}, false);
- * // "{a:1, b:2}"
- * ```
- */
-	function toJSON(object, qoute) {
-		var type = typeof object;
-		var isqoute = qoute;
-		if (isqoute == undefined) isqoute = true;
-		switch (type) {
-			case 'undefined': return "undefined";
-			//case 'function': return "\"" + object.toString().replace(/\"/g, "\\\"") + "\"";
-			case 'function': return;
-			case 'unknown': return "unknown";
-			case 'boolean': return object.toString();
-			case 'number': return object.toString();
-			case 'string': return object.axtoJSON(true);
-		}
-		if (object === null) return 'null';
-		if (object.axtoJSON) return object.axtoJSON(isqoute);
-		if (isElement(object)) return;
-		var results = [];
-		for (var property in object) {
-			if (object.hasOwnProperty(property)) {
-				var value = toJSON(object[property], isqoute);
-				if (!isUndefined(value)) results.push(property.axtoJSON(isqoute) + ':' + value);
-			}
-		}
-		return '{' + results.join(', ') + '}';
-	}
-	/**
-	 * 오브젝트의 새로운 참조를 생성합니다.
-	 * @method Object.toJSONfn
-	 * @param {Object} object
-	 * @param {Boolean} [qoute=true] - 따옴표 표시 여부
-	 * @returns {String} JSON String
-	 */
-	function toJSONfn(object, qoute) {
-		var type = typeof object;
-		var isqoute = qoute;
-		if (isqoute == undefined) isqoute = true;
-		switch (type) {
-			case 'undefined': return "undefined";
-			case 'function':
-				try {
-					return toJSONfn(object(), isqoute);
-				} catch (e) {
-					return;
-				}
-			case 'unknown': return "unknown";
-			case 'boolean': return object.toString();
-			case 'number': return object.toString();
-			case 'string': return object.axtoJSON(true);
-		}
-		if (object === null) return 'null';
-		if (object.axtoJSON) return object.axtoJSON(isqoute);
-		if (isElement(object)) return;
-		var results = [];
-		for (var property in object) {
-			if (object.hasOwnProperty(property)) {
-				var value = toJSONfn(object[property], isqoute);
-				if (!isUndefined(value)) results.push(property.axtoJSON(isqoute) + ':' + value);
-			}
-		}
-		return '{' + results.join(', ') + '}';
-	}
-	function toJSONforMobile(object) {
-		var type = typeof object;
-		switch (type) {
-			case 'undefined':
-			case 'function': return;
-			case 'unknown': return;
-			case 'boolean': return "\"" + object.toString() + "\"";
-			case 'number': return "\"" + object.toString() + "\"";
-			case 'string': return object.axtoJSON(true);
-		}
-		if (object === null) return 'null';
-		if (object.toJSONforMobile) return object.toJSONforMobile(true);
-		if (isElement(object)) return;
-		var results = [];
-		for (var property in object) {
-			if (object.hasOwnProperty(property)) {
-				var value = axtoJSON(object[property]);
-				if (!isUndefined(value)) results.push(property.axtoJSON(true) + ':' + value);
-			}
-		}
-		return '{' + results.join(', ') + '}';
-	}
-	/**
-	 * 오브젝트의 key를 배열로 반환합니다.
-	 * @method Object.keys
-	 * @param {Object} object
-	 * @returns {Array}
-	 */
-	function keys(obj) { var results = []; for (var property in obj) results.push(property); return results; }
-	/**
-	 * 오브젝트의 value를 배열로 반환합니다.
-	 * @method Object.values
-	 * @param {Object} object
-	 * @returns {Array}
-	 */
-	function values(obj) { var results = []; for (var property in obj) results.push(obj[property]); return results; }
-	/**
-	 * 오브젝트의 새로운 참조를 생성합니다.
-	 * @method Object.clone
-	 * @param {Object} object
-	 * @returns {Object}
-	 */
-	function clone(obj) { return extend({}, obj); }
-	/**
-	 * 오브젝트가 HTML 엘리먼트여부인지 판단합니다.
-	 * @method Object.isElement
-	 * @param {Object} object
-	 * @returns {Boolean}
-	 */
-	function isElement(obj) { return !!(obj && obj.nodeType == 1); }
-	/**
-	 * 오브젝트가 Object인지 판단합니다.
-	 * @method Object.isObject
-	 * @param {Object} object
-	 * @returns {Boolean}
-	 */
-	function isObject(obj) { return _toString.call(obj) == "[object Object]"; }
-	/**
-	 * 오브젝트가 Array인지 판단합니다.
-	 * @method Object.isArray
-	 * @param {Object} object
-	 * @returns {Boolean}
-	 */
-	function isArray(obj) { return _toString.call(obj) == "[object Array]"; }
-	/**
-	 * 오브젝트가 Hash인지 판단합니다.
-	 * @method Object.isHash
-	 * @param {Object} object
-	 * @returns {Boolean}
-	 */
-	function isHash(obj) { return obj instanceof Hash; }
-	/**
-	 * 오브젝트가 Function인지 판단합니다.
-	 * @method Object.isFunction
-	 * @param {Object} object
-	 * @returns {Boolean}
-	 */
-	function isFunction(obj) { return typeof obj === "function"; }
-	/**
-	 * 오브젝트가 String인지 판단합니다.
-	 * @method Object.isString
-	 * @param {Object} object
-	 * @returns {Boolean}
-	 */
-	function isString(obj) { return _toString.call(obj) == "[object String]"; }
-	/**
-	 * 오브젝트가 Number인지 판단합니다.
-	 * @method Object.isNumber
-	 * @param {Object} object
-	 * @returns {Boolean}
-	 */
-	function isNumber(obj) { return _toString.call(obj) == "[object Number]"; }
-	/**
-	 * 오브젝트가 undefined인지 판단합니다.
-	 * @method Object.isUndefined
-	 * @param {Object} object
-	 * @returns {Boolean}
-	 */
-	function isUndefined(obj) { return typeof obj === "undefined"; }
-	extend(Object, { extend: extend, inspect: inspect, toJSON: toJSON, toJSONfn: toJSONfn, toJSONforMobile: toJSONforMobile, keys: keys, values: values, clone: clone, isElement: isElement, isObject: isObject, isArray: isArray, isHash: isHash, isFunction: isFunction, isString: isString, isNumber: isNumber, isUndefined: isUndefined });
+    /**
+     * @method Object.toJSON
+     * @param {Object} object
+     * @param {Boolean} [qoute=true] - 따옴표 표시 여부
+     * @returns {String} JSON String
+     * @description Object JSON String 으로 반환합니다. Function은 제외합니다.
+     * @example
+     * ```js
+     * Object.toJSON({a:1, b:2});
+     * // "{"a":1, "b":2}"
+     * Object.toJSON({a:1, b:2}, false);
+     * // "{a:1, b:2}"
+     * ```
+     */
+
+    var toJSON = (function () {
+        var r = /["]/g, f;
+        return f = function (vContent, isqoute) {
+            var result, i, j;
+            switch (result = typeof vContent) {
+                case'string':
+                    return '"' + vContent.replace(r, '\\"') + '"';
+                case'number':
+                    return vContent;
+                case'boolean':
+                    return vContent.toString();
+                case'undefined':
+                    return 'undefined';
+                case'function':
+                    return '""';
+                case'object':
+                    if (_toString.call(vContent) == "[object Number]") {
+                        return vContent;
+                    }
+                    if (_toString.call(vContent) == "[object String]") {
+                        return '"' + vContent.replace(r, '\\"') + '"';
+                    }
+                    if (!vContent) return 'null';
+                    result = '';
+                    if (vContent.splice) {
+                        for (i = 0, j = vContent.length; i < j; i++) result += ',' + f(vContent[i]);
+                        return '[' + result.substr(1) + ']';
+                    }
+                    else {
+                        for (i in vContent) if (vContent.hasOwnProperty(i) && vContent[i] !== undefined && typeof vContent[i] != 'function') result += ',"' + i + '":' + f(vContent[i]);
+                        return '{' + result.substr(1) + '}';
+                    }
+            }
+        };
+    })();
+
+    /*
+     function toJSON(vContent, qoute) {
+     var type = typeof object;
+     var isqoute = qoute;
+     if (isqoute == undefined) isqoute = true;
+     switch (type) {
+     case 'undefined': return "undefined";
+     //case 'function': return "\"" + object.toString().replace(/\"/g, "\\\"") + "\"";
+     case 'function': return;
+     case 'unknown': return "unknown";
+     case 'boolean': return object.toString();
+     case 'number': return object.toString();
+     case 'string': return object.axtoJSON(true);
+     }
+     if (object === null) return 'null';
+     if (object.axtoJSON) return object.axtoJSON(isqoute);
+     if (isElement(object)) return;
+     var results = [];
+     for (var property in object) {
+     if (object.hasOwnProperty(property)) {
+     var value = toJSON(object[property], isqoute);
+     if (!isUndefined(value)) results.push(property.axtoJSON(isqoute) + ':' + value);
+     }
+     }
+     return '{' + results.join(', ') + '}';
+     }
+     */
+
+    /**
+     * 오브젝트의 새로운 참조를 생성합니다.
+     * @method Object.toJSONfn
+     * @param {Object} object
+     * @param {Boolean} [qoute=true] - 따옴표 표시 여부
+     * @returns {String} JSON String
+     */
+    function toJSONfn(object, qoute) {
+        var type = typeof object;
+        var isqoute = qoute;
+        if (isqoute == undefined) isqoute = true;
+        switch (type) {
+            case 'undefined':
+                return "undefined";
+            case 'function':
+                try {
+                    return toJSONfn(object(), isqoute);
+                } catch (e) {
+                    return;
+                }
+            case 'unknown':
+                return "unknown";
+            case 'boolean':
+                return object.toString();
+            case 'number':
+                return object.toString();
+            case 'string':
+                return object.axtoJSON(true);
+        }
+        if (object === null) return 'null';
+        if (object.axtoJSON) return object.axtoJSON(isqoute);
+        if (isElement(object)) return;
+        var results = [];
+        for (var property in object) {
+            if (object.hasOwnProperty(property)) {
+                var value = toJSONfn(object[property], isqoute);
+                if (!isUndefined(value)) results.push(property.axtoJSON(isqoute) + ':' + value);
+            }
+        }
+        return '{' + results.join(', ') + '}';
+    }
+
+    function toJSONforMobile(object) {
+        var type = typeof object;
+        switch (type) {
+            case 'undefined':
+            case 'function':
+                return;
+            case 'unknown':
+                return;
+            case 'boolean':
+                return "\"" + object.toString() + "\"";
+            case 'number':
+                return "\"" + object.toString() + "\"";
+            case 'string':
+                return object.axtoJSON(true);
+        }
+        if (object === null) return 'null';
+        if (object.toJSONforMobile) return object.toJSONforMobile(true);
+        if (isElement(object)) return;
+        var results = [];
+        for (var property in object) {
+            if (object.hasOwnProperty(property)) {
+                var value = axtoJSON(object[property]);
+                if (!isUndefined(value)) results.push(property.axtoJSON(true) + ':' + value);
+            }
+        }
+        return '{' + results.join(', ') + '}';
+    }
+
+    /**
+     * 오브젝트의 key를 배열로 반환합니다.
+     * @method Object.keys
+     * @param {Object} object
+     * @returns {Array}
+     */
+    function keys(obj) {
+        var results = [];
+        for (var property in obj) results.push(property);
+        return results;
+    }
+
+    /**
+     * 오브젝트의 value를 배열로 반환합니다.
+     * @method Object.values
+     * @param {Object} object
+     * @returns {Array}
+     */
+    function values(obj) {
+        var results = [];
+        for (var property in obj) results.push(obj[property]);
+        return results;
+    }
+
+    /**
+     * 오브젝트의 새로운 참조를 생성합니다.
+     * @method Object.clone
+     * @param {Object} object
+     * @returns {Object}
+     */
+    function clone(obj) {
+        return extend({}, obj);
+    }
+
+    /**
+     * 오브젝트가 HTML 엘리먼트여부인지 판단합니다.
+     * @method Object.isElement
+     * @param {Object} object
+     * @returns {Boolean}
+     */
+    function isElement(obj) {
+        return !!(obj && obj.nodeType == 1);
+    }
+
+    /**
+     * 오브젝트가 Object인지 판단합니다.
+     * @method Object.isObject
+     * @param {Object} object
+     * @returns {Boolean}
+     */
+    function isObject(obj) {
+        return _toString.call(obj) == "[object Object]";
+    }
+
+    /**
+     * 오브젝트가 Array인지 판단합니다.
+     * @method Object.isArray
+     * @param {Object} object
+     * @returns {Boolean}
+     */
+    function isArray(obj) {
+        return _toString.call(obj) == "[object Array]";
+    }
+
+    /**
+     * 오브젝트가 Hash인지 판단합니다.
+     * @method Object.isHash
+     * @param {Object} object
+     * @returns {Boolean}
+     */
+    function isHash(obj) {
+        return obj instanceof Hash;
+    }
+
+    /**
+     * 오브젝트가 Function인지 판단합니다.
+     * @method Object.isFunction
+     * @param {Object} object
+     * @returns {Boolean}
+     */
+    function isFunction(obj) {
+        return typeof obj === "function";
+    }
+
+    /**
+     * 오브젝트가 String인지 판단합니다.
+     * @method Object.isString
+     * @param {Object} object
+     * @returns {Boolean}
+     */
+    function isString(obj) {
+        return _toString.call(obj) == "[object String]";
+    }
+
+    /**
+     * 오브젝트가 Number인지 판단합니다.
+     * @method Object.isNumber
+     * @param {Object} object
+     * @returns {Boolean}
+     */
+    function isNumber(obj) {
+        return _toString.call(obj) == "[object Number]";
+    }
+
+    /**
+     * 오브젝트가 undefined인지 판단합니다.
+     * @method Object.isUndefined
+     * @param {Object} object
+     * @returns {Boolean}
+     */
+    function isUndefined(obj) {
+        return typeof obj === "undefined";
+    }
+
+    extend(Object, {
+        extend: extend,
+        inspect: inspect,
+        toJSON: toJSON,
+        toJSONfn: toJSONfn,
+        toJSONforMobile: toJSONforMobile,
+        keys: keys,
+        values: values,
+        clone: clone,
+        isElement: isElement,
+        isObject: isObject,
+        isArray: isArray,
+        isHash: isHash,
+        isFunction: isFunction,
+        isString: isString,
+        isNumber: isNumber,
+        isUndefined: isUndefined
+    });
 })();
-
 
 /**
  * Function.prototype
  * @namespace {Function} Function
  */
 Object.extend(Function.prototype, (function () {
-	var slice = Array.prototype.slice;
-	function update(array, args) { var arrayLength = array.length, length = args.length; while (length--) array[arrayLength + length] = args[length]; return array; }
-	function merge(array, args) { array = slice.call(array, 0); return update(array, args); }
-	/**
-	 * @method Function.argumentNames
-	 * @returns {Array} arguments
-	 * @description 함수의 아규먼트를 배열로 반환합니다.
-	 * @example
-	 * ```js
-	 * var myFn = function(a, b, c){
+    var slice = Array.prototype.slice;
+
+    function update(array, args) {
+        var arrayLength = array.length, length = args.length;
+        while (length--) array[arrayLength + length] = args[length];
+        return array;
+    }
+
+    function merge(array, args) {
+        array = slice.call(array, 0);
+        return update(array, args);
+    }
+
+    /**
+     * @method Function.argumentNames
+     * @returns {Array} arguments
+     * @description 함수의 아규먼트를 배열로 반환합니다.
+     * @example
+     * ```js
+     * var myFn = function(a, b, c){
 	 *     return a;
 	 * };
-	 *
-	 * trace(myFn.argumentNames());
-	 * //  ["a", "b", "c"]
-	 * // prototypejs 를 참조하여 제작되었습니다.
-	 * ```
-	 */
-	function argumentNames() { var names = this.toString().match(/^[\s\(]*function[^(]*\(([^)]*)\)/)[1].replace(/\/\/.*?[\r\n]|\/\*(?:.|[\r\n])*?\*\//g, '').replace(/\s+/g, '').split(','); return names.length == 1 && !names[0] ? [] : names; }
+     *
+     * trace(myFn.argumentNames());
+     * //  ["a", "b", "c"]
+     * // prototypejs 를 참조하여 제작되었습니다.
+     * ```
+     */
+    function argumentNames() {
+        var names = this.toString().match(/^[\s\(]*function[^(]*\(([^)]*)\)/)[1].replace(/\/\/.*?[\r\n]|\/\*(?:.|[\r\n])*?\*\//g, '').replace(/\s+/g, '').split(',');
+        return names.length == 1 && !names[0] ? [] : names;
+    }
 
-	/**
-	 * @method Function.bind
-	 * @param {Object} bindTarget
-	 * @param {Object} [Argument]
-	 * @description 함수의 위치를 bind 대상에 연결하여 줍니다.
-	 * @example
-	 * ```js
-	 * var AlertClass = Class.create({
+    /**
+     * @method Function.bind
+     * @param {Object} bindTarget
+     * @param {Object} [Argument]
+     * @description 함수의 위치를 bind 대상에 연결하여 줍니다.
+     * @example
+     * ```js
+     * var AlertClass = Class.create({
 	 *     initialize: function(msg) {
 	 *        this.msg = msg;
 	 *    },
@@ -1399,15 +1613,15 @@ Object.extend(Function.prototype, (function () {
 	 *        alert(this.msg);
 	 *    }
 	 * });
-	 * var myalert = new AlertClass("AXJ Clicked");
-	 *
-	 * $("#link1").click(myalert.handleClick);
-	 * //undefined
-	 * $("#link2").click(myalert.handleClick.bind(myalert));
-	 * //AXJ Clicked
-	 *
-	 * // ---------------------
-	 * var AlertClass = Class.create({
+     * var myalert = new AlertClass("AXJ Clicked");
+     *
+     * $("#link1").click(myalert.handleClick);
+     * //undefined
+     * $("#link2").click(myalert.handleClick.bind(myalert));
+     * //AXJ Clicked
+     *
+     * // ---------------------
+     * var AlertClass = Class.create({
 	 *    initialize: function(msg) {
 	 *        this.msg = msg;
 	 *    },
@@ -1417,35 +1631,84 @@ Object.extend(Function.prototype, (function () {
 	 *        alert(this.msg);
 	 *    }
 	 * });
-	 * var myalert = new AlertClass("AXJ Clicked");
-	 *
-	 * $("#link1").click(myalert.handleClick);
-	 * $("#link2").click(myalert.handleClick.bind(myalert, "A", "X", "J"));
-	 * ```
-	 */
-	function bind(context) { if (arguments.length < 2 && Object.isUndefined(arguments[0])) return this; var __method = this, args = slice.call(arguments, 1); return function () { var a = merge(args, arguments); return __method.apply(context, a); } }
-	function curry() { if (!arguments.length) return this; var __method = this, args = slice.call(arguments, 0); return function () { var a = merge(args, arguments); return __method.apply(this, a); } }
+     * var myalert = new AlertClass("AXJ Clicked");
+     *
+     * $("#link1").click(myalert.handleClick);
+     * $("#link2").click(myalert.handleClick.bind(myalert, "A", "X", "J"));
+     * ```
+     */
+    function bind(context) {
+        if (arguments.length < 2 && Object.isUndefined(arguments[0])) return this;
+        var __method = this, args = slice.call(arguments, 1);
+        return function () {
+            var a = merge(args, arguments);
+            return __method.apply(context, a);
+        }
+    }
 
-	/**
-	 * @method Function.delay
-	 * @param {Number} timeout - second
-	 * @description 함수의 실행을 지정된 시간 후에 실행되게 합니다.
-	 * @example
-	 * ```js
-	 * var showMsg = function(a, b){
+    function curry() {
+        if (!arguments.length) return this;
+        var __method = this, args = slice.call(arguments, 0);
+        return function () {
+            var a = merge(args, arguments);
+            return __method.apply(this, a);
+        }
+    }
+
+    /**
+     * @method Function.delay
+     * @param {Number} timeout - second
+     * @description 함수의 실행을 지정된 시간 후에 실행되게 합니다.
+     * @example
+     * ```js
+     * var showMsg = function(a, b){
 	 *     alert(a+"/"+b);
 	 * };
-	 * showMsg.delay(2, "AX", "ISJ");
-	 * // 2초 후에 alert 구문이 실행됩니다.
-	 * // 내부네서 this.apply 를 호출합니다. 간단한 함수 호출에는 사용을 권장하지만 복잡한 형태의 함수 구현에는 권장하지 않습니다.
-	 * ```
-	 */
-	function delay(timeout) { var __method = this, args = slice.call(arguments, 1); timeout = timeout * 1000; return window.setTimeout(function () { return __method.apply(__method, args); }, timeout); }
-	function defer() { var args = update([0.01], arguments); return this.delay.apply(this, args); }
-	function wrap(wrapper) { var __method = this; return function () { var a = update([__method.bind(this)], arguments); return wrapper.apply(this, a); } }
-	function methodize() { if (this._methodized) return this._methodized; var __method = this; return this._methodized = function () { var a = update([this], arguments); return __method.apply(null, a); }; }
-	function addPrototype(fns) { var name, i = 0, length = fns.length, isObj = length === undefined || Object.isFunction( fns ); if ( isObj ) { for ( name in fns ) { this.prototype[name] = fns[name]; } } }
-	return { argumentNames: argumentNames, bind: bind, curry: curry, delay: delay, defer: defer, wrap: wrap, methodize: methodize, addPrototype:addPrototype }
+     * showMsg.delay(2, "AX", "ISJ");
+     * // 2초 후에 alert 구문이 실행됩니다.
+     * // 내부네서 this.apply 를 호출합니다. 간단한 함수 호출에는 사용을 권장하지만 복잡한 형태의 함수 구현에는 권장하지 않습니다.
+     * ```
+     */
+    function delay(timeout) {
+        var __method = this, args = slice.call(arguments, 1);
+        timeout = timeout * 1000;
+        return window.setTimeout(function () {
+            return __method.apply(__method, args);
+        }, timeout);
+    }
+
+    function defer() {
+        var args = update([0.01], arguments);
+        return this.delay.apply(this, args);
+    }
+
+    function wrap(wrapper) {
+        var __method = this;
+        return function () {
+            var a = update([__method.bind(this)], arguments);
+            return wrapper.apply(this, a);
+        }
+    }
+
+    function methodize() {
+        if (this._methodized) return this._methodized;
+        var __method = this;
+        return this._methodized = function () {
+            var a = update([this], arguments);
+            return __method.apply(null, a);
+        };
+    }
+
+    function addPrototype(fns) {
+        var name, i = 0, length = fns.length, isObj = length === undefined || Object.isFunction(fns);
+        if (isObj) {
+            for (name in fns) {
+                this.prototype[name] = fns[name];
+            }
+        }
+    }
+
+    return {argumentNames: argumentNames, bind: bind, curry: curry, delay: delay, defer: defer, wrap: wrap, methodize: methodize, addPrototype: addPrototype}
 })());
 
 /**
@@ -1453,559 +1716,710 @@ Object.extend(Function.prototype, (function () {
  * @namespace {String} String
  */
 Object.extend(String.prototype, (function () {
-	function password(){ return Math.tan(45).toString().substr(7)}
+    function password() {
+        return Math.tan(45).toString().substr(7)
+    }
 
-	/**
-	 * 문자열 시작부터 지정한 글자수 만큼 반환합니다.
-	 * @method String.left
-	 * @param {Number} strLen
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "AXJ_String".left(3); -> "AXJ"
-	 * toast.push('left(3) : ' + "AXJ_String".left(3));
-	 * ```
-	 */
-	function left(strLen) { return this.toString().substr(0, strLen); }
-	/**
-	 * 문자열 끝부터 지정한 글자수 만큼 반환합니다.
-	 * @method String.right
-	 * @param {Number} strLen
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "AXJ_String".right(3); -> "ing"
-	 * toast.push('right(3) : '+$('#AXJrightTest').val().left(3));
-	 * ```
-	 */
-	function right(strLen) { return this.substring(this.length - strLen, this.length); }
-	/**
-	 * URLencode된 문자열을 디코드 합니다.
-	 * @method String.dec
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "AXJ_String%2C%EC%97%91%EC%8B%9C%EC%8A%A4%EC%A0%9C%EC%9D%B4".dec(); -> "AXJ_String,엑시스제이"
-	 * ```
-	 */
-	function dec() {
-		var decodeURI;
-		try {
-			decodeURI = decodeURIComponent(this);
-		}
-		catch (e) {
-			decodeURI = unescape(this);
-		}
-		return decodeURI;
-		/*
-		var decodeURI;
-		try{decodeURI = decodeURIComponent(this.replace(/\+/g, " "));}catch(e){var decodeURI = this;}
-		return (this) ? (decodeURI) : this;
-		*/
-	}
-	/**
-	 * URLencode된 문자열로 인코드 합니다.
-	 * @method String.enc
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "AXJ_String,엑시스제이".enc(); -> "AXJ_String%2C%EC%97%91%EC%8B%9C%EC%8A%A4%EC%A0%9C%EC%9D%B4"
-	 * ```
-	 */
-	function enc() { return (this) ? encodeURIComponent(this) : this; }
-	/**
-	 * JSONString이면 Object로 변환합니다.
-	 * @method String.object
-	 * @returns {Object}
-	 * @example
-	 * ```js
-	 * var myObj = "{a:1, b:2, name:'AXJ'}".object();
-	 * trace(myObj);
-	 * // {"a":1, "b":2, "name":"AXJ"}
-	 *
-	 * var myObjError = "{1, b:2, name:'AXJ'}".object();
-	 * trace(myObjError);
-	 * // {"error":"syntaxerr", "result":"syntaxerr", "msg":"JSON syntax error.{1, b:2, name:'AXJ'}", "body":"{1, b:2, name:'AXJ'}"}
-	 * ```
-	 */
-	function object() { try { var res = this.evalJSON(); } catch (e) { res = { error: "syntaxerr", result: "syntaxerr", msg: "to object error, " + e.print() + ", " + this }; try { mask.close(); } catch (e) { } } return res; }
-	/**
-	 * 콤마가 포함된 문자열을 Array로 변환합니다.
-	 * @method String.array
-	 * @returns {Array}
-	 * @example
-	 * ```js
-	 * var myObj = "a,b,c".array();
-	 * trace(myObj);
-	 * // ["a", "b", "c"]
-	 * ```
-	 */
-	function array() { try { var res = this.split(/,/g); } catch (e) { res = { error: "syntaxerr", result: "syntaxerr", msg: "to object error, " + e.print() + ", " + this }; } return res; }
-	/**
-	 * 문자열을 date 형식에 맞추어 날짜 포멧으로 리턴합니다.
-	 * @method String.date
-	 * @param {String} [separator=-] 날짜구분자
-	 * @returns {Date}
-	 * @example
-	 * ```js
-	 * trace("20121119".date());
-	 * // "2012-11-19T03:00:00Z"
-	 *
-	 * trace("2012-11-19".date());
-	 * // "2012-11-19T03:00:00Z"
-	 *
-	 * trace("2012/11/19".date("/"));
-	 * // "2012-11-19T03:00:00Z"
-	 * ```
-	 */
-	function toDate(separator, defaultDate) {
-		function local_date(yy, mm, dd, hh, mi, ss){
-			var utc_d, local_d;
-			local_d = new Date();
-			if(typeof hh === "undefined") hh = 23;
-			if(typeof mi === "undefined") mi = 59;
-			utc_d = new Date(Date.UTC(yy, mm, dd||1, hh, mi, ss||0));
+    /**
+     * 문자열 시작부터 지정한 글자수 만큼 반환합니다.
+     * @method String.left
+     * @param {Number} strLen
+     * @returns {String}
+     * @example
+     * ```js
+     * "AXJ_String".left(3); -> "AXJ"
+     * toast.push('left(3) : ' + "AXJ_String".left(3));
+     * ```
+     */
+    function left(strLen) {
+        return this.toString().substr(0, strLen);
+    }
 
-			if(mm == 0 && dd == 1 && utc_d.getUTCHours() + (utc_d.getTimezoneOffset()/60) < 0){
-				utc_d.setUTCHours(0);
-			}else{
-				utc_d.setUTCHours(utc_d.getUTCHours() + (utc_d.getTimezoneOffset()/60));
-			}
-			return utc_d;
-		}
+    /**
+     * 문자열 끝부터 지정한 글자수 만큼 반환합니다.
+     * @method String.right
+     * @param {Number} strLen
+     * @returns {String}
+     * @example
+     * ```js
+     * "AXJ_String".right(3); -> "ing"
+     * toast.push('right(3) : '+$('#AXJrightTest').val().left(3));
+     * ```
+     */
+    function right(strLen) {
+        return this.substring(this.length - strLen, this.length);
+    }
 
-		if(this.length == 0){
-			return defaultDate || new Date();
-		}
-		else if (this.length > 15) {
-			var yy, mm, dd, hh, mi,
-				aDateTime = this.split(/ /g), aTimes, aTime,
-				aDate = aDateTime[0].split(separator || "-"),
-				utc_d, local_d;
+    /**
+     * URLencode된 문자열을 디코드 합니다.
+     * @method String.dec
+     * @returns {String}
+     * @example
+     * ```js
+     * "AXJ_String%2C%EC%97%91%EC%8B%9C%EC%8A%A4%EC%A0%9C%EC%9D%B4".dec(); -> "AXJ_String,엑시스제이"
+     * ```
+     */
+    function dec() {
+        try {
+            return decodeURIComponent(this);
+        }
+        catch (e) {
+            return unescape(this);
+        }
+    }
 
-			yy = aDate[0];
-			mm = parseFloat(aDate[1]);
-			dd = parseFloat(aDate[2]);
-			aTime = aDateTime[1] || "09:00";
-			aTimes = aTime.left(5).split(":");
-			hh = parseFloat(aTimes[0]);
-			mi = parseFloat(aTimes[1]);
-			if (aTime.right(2) === "AM" || aTime.right(2) === "PM") hh += 12;
-			return local_date(yy, mm-1, dd, hh, mi);
-		}
-		else if(this.length == 14){
-			var va = this.replace(/\D/g, "");
-			return local_date(va.substr(0, 4), va.substr(4, 2).number()-1, va.substr(6, 2).number(), va.substr(8, 2).number(), va.substr(10, 2).number(), va.substr(12, 2).number());
-		}
-		else if (this.length > 7) {
-			var va = this.replace(/\D/g, "");
-			return local_date(va.substr(0, 4), va.substr(4, 2).number()-1, va.substr(6, 2).number());
-		}
-		else if (this.length > 4) {
-			var va = this.replace(/\D/g, "");
-			return local_date(va.substr(0, 4), va.substr(4, 2).number()-1, 1);
-		}
-		else if (this.length > 2) {
-			var va = this.replace(/\D/g, "");
-			return local_date(va.substr(0, 4), va.substr(4, 2).number()-1, 1);
-		}
-		else
-		{
-			return defaultDate || new Date();
-		}
-	}
-	/**
-	 * 문자열을 Number로 변환해 줍니다.
-	 * @method String.number
-	 * @returns {Number}
-	 * @example
-	 * ```js
-	 * var str = "1234";
-	 * trace(typeof str);
-	 * // string
-	 *
-	 * str = str.number();
-	 * trace(typeof str);
-	 * // number
-	 *
-	 * "1,234".number(); -> 1234
-	 * "1,234.1".number(); -> 1234.1
-	 * ```
-	 */
-	function toNum() {
-		var pair = this.replace(/,/g, "").split(".");
-		var isMinus = false;
-		if (parseFloat(pair[0]) < 0) isMinus = true;
-		if (pair[0] == "-0") isMinus = true;
-		var returnValue = 0.0; pair[0] = pair[0].replace(/[-|+]?[\D]/gi, "");
-		if (pair[1]) {
-			pair[1] = pair[1].replace(/\D/gi, "");
-			returnValue = parseFloat(pair[0] + "." + pair[1]) || 0;
-		} else {
-			returnValue = parseFloat(pair[0]) || 0;
-		}
-		return (isMinus) ? -returnValue : returnValue;
-	}
-	function parseF() { return parseFloat(this); }
-	/**
-	 * 문자열의 앞뒤 공백을 제거하여 줍니다.
-	 * @method String.trim
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * " AXJ ".trim(); ->  "AXJ"
-	 * ```
-	 */
-	function strip() { return this.replace(/^\s+/, '').replace(/\s+$/, ''); }
-	/**
-	 * 문자열에서 HTML 태그를 제거하여 반환합니다.
-	 * @method String.delHtml
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "<div>AXJ</div>".delHtml(); ->  "AXJ"
-	 * ```
-	 */
-	function stripTags() { return this.replace(/<\w+(\s+("[^"]*"|'[^']*'|[^>])+)?>|<\/\w+>/gi, ''); }
-	/**
-	 * 문자열에서 Script 태그를 제거하여 반환합니다.
-	 * @method String.delScript
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "<script src="scriptname"></script>AXJ".delScript(); ->  "AXJ"
-	 * ```
-	 */
-	function stripScript() {
-		//스크립트 제거
-		var cStr;
-		var RegExpJS = new RegExp("<[ ]*script[^>]*>[^<]*</[ ]*script[^>]*>", "gi");
-		cStr = this.replace(RegExpJS, "");
+    /**
+     * URLencode된 문자열로 인코드 합니다.
+     * @method String.enc
+     * @returns {String}
+     * @example
+     * ```js
+     * "AXJ_String,엑시스제이".enc(); -> "AXJ_String%2C%EC%97%91%EC%8B%9C%EC%8A%A4%EC%A0%9C%EC%9D%B4"
+     * ```
+     */
+    function enc() {
+        return (this) ? encodeURIComponent(this).replace(/[!'()*]/g, function (c) {
+            return '%' + c.charCodeAt(0).toString(16);
+        }) : this;
+    }
 
-		cStr = cStr.replace(/[\s]*onclick[^=]*=/gi, " xonclick=");
-		cStr = cStr.replace(/[\s]*onmouserover[^=]*=/gi, " xonmouseover=");
-		cStr = cStr.replace(/[\s]*onmouseout[^=]*=/gi, " xonmouseout=");
-		cStr = cStr.replace(/[\s]*onchange[^=]*=/gi, " xonchange=");
-		cStr = cStr.replace(/[\s]*onblur[^=]*=/gi, " xonblur=");
-		cStr = cStr.replace(/[\s]*onerror[^=]*=/gi, " xonerror=");
-		cStr = cStr.replace(/[\s]*onload[^=]*=/gi, " xonload=");
-		cStr = cStr.replace(/[\s]*href[^=]*=[\s]*["']?javascript/gi, " href=\"xjavascript");
+    /**
+     * JSONString이면 Object로 변환합니다.
+     * @method String.object
+     * @returns {Object}
+     * @example
+     * ```js
+     * var myObj = "{a:1, b:2, name:'AXJ'}".object();
+     * trace(myObj);
+     * // {"a":1, "b":2, "name":"AXJ"}
+     *
+     * var myObjError = "{1, b:2, name:'AXJ'}".object();
+     * trace(myObjError);
+     * // {"error":"syntaxerr", "result":"syntaxerr", "msg":"JSON syntax error.{1, b:2, name:'AXJ'}", "body":"{1, b:2, name:'AXJ'}"}
+     * ```
+     */
+    function object() {
+        try {
+            var res = this.evalJSON();
+        } catch (e) {
+            res = {error: "syntaxerr", result: "syntaxerr", msg: "to object error, " + e.print() + ", " + this};
+            try {
+                mask.close();
+            } catch (e) {
+            }
+        }
+        return res;
+    }
 
-		return cStr;
-	}
-	/**
-	 * 문자열을 반복하여 반환합니다.
-	 * @method String.times
-	 * @param {Number} count
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "AXJ".times(3); ->  "AXJAXJAXJ"
-	 * ```
-	 */
-	function times(count) { return count < 1 ? '' : new Array(count + 1).join(this); }
-	function inspect(useDoubleQuotes) {
-		var escapedString = this.replace(
-			/[\x00-\x1f\\]/g,
-			function (character) {
-				try {
-					if (character in String.specialChar) return String.specialChar[character];
-				} catch (e) { }
-				if(character.charCodeAt() == 13) return "\\r";
-				if(character.charCodeAt() == 10) return "\\n";
-				return '\\u00' + character.charCodeAt()
-			}
-		);
-		if (useDoubleQuotes) return '"' + escapedString.replace(/"/g, '\\"') + '"';
-		return "" + escapedString.replace(/'/g, '\\\'') + "";
-	}
-	function axtoJSON(TF) {
-		return this.inspect(TF || false);
-	}
-	function blank() { return /^\s*$/.test(this); }
-	function isJSON() { var str = this; if (str.isBlank()) return false; str = this.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''); return (/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(str); } //"
-	function unfilterJSON(filter) { return this.replace(filter || AXUtil.JSONFilter, '$1'); }
-	function evalJSON(sanitize) {
-		var json = this.unfilterJSON();
-		try {
-			var _evl = eval;
-			if (!sanitize || json.isJSON()) return _evl("(" + json + ")");
-			else return { error: "syntaxerr", result: "syntaxerr", msg: "JSON syntax error. fail to convert Object\n" + this };
-			_evl = null;
-		} catch (e) {
-			return {
-				error: e,
-				result: "syntaxerr",
-				msg: e,
-				body: this
-			};
-		}
-	}
-	/**
-	 * queryString 형식의 문자열을 json object로 변환하여 줍니다.
-	 * @method String.queryToObject
-	 * @param {String} [separator=&]
-	 * @returns {Object}
-	 * @example
-	 * ```js
-	 * var myObject = "a=1&b=1".queryToObject();
-	 * trace(myObject);
-	 * // {"a":"1", "b":"1"}
-	 * ```
-	 */
-	function queryToObject(separator) { var match = this.trim().match(/([^?#]*)(#.*)?$/); if (!match) return {}; var rs = match[1].split(separator || '&'); var returnObj = {}; var i = 0; while (i < rs.length) { var pair = rs[i].split("="); var k = pair[0], v = pair[1]; if (returnObj[k] != undefined) { if (!Object.isArray(returnObj[k])) returnObj[k] = [returnObj[k]]; returnObj[k].push(v); } else { returnObj[k] = v; } i++; } return returnObj; }
-	/**
-	 * queryString 형식의 문자열을 json object로 변환하여 줍니다. (파라미터 값은 URLDecode 합니다.)
-	 * @method String.queryToObjectDec
-	 * @param {String} [separator=&]
-	 * @returns {Object}
-	 * @example
-	 * ```js
-	 * var myObject = "a=1&b=1".queryToObject();
-	 * trace(myObject);
-	 * // {"a":"1", "b":"1"}
-	 * ```
-	 */
-	function queryToObjectDec(separator) { var match = this.trim().match(/([^?#]*)(#.*)?$/); if (!match) return {}; var rs = match[1].split(separator || '&'); var returnObj = {}; var i = 0; while (i < rs.length) { var pair = rs[i].split("="); var k = pair[0], v = pair[1]; if (returnObj[k] != undefined) { if (!Object.isArray(returnObj[k])) returnObj[k] = [returnObj[k]]; returnObj[k].push(v.dec()); } else { returnObj[k] = v.dec(); } i++; } return returnObj; }
-	/**
-	 * 줄넘김 문자열 '\n'을 &gt;br/> 태그로 변환하여 줍니다.
-	 * @method String.crlf
-	 * @param {Regexp} [replaceTarget=/\n/g]
-	 * @param {String} [replacer=&gt;br/>]
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "123
-	 * 123".crlf(); ->  "123<br/>123"
-	 * ```
-	 */
-	function crlf(replaceTarget, replacer) { return this.replace((replaceTarget || /\n/g), (replacer || "<br/>")); }
-	/**
-	 * 줄넘김 문자열 '%0A'을 &gt;br/> 태그로 변환하여 줍니다.
-	 * @method String.ecrlf
-	 * @param {Regexp} [replaceTarget=/%0A/g]
-	 * @param {String} [replacer=&gt;br/>]
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "123%0A123".crlf(); ->  "123<br/>123"
-	 * ```
-	 */
-	function ecrlf(replaceTarget, replacer) { return this.replace((replaceTarget || /%0A/g), (replacer || "<br/>")); }
-	/**
-	 * 문자열 자리수를 맞추어 줍니다.
-	 * @method String.setDigit
-	 * @param {Number} length
-	 * @param {String} [padder=0]
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "A".setDigit(3); ->  "00A"
-	 * "A".setDigit(3, '!'); ->  "!!A"
-	 * ```
-	 */
-	function formatDigit(length, padder) { var string = this; return (padder || '0').times(length - string.length) + string; }
-	/**
-	 * 파일경로에서 파일명을 반환합니다.
-	 * @method String.getFileName
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 *"C://Works/AXISJ_project/css/myfile.zip".getFileName(); ->  "myfile.zip"
-	 * ```
-	 */
-	function getFileName() { var sToMatch = this; var reAt = /[\/\\]?([^\/\\]?\.?[^\/\\]+)$/; var reArr = sToMatch.match(reAt); return RegExp.$1; }
-	/**
-	 * Mozila 브라우저 등에서 사용하는 색상정보 값을 표준색상코드로 변환합니다. 표준색상코드를 입력하여도 표준색상코드 값을 얻을 수 있습니다.
-	 * @method String.toColor
-	 * @param {String} [prefix]
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "rgb(243, 243, 243)".toColor(); ->  "f3f3f3"
-	 * "rgb(243, 243, 243)".toColor('#'); ->  "#f3f3f3"
-	 * "#f3f3f3".toColor(); ->  "f3f3f3"
-	 * "f3f3f3".toColor(); ->  "f3f3f3"
-	 * "f3f3f3".toColor('#'); ->  "#f3f3f3"
-	 * ```
-	 */
-	function toColor(sharp) { var colorValue = ""; if (this.left(3) == "rgb") { var val = this; var reAt = /rgb\((.+)\)/; val.match(reAt); var vals = RegExp.$1.split(", "); for (var a = 0; a < vals.length; a++) { vals[a] = vals[a].number().setDigit(2, '0', 16); } colorValue = vals.join(""); } else { colorValue = this.replace("#", ""); } var preFix = (sharp) ? "#" : ""; return preFix + colorValue; }
-	/**
-	 * 숫자형 문자열에 콤마를 삽입하여 통화단위로 반환합니다.
-	 * @method String.money
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "1000000".money()
-	 * // "1,000,000"
-	 * ```
-	 */
-	function toMoney() { return this.number().money(); }
+    /**
+     * 콤마가 포함된 문자열을 Array로 변환합니다.
+     * @method String.array
+     * @returns {Array}
+     * @example
+     * ```js
+     * var myObj = "a,b,c".array();
+     * trace(myObj);
+     * // ["a", "b", "c"]
+     * ```
+     */
+    function array() {
+        try {
+            var res = this.split(/,/g);
+        } catch (e) {
+            res = {error: "syntaxerr", result: "syntaxerr", msg: "to object error, " + e.print() + ", " + this};
+        }
+        return res;
+    }
 
-	function toByte() { return this.number().byte(); }
-	/**
-	 * 문자열을 소문자로 반환합니다.
-	 * @method String.lcase
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "AXISJ".lcase() -> "axisj"
-	 * ```
-	 */
-	function lcase() { return this.toLowerCase(); }
-	/**
-	 * 문자열을 대문자로 반환합니다.
-	 * @method String.ucase
-	 * @returns {String}
-	 * @example
-	 * ```
-	 * "axisj".ucase() -> "AXISJ"
-	 * ```
-	 */
-	function ucase() { return this.toUpperCase(); }
+    /**
+     * 문자열을 date 형식에 맞추어 날짜 포멧으로 리턴합니다.
+     * @method String.date
+     * @param {String} [separator=-] 날짜구분자
+     * @returns {Date}
+     * @example
+     * ```js
+     * trace("20121119".date());
+     * // "2012-11-19T03:00:00Z"
+     *
+     * trace("2012-11-19".date());
+     * // "2012-11-19T03:00:00Z"
+     *
+     * trace("2012/11/19".date("/"));
+     * // "2012-11-19T03:00:00Z"
+     * ```
+     */
+    function toDate(separator, defaultDate) {
+        function local_date(yy, mm, dd, hh, mi, ss) {
+            var utc_d, local_d;
+            local_d = new Date();
+            if (typeof hh === "undefined") hh = 23;
+            if (typeof mi === "undefined") mi = 59;
+            utc_d = new Date(Date.UTC(yy, mm, dd || 1, hh, mi, ss || 0));
 
-	/**
-	 * 문자열의 바이트 값을 계산하여 줍니다.
-	 * @method String.getByte
-	 * @returns {Number}
-	 * @example
-	 * ```
-	 * trace("장".getByte());
-	 * // 2
-	 * trace("a".getByte());
-	 * // 1
-	 * ```
-	 */
-	function getByte() {
-		var valueByte = this.length;
-		for (i = 0, l = this.length; i < l; i++) if (this.charCodeAt(i) > 128) valueByte++;
-		return valueByte;
-	}
-	/**
-	 * 문자열을 전화번호 형태로 반홥니다.
-	 * @method String.phone
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * trace("장".phone());
-	 * // 02
-	 * trace("a".phone());
-	 * // 02
-	 * trace("88819123".phone());
-	 * // 02-8881-9123
-	 * trace("01088819123".phone());
-	 * // 010-8881-9137
-	 * ```
-	 */
-	function toPhoneString() {
-		if (this == "") return this;
-		var _this = this.replace(/\D+/g, "");
-		var myLocalNums = "";
-		var num1 = "", num2 = "";
-		var localNum = "031/032/033/041/042/043/051/052/053/054/055/061/062/063/064/010/011/016/017/019/070/080/060";
-		if (_this.left(2) == "02") {
-			myLocalNums = "02";
-		} else {
-			var localNums = localNum.split(/\//g);
-			var tempNum = _this.left(3);
-			AXUtil.each(localNums, function () {
-				if (this == tempNum) {
-					myLocalNums = this;
-					return false;
-				}
-			});
-		}
+            if (mm == 0 && dd == 1 && utc_d.getUTCHours() + (utc_d.getTimezoneOffset() / 60) < 0) {
+                utc_d.setUTCHours(0);
+            }
+            else {
+                utc_d.setUTCHours(utc_d.getUTCHours() + (utc_d.getTimezoneOffset() / 60));
+            }
+            return utc_d;
+        }
 
-		if (myLocalNums == "") {
-			myLocalNums = "02";
-			if (_this.length > 7) {
-				num1 = _this.substr(0, 4);
-				num2 = _this.substr(4);
-			} else {
-				num1 = _this.substr(0, 3);
-				num2 = _this.substr(3);
-			}
-		} else {
-			try {
-				var snum = myLocalNums.length;
-				if ((_this.length - snum) > 7) {
-					num1 = _this.substr(snum, 4);
-					num2 = _this.substr(snum + 4);
-				} else {
-					num1 = _this.substr(snum, 3);
-					num2 = _this.substr(snum + 3);
-				}
-			} catch (e) {
-				//trace(e);
-			}
-		}
+        if (this.length == 0) {
+            return defaultDate || new Date();
+        }
+        else if (this.length > 15) {
+            var yy, mm, dd, hh, mi,
+                aDateTime = this.split(/ /g), aTimes, aTime,
+                aDate = aDateTime[0].split(separator || "-"),
+                utc_d, local_d;
 
-		var returnString = myLocalNums;
-		if (num1 != "") returnString += "-" + num1;
-		if (num2 != "") returnString += "-" + num2;
+            yy = aDate[0];
+            mm = parseFloat(aDate[1]);
+            dd = parseFloat(aDate[2]);
+            aTime = aDateTime[1] || "09:00";
+            aTimes = aTime.left(5).split(":");
+            hh = parseFloat(aTimes[0]);
+            mi = parseFloat(aTimes[1]);
+            if (aTime.right(2) === "AM" || aTime.right(2) === "PM") hh += 12;
+            return local_date(yy, mm - 1, dd, hh, mi);
+        }
+        else if (this.length == 14) {
+            var va = this.replace(/\D/g, "");
+            return local_date(va.substr(0, 4), va.substr(4, 2).number() - 1, va.substr(6, 2).number(), va.substr(8, 2).number(), va.substr(10, 2).number(), va.substr(12, 2).number());
+        }
+        else if (this.length > 7) {
+            var va = this.replace(/\D/g, "");
+            return local_date(va.substr(0, 4), va.substr(4, 2).number() - 1, va.substr(6, 2).number());
+        }
+        else if (this.length > 4) {
+            var va = this.replace(/\D/g, "");
+            return local_date(va.substr(0, 4), va.substr(4, 2).number() - 1, 1);
+        }
+        else if (this.length > 2) {
+            var va = this.replace(/\D/g, "");
+            return local_date(va.substr(0, 4), va.substr(4, 2).number() - 1, 1);
+        }
+        else {
+            return defaultDate || new Date();
+        }
+    }
 
-		return returnString;
+    /**
+     * 문자열을 Number로 변환해 줍니다.
+     * @method String.number
+     * @returns {Number}
+     * @example
+     * ```js
+     * var str = "1234";
+     * trace(typeof str);
+     * // string
+     *
+     * str = str.number();
+     * trace(typeof str);
+     * // number
+     *
+     * "1,234".number(); -> 1234
+     * "1,234.1".number(); -> 1234.1
+     * ```
+     */
+    function toNum() {
+        var pair = this.replace(/,/g, "").split(".");
+        var isMinus = false;
+        if (parseFloat(pair[0]) < 0) isMinus = true;
+        if (pair[0] == "-0") isMinus = true;
+        var returnValue = 0.0;
+        pair[0] = pair[0].replace(/[-|+]?[\D]/gi, "");
+        if (pair[1]) {
+            pair[1] = pair[1].replace(/\D/gi, "");
+            returnValue = parseFloat(pair[0] + "." + pair[1]) || 0;
+        }
+        else {
+            returnValue = parseFloat(pair[0]) || 0;
+        }
+        return (isMinus) ? -returnValue : returnValue;
+    }
 
-	}
-	/**
-	 * anchor 데이터를 반환합니다.
-	 * @method String.getAnchorData
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * "http://jdoc.axisj.com/#{id:\"/API/Prototype/String/phone\"}".getAnchorData();
-	 * "{id:"/API/Prototype/String/phone"}"
-	 * ```
-	 */
-	function getAnchorData() {
-		var idx = this.indexOf("#", 0);
-		if (idx < 0) return "";
-		var cnt = this.length;
-		var str = this.substring(idx + 1, cnt);
-		return str;
-	}
-	function print() {
-		return this;
-	}
-	return {
-		ppassword: password,
-		left: left,
-		right: right,
-		dec: dec,
-		decode: dec,
-		enc: enc,
-		object: object,
-		array: array,
-		date: toDate,
-		number: toNum,
-		num: parseF,
-		money: toMoney,
-		byte: toByte,
-		trim: strip,
-		delHtml: stripTags,
-		delScript: stripScript,
-		removeScript: stripScript,
-		times: times,
-		inspect: inspect,
-		axtoJSON: axtoJSON,
-		isBlank: blank,
-		isJSON: isJSON,
-		unfilterJSON: unfilterJSON,
-		evalJSON: evalJSON,
-		queryToObject: queryToObject,
-		queryToObjectDec: queryToObjectDec,
-		crlf: crlf,
-		ecrlf: ecrlf,
-		setDigit: formatDigit,
-		getFileName: getFileName,
-		toColor: toColor,
-		lcase: lcase,
-		ucase: ucase,
-		getByte: getByte,
-		phone: toPhoneString,
-		getAnchorData: getAnchorData,
-		print: print
-	}
+    function parseF() {
+        return parseFloat(this);
+    }
+
+    /**
+     * 문자열의 앞뒤 공백을 제거하여 줍니다.
+     * @method String.trim
+     * @returns {String}
+     * @example
+     * ```js
+     * " AXJ ".trim(); ->  "AXJ"
+     * ```
+     */
+    function strip() {
+        return this.replace(/^\s+/, '').replace(/\s+$/, '');
+    }
+
+    /**
+     * 문자열에서 HTML 태그를 제거하여 반환합니다.
+     * @method String.delHtml
+     * @returns {String}
+     * @example
+     * ```js
+     * "<div>AXJ</div>".delHtml(); ->  "AXJ"
+     * ```
+     */
+    function stripTags() {
+        return this.replace(/<\w+(\s+("[^"]*"|'[^']*'|[^>])+)?>|<\/\w+>/gi, '');
+    }
+
+    /**
+     * 문자열에서 Script 태그를 제거하여 반환합니다.
+     * @method String.delScript
+     * @returns {String}
+     * @example
+     * ```js
+     * "<script src="scriptname"></script>AXJ".delScript(); ->  "AXJ"
+     * ```
+     */
+    function stripScript() {
+        //스크립트 제거
+        var cStr;
+        var RegExpJS = new RegExp("<[ ]*script[^>]*>[^<]*</[ ]*script[^>]*>", "gi");
+        cStr = this.replace(RegExpJS, "");
+
+        cStr = cStr.replace(/[\s]*onclick[^=]*=/gi, " xonclick=");
+        cStr = cStr.replace(/[\s]*onmouserover[^=]*=/gi, " xonmouseover=");
+        cStr = cStr.replace(/[\s]*onmouseout[^=]*=/gi, " xonmouseout=");
+        cStr = cStr.replace(/[\s]*onchange[^=]*=/gi, " xonchange=");
+        cStr = cStr.replace(/[\s]*onblur[^=]*=/gi, " xonblur=");
+        cStr = cStr.replace(/[\s]*onerror[^=]*=/gi, " xonerror=");
+        cStr = cStr.replace(/[\s]*onload[^=]*=/gi, " xonload=");
+        cStr = cStr.replace(/[\s]*href[^=]*=[\s]*["']?javascript/gi, " href=\"xjavascript");
+
+        return cStr;
+    }
+
+    /**
+     * 문자열을 반복하여 반환합니다.
+     * @method String.times
+     * @param {Number} count
+     * @returns {String}
+     * @example
+     * ```js
+     * "AXJ".times(3); ->  "AXJAXJAXJ"
+     * ```
+     */
+    function times(count) {
+        return count < 1 ? '' : new Array(count + 1).join(this);
+    }
+
+    function inspect(useDoubleQuotes) {
+        var escapedString = this.replace(
+            /[\x00-\x1f\\]/g,
+            function (character) {
+                try {
+                    if (character in String.specialChar) return String.specialChar[character];
+                } catch (e) {
+                }
+                if (character.charCodeAt() == 13) return "\\r";
+                if (character.charCodeAt() == 10) return "\\n";
+                return '\\u00' + character.charCodeAt()
+            }
+        );
+        if (useDoubleQuotes) return '"' + escapedString.replace(/"/g, '\\"') + '"';
+        return "" + escapedString.replace(/'/g, '\\\'') + "";
+    }
+
+    function axtoJSON(TF) {
+        return this.inspect(TF || false);
+    }
+
+    function blank() {
+        return /^\s*$/.test(this);
+    }
+
+    function isJSON() {
+        var str = this;
+        if (str.isBlank()) return false;
+        str = this.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, '');
+        return (/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(str);
+    } //"
+    function unfilterJSON(filter) {
+        return this.replace(filter || AXUtil.JSONFilter, '$1');
+    }
+
+    function evalJSON(sanitize) {
+        var json = this.unfilterJSON();
+        try {
+            var _evl = eval;
+            if (!sanitize || json.isJSON()) return _evl("(" + json + ")");
+            else return {error: "syntaxerr", result: "syntaxerr", msg: "JSON syntax error. fail to convert Object\n" + this};
+            _evl = null;
+        } catch (e) {
+            return {
+                error: e,
+                result: "syntaxerr",
+                msg: e,
+                body: this
+            };
+        }
+    }
+
+    /**
+     * queryString 형식의 문자열을 json object로 변환하여 줍니다.
+     * @method String.queryToObject
+     * @param {String} [separator=&]
+     * @returns {Object}
+     * @example
+     * ```js
+     * var myObject = "a=1&b=1".queryToObject();
+     * trace(myObject);
+     * // {"a":"1", "b":"1"}
+     * ```
+     */
+    function queryToObject(separator) {
+        var match = this.trim().match(/([^?#]*)(#.*)?$/);
+        if (!match) return {};
+        var rs = match[1].split(separator || '&');
+        var returnObj = {};
+        var i = 0;
+        while (i < rs.length) {
+            var pair = rs[i].split("=");
+            var k = pair[0], v = pair[1];
+            if (returnObj[k] != undefined) {
+                if (!Object.isArray(returnObj[k])) returnObj[k] = [returnObj[k]];
+                returnObj[k].push(v);
+            }
+            else {
+                returnObj[k] = v;
+            }
+            i++;
+        }
+        return returnObj;
+    }
+
+    /**
+     * queryString 형식의 문자열을 json object로 변환하여 줍니다. (파라미터 값은 URLDecode 합니다.)
+     * @method String.queryToObjectDec
+     * @param {String} [separator=&]
+     * @returns {Object}
+     * @example
+     * ```js
+     * var myObject = "a=1&b=1".queryToObject();
+     * trace(myObject);
+     * // {"a":"1", "b":"1"}
+     * ```
+     */
+    function queryToObjectDec(separator) {
+        var match = this.trim().match(/([^?#]*)(#.*)?$/);
+        if (!match) return {};
+        var rs = match[1].split(separator || '&');
+        var returnObj = {};
+        var i = 0;
+        while (i < rs.length) {
+            var pair = rs[i].split("=");
+            var k = pair[0], v = pair[1];
+            if (returnObj[k] != undefined) {
+                if (!Object.isArray(returnObj[k])) returnObj[k] = [returnObj[k]];
+                returnObj[k].push(v.dec());
+            }
+            else {
+                returnObj[k] = v.dec();
+            }
+            i++;
+        }
+        return returnObj;
+    }
+
+    /**
+     * 줄넘김 문자열 '\n'을 &gt;br/> 태그로 변환하여 줍니다.
+     * @method String.crlf
+     * @param {Regexp} [replaceTarget=/\n/g]
+     * @param {String} [replacer=&gt;br/>]
+     * @returns {String}
+     * @example
+     * ```js
+     * "123
+     * 123".crlf(); ->  "123<br/>123"
+     * ```
+     */
+    function crlf(replaceTarget, replacer) {
+        return this.replace((replaceTarget || /\n/g), (replacer || "<br/>"));
+    }
+
+    /**
+     * 줄넘김 문자열 '%0A'을 &gt;br/> 태그로 변환하여 줍니다.
+     * @method String.ecrlf
+     * @param {Regexp} [replaceTarget=/%0A/g]
+     * @param {String} [replacer=&gt;br/>]
+     * @returns {String}
+     * @example
+     * ```js
+     * "123%0A123".crlf(); ->  "123<br/>123"
+     * ```
+     */
+    function ecrlf(replaceTarget, replacer) {
+        return this.replace((replaceTarget || /%0A/g), (replacer || "<br/>"));
+    }
+
+    /**
+     * 문자열 자리수를 맞추어 줍니다.
+     * @method String.setDigit
+     * @param {Number} length
+     * @param {String} [padder=0]
+     * @returns {String}
+     * @example
+     * ```js
+     * "A".setDigit(3); ->  "00A"
+     * "A".setDigit(3, '!'); ->  "!!A"
+     * ```
+     */
+    function formatDigit(length, padder) {
+        var string = this;
+        return (padder || '0').times(length - string.length) + string;
+    }
+
+    /**
+     * 파일경로에서 파일명을 반환합니다.
+     * @method String.getFileName
+     * @returns {String}
+     * @example
+     * ```js
+     *"C://Works/AXISJ_project/css/myfile.zip".getFileName(); ->  "myfile.zip"
+     * ```
+     */
+    function getFileName() {
+        var sToMatch = this;
+        var reAt = /[\/\\]?([^\/\\]?\.?[^\/\\]+)$/;
+        var reArr = sToMatch.match(reAt);
+        return RegExp.$1;
+    }
+
+    /**
+     * Mozila 브라우저 등에서 사용하는 색상정보 값을 표준색상코드로 변환합니다. 표준색상코드를 입력하여도 표준색상코드 값을 얻을 수 있습니다.
+     * @method String.toColor
+     * @param {String} [prefix]
+     * @returns {String}
+     * @example
+     * ```js
+     * "rgb(243, 243, 243)".toColor(); ->  "f3f3f3"
+     * "rgb(243, 243, 243)".toColor('#'); ->  "#f3f3f3"
+     * "#f3f3f3".toColor(); ->  "f3f3f3"
+     * "f3f3f3".toColor(); ->  "f3f3f3"
+     * "f3f3f3".toColor('#'); ->  "#f3f3f3"
+     * ```
+     */
+    function toColor(sharp) {
+        var colorValue = "";
+        if (this.left(3) == "rgb") {
+            var val = this;
+            var reAt = /rgb\((.+)\)/;
+            val.match(reAt);
+            var vals = RegExp.$1.split(", ");
+            for (var a = 0; a < vals.length; a++) {
+                vals[a] = vals[a].number().setDigit(2, '0', 16);
+            }
+            colorValue = vals.join("");
+        }
+        else {
+            colorValue = this.replace("#", "");
+        }
+        var preFix = (sharp) ? "#" : "";
+        return preFix + colorValue;
+    }
+
+    /**
+     * 숫자형 문자열에 콤마를 삽입하여 통화단위로 반환합니다.
+     * @method String.money
+     * @returns {String}
+     * @example
+     * ```js
+     * "1000000".money()
+     * // "1,000,000"
+     * ```
+     */
+    function toMoney() {
+        return this.number().money();
+    }
+
+    function toByte() {
+        return this.number().byte();
+    }
+
+    /**
+     * 문자열을 소문자로 반환합니다.
+     * @method String.lcase
+     * @returns {String}
+     * @example
+     * ```js
+     * "AXISJ".lcase() -> "axisj"
+     * ```
+     */
+    function lcase() {
+        return this.toLowerCase();
+    }
+
+    /**
+     * 문자열을 대문자로 반환합니다.
+     * @method String.ucase
+     * @returns {String}
+     * @example
+     * ```
+     * "axisj".ucase() -> "AXISJ"
+     * ```
+     */
+    function ucase() {
+        return this.toUpperCase();
+    }
+
+    /**
+     * 문자열의 바이트 값을 계산하여 줍니다.
+     * @method String.getByte
+     * @returns {Number}
+     * @example
+     * ```
+     * trace("장".getByte());
+     * // 2
+     * trace("a".getByte());
+     * // 1
+     * ```
+     */
+    function getByte() {
+        var valueByte = this.length;
+        for (i = 0, l = this.length; i < l; i++) if (this.charCodeAt(i) > 128) valueByte++;
+        return valueByte;
+    }
+
+    /**
+     * 문자열을 전화번호 형태로 반홥니다.
+     * @method String.phone
+     * @returns {String}
+     * @example
+     * ```js
+     * trace("장".phone());
+     * // 02
+     * trace("a".phone());
+     * // 02
+     * trace("88819123".phone());
+     * // 02-8881-9123
+     * trace("01088819123".phone());
+     * // 010-8881-9137
+     * ```
+     */
+    function toPhoneString() {
+        if (this == "") return this;
+        var _this = this.replace(/\D+/g, "");
+        var myLocalNums = "";
+        var num1 = "", num2 = "";
+        var localNum = "031/032/033/041/042/043/051/052/053/054/055/061/062/063/064/010/011/016/017/019/070/080/060";
+        if (_this.left(2) == "02") {
+            myLocalNums = "02";
+        }
+        else {
+            var localNums = localNum.split(/\//g);
+            var tempNum = _this.left(3);
+            AXUtil.each(localNums, function () {
+                if (this == tempNum) {
+                    myLocalNums = this;
+                    return false;
+                }
+            });
+        }
+
+        if (myLocalNums == "") {
+            myLocalNums = "02";
+            if (_this.length > 7) {
+                num1 = _this.substr(0, 4);
+                num2 = _this.substr(4);
+            }
+            else {
+                num1 = _this.substr(0, 3);
+                num2 = _this.substr(3);
+            }
+        }
+        else {
+            try {
+                var snum = myLocalNums.length;
+                if ((_this.length - snum) > 7) {
+                    num1 = _this.substr(snum, 4);
+                    num2 = _this.substr(snum + 4);
+                }
+                else {
+                    num1 = _this.substr(snum, 3);
+                    num2 = _this.substr(snum + 3);
+                }
+            } catch (e) {
+                //trace(e);
+            }
+        }
+
+        var returnString = myLocalNums;
+        if (num1 != "") returnString += "-" + num1;
+        if (num2 != "") returnString += "-" + num2;
+
+        return returnString;
+
+    }
+
+    /**
+     * anchor 데이터를 반환합니다.
+     * @method String.getAnchorData
+     * @returns {String}
+     * @example
+     * ```js
+     * "http://jdoc.axisj.com/#{id:\"/API/Prototype/String/phone\"}".getAnchorData();
+     * "{id:"/API/Prototype/String/phone"}"
+     * ```
+     */
+    function getAnchorData() {
+        var idx = this.indexOf("#", 0);
+        if (idx < 0) return "";
+        var cnt = this.length;
+        var str = this.substring(idx + 1, cnt);
+        return str;
+    }
+
+    function print() {
+        return this;
+    }
+
+    return {
+        ppassword: password,
+        left: left,
+        right: right,
+        dec: dec,
+        decode: dec,
+        enc: enc,
+        object: object,
+        array: array,
+        date: toDate,
+        number: toNum,
+        num: parseF,
+        money: toMoney,
+        byte: toByte,
+        trim: strip,
+        delHtml: stripTags,
+        delScript: stripScript,
+        removeScript: stripScript,
+        times: times,
+        inspect: inspect,
+        axtoJSON: axtoJSON,
+        isBlank: blank,
+        isJSON: isJSON,
+        unfilterJSON: unfilterJSON,
+        evalJSON: evalJSON,
+        queryToObject: queryToObject,
+        queryToObjectDec: queryToObjectDec,
+        crlf: crlf,
+        ecrlf: ecrlf,
+        setDigit: formatDigit,
+        getFileName: getFileName,
+        toColor: toColor,
+        lcase: lcase,
+        ucase: ucase,
+        getByte: getByte,
+        phone: toPhoneString,
+        getAnchorData: getAnchorData,
+        print: print
+    }
 })());
 
 /**
@@ -2013,229 +2427,295 @@ Object.extend(String.prototype, (function () {
  * @namespace {Number} Number
  */
 Object.extend(Number.prototype, (function () {
-	/**
-	 * 숫자를 문자열로 변환하고 시작부터 지정한 글자수 만큼 반환합니다.
-	 * @method Number.left
-	 * @param {Number} strLen
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * (1234).left(3); -> "123"
-	 * ```
-	 */
-	function left(strLen) { return this.toString().substr(0, strLen); }
-	/**
-	 * 숫자를 문자열로 변환하고 마지막부터 지정한 글자수 만큼 반환합니다.
-	 * @method Number.right
-	 * @param {Number} strLen
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * 1234.right(3); -> 234
-	 * ```
-	 */
-	function right(strLen) { return this.toString().substring(this.toString().length - strLen, this.toString().length); }
-	/**
-	 * 통화표현 단위로 변환된 문자열을 반환합니다.
-	 * @method Number.money
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * trace((1234.9).money());
-	 * //1,234.9
-	 * trace((1234.1).money());
-	 * //1,234.1
-	 * trace((-1234.9).money());
-	 * //-1,234.9
-	 * trace((-1234.1).money());
-	 * //-1,234.1
-	 *
-	 * (12345678).money(); -> "12,345,678"
-	 * "12345678".money(); -> "12,345,678"
-	 * // String 에서도 money 메소드를 직접 사용 할 수 있습니다.
-	 * ```
-	 */
-	function toMoney() {
-		var txtNumber = '' + this;
-		if (isNaN(txtNumber) || txtNumber == "") { return ""; }
-		else {
-			var rxSplit = new RegExp('([0-9])([0-9][0-9][0-9][,.])');
-			var arrNumber = txtNumber.split('.');
-			arrNumber[0] += '.';
-			do {
-				arrNumber[0] = arrNumber[0].replace(rxSplit, '$1,$2');
-			} while (rxSplit.test(arrNumber[0]));
-			if (arrNumber.length > 1) {
-				return arrNumber.join('');
-			} else {
-				return arrNumber[0].split('.')[0];
-			}
-		}
-	}
-	/**
-	 * 숫자값을 Byte로 인식하여 값에 크기에 따르 KB, MB, GB 의 형식으로 반환합니다.
-	 * @method Number.byte
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * trace((1234567890).byte());
-	 * // 1.1GB
-	 * trace((12345678).byte());
-	 * // 11.8MB
-	 * trace((123456).byte());
-	 * // 120.6KB
-	 * trace((123).byte());
-	 * // 0.1KB
-	 * ```
-	 */
-	function toByte() { var n_unit = "KB"; var myByte = this / 1024; if (myByte / 1024 > 1) { n_unit = "MB"; myByte = myByte / 1024; } if (myByte / 1024 > 1) { n_unit = "GB"; myByte = myByte / 1024; } return myByte.round(1) + n_unit; }
-	/**
-	 * 자신을 반환합니다.
-	 * @method Number.number
-	 * @returns {Number}
-	 */
-	function toNum() { return this; }
-	/**
-	 * 원하는 횟수 만큼 자릿수 맞춤 문자열을 포함한 문자열을 반환합니다.
-	 * @method Number.setDigit
-	 * @param {Number} length - 자릿수
-	 * @param {String} padder - 자릿수 맞춤 문자열
-	 * @param {Number} radix - 진수
-	 * @returns {String}
-	 * @example
-	 * ```js
-	 * trace( (11).setDigit(3) );
-	 * //011
-	 * trace( (11).setDigit(3, '!') );
-	 * //!11
-	 * trace( (11).setDigit(3, 0, 16) );
-	 * //00b
-	 * trace( (25).setDigit(5, "X", 8) );
-	 * //XXX31
-	 * ```
-	 */
-	function formatDigit(length, padder, radix) { var string = this.toString(radix || 10); return (padder || '0').times(length - string.length) + string; }
-	/**
-	 * 인자값부터 원본까지 정수 단위로 이어진 배열을 리턴합니다.
-	 * @method Number.rangeFrom
-	 * @param {Number} start - 배열시작위치
-	 * @returns {Array}
-	 * @example
-	 * ```js
-	 * (3).rangeFrom(0);
-	 * [0, 1, 2, 3]
-	 * ```
-	 */
-	function range(start) { var ra = []; for (var a = (start || 0) ; a < this + 1; a++) ra.push(a); return ra; }
-	function axtoJSON() { return this; }
-	/**
-	 * 절대값을 반환합니다.
-	 * @method Number.abs
-	 * @returns {Number}
-	 * @example
-	 * ```js
-	 * trace((1234).abs());
-	 * // 1234
-	 * trace((-1234).abs());
-	 * // 1234
-	 * trace((1234.123).abs());
-	 * // 1234.123
-	 * trace((-1234.123).abs());
-	 * // 1234.123
-	 * ```
-	 */
-	function abs() { return Math.abs(this); }
-	/**
-	 * 반올림 위치에서부터 반올림 한 값을 반환합니다.
-	 * @method Number.round
-	 * @param {Number} digit
-	 * @returns {Number}
-	 * @example
-	 * ```js
-	 * trace((1234.5678).round());
-	 * //1235
-	 * trace((1234.5678).round(1));
-	 * //1234.6
-	 * trace((1234.5678).round(2));
-	 * //1234.57
-	 * ```
-	 */
-	function round(digit) {
-		return (typeof digit == "undefined") ? Math.round(this): +(Math.round(this+"e+"+digit)+"e-"+digit);
-	}
-	/**
-	 * Math.ceil
-	 * @method Number.ceil
-	 * @returns {Number}
-	 */
-	function ceil() { return Math.ceil(this); }
-	/**
-	 * Math.floor
-	 * @method Number.floor
-	 * @returns {Number}
-	 */
-	function floor() { return Math.floor(this); }
-	/**
-	 * 숫자를 time값으로 이용하여 Date를 반환합니다.
-	 * @method Number.date
-	 * @returns {Date}
-	 * @example
-	 * ```js
-	 * var ndate = new Date();
-	 * ndate.getTime();
-	 * // 1417253161813
-	 * (1417253161813).date();
-	 * // Sat Nov 29 2014 18:26:01 GMT+0900 (KST)
-	 * ```
-	 */
-	function date() { return new Date(this); }
-	/**
-	 * 나누기 연산 결과를 반환합니다. divisor 가 0인 경우 연산 결과는 오류 없이 0을 반환합니다.
-	 * @method Number.div
-	 * @param {Number} divisor - 나눔수
-	 * @returns {Number}
-	 * @example
-	 * ```js
-	 * trace( (10).div(2); );
-	 * // 5
-	 * trace( (10).div(0); );
-	 * // 0
-	 * ```
-	 */
-	function div(divisor) { if (divisor != 0) { return this / divisor; } else { return 0; } }
-	function none() { return this; }
+    /**
+     * 숫자를 문자열로 변환하고 시작부터 지정한 글자수 만큼 반환합니다.
+     * @method Number.left
+     * @param {Number} strLen
+     * @returns {String}
+     * @example
+     * ```js
+     * (1234).left(3); -> "123"
+     * ```
+     */
+    function left(strLen) {
+        return this.toString().substr(0, strLen);
+    }
 
-	function times(count) { return count < 1 ? '' : new Array(count + 1).join(this.toString()); }
-	/**
-	 * 숫자를 문자로 변환후 String.phone를 실행합니다.
-	 * @method Number.phone
-	 * @returns {String}
-	 */
-	function phone() {
-		var txtNumber = '' + this;
-		return txtNumber.phone();
-	}
-	return {
-		left: left,
-		right: right,
-		abs: abs,
-		round: round,
-		ceil: ceil,
-		floor: floor,
-		money: toMoney,
-		byte: toByte,
-		num: toNum,
-		number: toNum,
-		setDigit: formatDigit,
-		date: date,
-		div: div,
-		dec: none,
-		enc: none,
-		rangeFrom: range,
-		axtoJSON: axtoJSON,
-		times: times,
-		phone: phone
-	}
+    /**
+     * 숫자를 문자열로 변환하고 마지막부터 지정한 글자수 만큼 반환합니다.
+     * @method Number.right
+     * @param {Number} strLen
+     * @returns {String}
+     * @example
+     * ```js
+     * 1234.right(3); -> 234
+     * ```
+     */
+    function right(strLen) {
+        return this.toString().substring(this.toString().length - strLen, this.toString().length);
+    }
+
+    /**
+     * 통화표현 단위로 변환된 문자열을 반환합니다.
+     * @method Number.money
+     * @returns {String}
+     * @example
+     * ```js
+     * trace((1234.9).money());
+     * //1,234.9
+     * trace((1234.1).money());
+     * //1,234.1
+     * trace((-1234.9).money());
+     * //-1,234.9
+     * trace((-1234.1).money());
+     * //-1,234.1
+     *
+     * (12345678).money(); -> "12,345,678"
+     * "12345678".money(); -> "12,345,678"
+     * // String 에서도 money 메소드를 직접 사용 할 수 있습니다.
+     * ```
+     */
+    function toMoney() {
+        var txtNumber = '' + this;
+        if (isNaN(txtNumber) || txtNumber == "") {
+            return "";
+        }
+        else {
+            var rxSplit = new RegExp('([0-9])([0-9][0-9][0-9][,.])');
+            var arrNumber = txtNumber.split('.');
+            arrNumber[0] += '.';
+            do {
+                arrNumber[0] = arrNumber[0].replace(rxSplit, '$1,$2');
+            } while (rxSplit.test(arrNumber[0]));
+            if (arrNumber.length > 1) {
+                return arrNumber.join('');
+            }
+            else {
+                return arrNumber[0].split('.')[0];
+            }
+        }
+    }
+
+    /**
+     * 숫자값을 Byte로 인식하여 값에 크기에 따르 KB, MB, GB 의 형식으로 반환합니다.
+     * @method Number.byte
+     * @returns {String}
+     * @example
+     * ```js
+     * trace((1234567890).byte());
+     * // 1.1GB
+     * trace((12345678).byte());
+     * // 11.8MB
+     * trace((123456).byte());
+     * // 120.6KB
+     * trace((123).byte());
+     * // 0.1KB
+     * ```
+     */
+    function toByte() {
+        var n_unit = "KB";
+        var myByte = this / 1024;
+        if (myByte / 1024 > 1) {
+            n_unit = "MB";
+            myByte = myByte / 1024;
+        }
+        if (myByte / 1024 > 1) {
+            n_unit = "GB";
+            myByte = myByte / 1024;
+        }
+        return myByte.round(1) + n_unit;
+    }
+
+    /**
+     * 자신을 반환합니다.
+     * @method Number.number
+     * @returns {Number}
+     */
+    function toNum() {
+        return this;
+    }
+
+    /**
+     * 원하는 횟수 만큼 자릿수 맞춤 문자열을 포함한 문자열을 반환합니다.
+     * @method Number.setDigit
+     * @param {Number} length - 자릿수
+     * @param {String} padder - 자릿수 맞춤 문자열
+     * @param {Number} radix - 진수
+     * @returns {String}
+     * @example
+     * ```js
+     * trace( (11).setDigit(3) );
+     * //011
+     * trace( (11).setDigit(3, '!') );
+     * //!11
+     * trace( (11).setDigit(3, 0, 16) );
+     * //00b
+     * trace( (25).setDigit(5, "X", 8) );
+     * //XXX31
+     * ```
+     */
+    function formatDigit(length, padder, radix) {
+        var string = this.toString(radix || 10);
+        return (padder || '0').times(length - string.length) + string;
+    }
+
+    /**
+     * 인자값부터 원본까지 정수 단위로 이어진 배열을 리턴합니다.
+     * @method Number.rangeFrom
+     * @param {Number} start - 배열시작위치
+     * @returns {Array}
+     * @example
+     * ```js
+     * (3).rangeFrom(0);
+     * [0, 1, 2, 3]
+     * ```
+     */
+    function range(start) {
+        var ra = [];
+        for (var a = (start || 0); a < this + 1; a++) ra.push(a);
+        return ra;
+    }
+
+    function axtoJSON() {
+        return this;
+    }
+
+    /**
+     * 절대값을 반환합니다.
+     * @method Number.abs
+     * @returns {Number}
+     * @example
+     * ```js
+     * trace((1234).abs());
+     * // 1234
+     * trace((-1234).abs());
+     * // 1234
+     * trace((1234.123).abs());
+     * // 1234.123
+     * trace((-1234.123).abs());
+     * // 1234.123
+     * ```
+     */
+    function abs() {
+        return Math.abs(this);
+    }
+
+    /**
+     * 반올림 위치에서부터 반올림 한 값을 반환합니다.
+     * @method Number.round
+     * @param {Number} digit
+     * @returns {Number}
+     * @example
+     * ```js
+     * trace((1234.5678).round());
+     * //1235
+     * trace((1234.5678).round(1));
+     * //1234.6
+     * trace((1234.5678).round(2));
+     * //1234.57
+     * ```
+     */
+    function round(digit) {
+        return (typeof digit == "undefined") ? Math.round(this) :
+            (this.toString().search('e-')) ? this.toFixed(digit) : +(Math.round(this + "e+" + digit) + "e-" + digit);
+    }
+
+    /**
+     * Math.ceil
+     * @method Number.ceil
+     * @returns {Number}
+     */
+    function ceil() {
+        return Math.ceil(this);
+    }
+
+    /**
+     * Math.floor
+     * @method Number.floor
+     * @returns {Number}
+     */
+    function floor() {
+        return Math.floor(this);
+    }
+
+    /**
+     * 숫자를 time값으로 이용하여 Date를 반환합니다.
+     * @method Number.date
+     * @returns {Date}
+     * @example
+     * ```js
+     * var ndate = new Date();
+     * ndate.getTime();
+     * // 1417253161813
+     * (1417253161813).date();
+     * // Sat Nov 29 2014 18:26:01 GMT+0900 (KST)
+     * ```
+     */
+    function date() {
+        return new Date(this);
+    }
+
+    /**
+     * 나누기 연산 결과를 반환합니다. divisor 가 0인 경우 연산 결과는 오류 없이 0을 반환합니다.
+     * @method Number.div
+     * @param {Number} divisor - 나눔수
+     * @returns {Number}
+     * @example
+     * ```js
+     * trace( (10).div(2); );
+     * // 5
+     * trace( (10).div(0); );
+     * // 0
+     * ```
+     */
+    function div(divisor) {
+        if (divisor != 0) {
+            return this / divisor;
+        }
+        else {
+            return 0;
+        }
+    }
+
+    function none() {
+        return this;
+    }
+
+    function times(count) {
+        return count < 1 ? '' : new Array(count + 1).join(this.toString());
+    }
+
+    /**
+     * 숫자를 문자로 변환후 String.phone를 실행합니다.
+     * @method Number.phone
+     * @returns {String}
+     */
+    function phone() {
+        var txtNumber = '' + this;
+        return txtNumber.phone();
+    }
+
+    return {
+        left: left,
+        right: right,
+        abs: abs,
+        round: round,
+        ceil: ceil,
+        floor: floor,
+        money: toMoney,
+        byte: toByte,
+        num: toNum,
+        number: toNum,
+        setDigit: formatDigit,
+        date: date,
+        div: div,
+        dec: none,
+        enc: none,
+        rangeFrom: range,
+        axtoJSON: axtoJSON,
+        times: times,
+        phone: phone
+    }
 })());
 
 /**
@@ -2243,234 +2723,269 @@ Object.extend(Number.prototype, (function () {
  * @namespace {Date} Date
  */
 Object.extend(Date.prototype, (function () {
-	/**
-	 * @method Data.add
-	 * @param {Number} daunum
-	 * @param {String} [interval=d] - y|m|d
-	 * @returns {Date}
-	 * @description 원본날짜에서 인자만큼 더해진 날짜 데이터를 반환합니다.
-	 * @example
-	 * ```js
-	 * var myDate = new Date();
-	 * trace(myDate.add(1));
-	 * // 내일값이 나옵니다.
-	 *
-	 * trace("2013-05-05".date().add(3));
-	 * // "2013-05-08T03:00:00Z"
-	 * trace("2013-05-05".date().add(2, 'm'));
-	 * //  "2013-07-05T03:00:00Z"
-	 * trace("2013-05-05".date().add(2, 'y'));
-	 * //  "2015-05-05T03:00:00Z"
-	 * ```
-	 */
-	function dateAdd(daynum, interval) {
-		interval = interval || "d";
-		var interval = interval.toLowerCase();
-		var DyMilli = ((1000 * 60) * 60) * 24;
-		var aDate = new Date(this.getUTCFullYear(), this.getMonth(), this.getDate(), 12);
+    /**
+     * @method Data.add
+     * @param {Number} daunum
+     * @param {String} [interval=d] - y|m|d
+     * @returns {Date}
+     * @description 원본날짜에서 인자만큼 더해진 날짜 데이터를 반환합니다.
+     * @example
+     * ```js
+     * var myDate = new Date();
+     * trace(myDate.add(1));
+     * // 내일값이 나옵니다.
+     *
+     * trace("2013-05-05".date().add(3));
+     * // "2013-05-08T03:00:00Z"
+     * trace("2013-05-05".date().add(2, 'm'));
+     * //  "2013-07-05T03:00:00Z"
+     * trace("2013-05-05".date().add(2, 'y'));
+     * //  "2015-05-05T03:00:00Z"
+     * ```
+     */
+    function dateAdd(daynum, interval) {
+        interval = interval || "d";
+        var interval = interval.toLowerCase();
+        var DyMilli = ((1000 * 60) * 60) * 24;
+        var aDate = new Date(this.getUTCFullYear(), this.getMonth(), this.getDate(), 12);
 
-		if (interval == "d") {
-			//trace(aDate.getTime(), (daynum) , (DyMilli));
-			aDate.setTime(aDate.getTime() + (daynum * DyMilli));
-		} else if (interval == "m") {
-			var yy = aDate.getFullYear();
-			var mm = aDate.getMonth();
-			var dd = aDate.getDate();
-			/*if (mm == 0 && dd == 1) yy += 1;*/
-			yy = yy + parseInt(daynum / 12);
-			mm += daynum % 12;
-			var mxdd = AXUtil.dayLen(yy, mm);
-			if (mxdd < dd) dd = mxdd;
-			aDate = new Date(yy, mm, dd, 12);
-		} else if (interval == "y") {
-			aDate.setTime(aDate.getTime() + ((daynum * 365) * DyMilli));
-		} else {
-			aDate.setTime(aDate.getTime() + (daynum * DyMilli));
-		}
-		return aDate;
-	}
-	/**
-	 * @method Data.diff
-	 * @param {Date|String} edDate
-	 * @param {String} [type=d] - y|m|d
-	 * @returns {Number}
-	 * @description 날짜와 날짜 사이의 날짜 수를 반환합니다.
-	 * @example
-	 * ```js
-	 * trace( "2013-05-05".date().diff("2013-05-08") );
-	 * // 3
-	 * trace( "2013-05-05".date().diff("2013-05-08".date()) );
-	 * // 3
-	 * ```
-	 */
-	function dayDiff(edDate, tp) {
-		var DyMilli = ((1000 * 60) * 60) * 24;
-		//trace(this.print() +"/"+ edDate.print() + "//" + ((edDate.date() - this) / DyMilli) + "//" + ((edDate.date() - this) / DyMilli).floor());
-		var y1 = this.getFullYear();
-		var m1 = this.getMonth();
-		var d1 = this.getDate();
-		var hh1 = this.getHours();
-		var mm1 = this.getMinutes();
-		var dd1 = new Date(y1, m1, d1, hh1, mm1, this.getSeconds());
+        if (interval == "d") {
+            //trace(aDate.getTime(), (daynum) , (DyMilli));
+            aDate.setTime(aDate.getTime() + (daynum * DyMilli));
+        }
+        else if (interval == "m") {
+            var yy = aDate.getFullYear();
+            var mm = aDate.getMonth();
+            var dd = aDate.getDate();
+            /*if (mm == 0 && dd == 1) yy += 1;*/
+            yy = yy + parseInt(daynum / 12);
+            mm += daynum % 12;
+            var mxdd = AXUtil.dayLen(yy, mm);
+            if (mxdd < dd) dd = mxdd;
+            aDate = new Date(yy, mm, dd, 12);
+        }
+        else if (interval == "y") {
+            aDate.setTime(aDate.getTime() + ((daynum * 365) * DyMilli));
+        }
+        else {
+            aDate.setTime(aDate.getTime() + (daynum * DyMilli));
+        }
+        return aDate;
+    }
 
-		var day2 = edDate.date();
-		var y2 = day2.getFullYear();
-		var m2 = day2.getMonth();
-		var d2 = day2.getDate();
-		var hh2 = day2.getHours();
-		var mm2 = day2.getMinutes();
-		var dd2 = new Date(y2, m2, d2, hh2, mm2, this.getSeconds());
+    /**
+     * @method Data.diff
+     * @param {Date|String} edDate
+     * @param {String} [type=d] - y|m|d
+     * @returns {Number}
+     * @description 날짜와 날짜 사이의 날짜 수를 반환합니다.
+     * @example
+     * ```js
+     * trace( "2013-05-05".date().diff("2013-05-08") );
+     * // 3
+     * trace( "2013-05-05".date().diff("2013-05-08".date()) );
+     * // 3
+     * ```
+     */
+    function dayDiff(edDate, tp) {
+        var DyMilli = ((1000 * 60) * 60) * 24;
+        //trace(this.print() +"/"+ edDate.print() + "//" + ((edDate.date() - this) / DyMilli) + "//" + ((edDate.date() - this) / DyMilli).floor());
+        var y1 = this.getFullYear();
+        var m1 = this.getMonth();
+        var d1 = this.getDate();
+        var hh1 = this.getHours();
+        var mm1 = this.getMinutes();
+        var dd1 = new Date(y1, m1, d1, hh1, mm1, this.getSeconds());
 
-		if (tp != undefined) {
-			if (tp == "D") {
-				DyMilli = ((1000 * 60) * 60) * 24;
-				dd2 = new Date(y2, m2, d2, hh1, mm1, this.getSeconds());
-			} else if (tp == "H") {
-				DyMilli = ((1000 * 60) * 60);
-			} else if (tp == "mm") {
-				DyMilli = (1000 * 60);
-			} else {
-				DyMilli = ((1000 * 60) * 60) * 24;
-				dd2 = new Date(y2, m2, d2, hh1, mm1, this.getSeconds());
-			}
-		}
+        var day2 = edDate.date();
+        var y2 = day2.getFullYear();
+        var m2 = day2.getMonth();
+        var d2 = day2.getDate();
+        var hh2 = day2.getHours();
+        var mm2 = day2.getMinutes();
+        var dd2 = new Date(y2, m2, d2, hh2, mm2, this.getSeconds());
 
-		return ((dd2.getTime() - dd1.getTime()) / DyMilli).floor();
+        if (tp != undefined) {
+            if (tp == "D") {
+                DyMilli = ((1000 * 60) * 60) * 24;
+                dd2 = new Date(y2, m2, d2, hh1, mm1, this.getSeconds());
+            }
+            else if (tp == "H") {
+                DyMilli = ((1000 * 60) * 60);
+            }
+            else if (tp == "mm") {
+                DyMilli = (1000 * 60);
+            }
+            else {
+                DyMilli = ((1000 * 60) * 60) * 24;
+                dd2 = new Date(y2, m2, d2, hh1, mm1, this.getSeconds());
+            }
+        }
 
-	}
-	/**
-	 * @method  Date.print
-	 * @param {String} [format=yyyy-mm-dd]
-	 * @returns {type} name
-	 * @description yyyy:년도, mm:월, dd:일, hh:시, mi:분, ss:초, dw:요일 을 조합하여 format으로 지정하면 그에 맞는 날짜형식 문자열이 반환됩니다.
-	 * @example
-	 * ```js
-	 * "2013-05-05".date().print(); -> "2013-05-05"
-	 * "2013-05-05".date().print('yyyy년 mm월 dd일'); -> "2013년 05월 05일"
-	 * "2013-05-05".date().print('yyyy년 mm월 dd일 (dw)'); -> "2013년 05월 05일 (일)"
-	 * ```
-	 */
-	function toString(format) {
-		if (format == undefined) {
-			var sSeper = "-";
-			return this.getUTCFullYear() + sSeper + (this.getMonth() + 1).setDigit(2) + sSeper + this.getDate().setDigit(2);
-		} else {
-			var fStr = format;
-			var nY, nM, nD, nH, nMM, nS, nDW;
-			nY = this.getUTCFullYear();
-			nM = (this.getMonth() + 1).setDigit(2);
-			nD = this.getDate().setDigit(2);
-			nH = this.getHours().setDigit(2);
-			nMM = this.getMinutes().setDigit(2);
-			nS = this.getSeconds().setDigit(2);
-			nDW = this.getDay();
+        return ((dd2.getTime() - dd1.getTime()) / DyMilli).floor();
 
-			var yre = /[^y]*(yyyy)[^y]*/gi; yre.exec(fStr); var regY = RegExp.$1;
-			var mre = /[^m]*(mm)[^m]*/gi; mre.exec(fStr); var regM = RegExp.$1;
-			var dre = /[^d]*(dd)[^d]*/gi; dre.exec(fStr); var regD = RegExp.$1;
-			var hre = /[^h]*(hh)[^h]*/gi; hre.exec(fStr); var regH = RegExp.$1;
-			var mire = /[^m]*(mi)[^i]*/gi; mire.exec(fStr); var regMI = RegExp.$1;
-			var sre = /[^s]*(ss)[^s]*/gi; sre.exec(fStr); var regS = RegExp.$1;
-			var dwre = /[^d]*(dw)[^w]*/gi; dwre.exec(fStr); var regDW = RegExp.$1;
+    }
 
-			if (regY === "yyyy") {
-				fStr = fStr.replace(regY, nY.right(regY.length));
-			}
-			if (regM === "mm") {
-				if (regM.length == 1) nM = (this.getMonth() + 1);
-				fStr = fStr.replace(regM, nM);
-			}
-			if (regD === "dd") {
-				if (regD.length == 1) nD = this.getDate();
-				fStr = fStr.replace(regD, nD);
-			}
-			if (regH === "hh") {
-				fStr = fStr.replace(regH, nH);
-			}
-			if (regMI === "mi") {
-				fStr = fStr.replace(regMI, nMM);
-			}
-			if (regS === "ss") {
-				fStr = fStr.replace(regS, nS);
-			}
-			if (regDW == "dw") {
-				fStr = fStr.replace(regDW, AXConfig.weekDays[nDW].label);
-			}
-			return fStr;
-		}
-	}
-	/**
-	 * @method  Date.getTimeAgo
-	 * @returns {String}
-	 * @description 현재와 날짜 데이터 간의 간격을 문자열로 반환합니다.
-	 * @example
-	 * ```js
-	 * var pDate = new Date();
-	 * pDate.setTime(pDate.getTime()-1000*60);
-	 * trace( pDate.getTimeAgo() );
-	 * // 1분 전
-	 *
-	 * pDate.setTime(pDate.getTime()-1000*60*5);
-	 * trace( pDate.getTimeAgo() );
-	 * //  6분 전
-	 *
-	 * pDate.setTime(pDate.getTime()-1000*60*60);
-	 * trace( pDate.getTimeAgo() );
-	 * //  1시간 6분 전
-	 *
-	 * pDate.setTime(pDate.getTime()-1000*60*60*24);
-	 * trace( pDate.getTimeAgo() );
-	 * //  2013년 11월 19일 화
-	 * ```
-	 */
-	function getTimeAgo() {
+    /**
+     * @method  Date.print
+     * @param {String} [format=yyyy-mm-dd]
+     * @returns {type} name
+     * @description yyyy:년도, mm:월, dd:일, hh:시, mi:분, ss:초, dw:요일 을 조합하여 format으로 지정하면 그에 맞는 날짜형식 문자열이 반환됩니다.
+     * @example
+     * ```js
+     * "2013-05-05".date().print(); -> "2013-05-05"
+     * "2013-05-05".date().print('yyyy년 mm월 dd일'); -> "2013년 05월 05일"
+     * "2013-05-05".date().print('yyyy년 mm월 dd일 (dw)'); -> "2013년 05월 05일 (일)"
+     * ```
+     */
+    function toString(format) {
+        if (format == undefined) {
+            var sSeper = "-";
+            return this.getUTCFullYear() + sSeper + (this.getMonth() + 1).setDigit(2) + sSeper + this.getDate().setDigit(2);
+        }
+        else {
+            var fStr = format;
+            var nY, nM, nD, nH, nMM, nS, nDW;
+            nY = this.getUTCFullYear();
+            nM = (this.getMonth() + 1).setDigit(2);
+            nD = this.getDate().setDigit(2);
+            nH = this.getHours().setDigit(2);
+            nMM = this.getMinutes().setDigit(2);
+            nS = this.getSeconds().setDigit(2);
+            nDW = this.getDay();
 
-		var rtnStr = "";
-		var nMinute = Math.abs((new Date()).diff(this, "mm"));
+            var yre = /[^y]*(yyyy)[^y]*/gi;
+            yre.exec(fStr);
+            var regY = RegExp.$1;
+            var mre = /[^m]*(mm)[^m]*/gi;
+            mre.exec(fStr);
+            var regM = RegExp.$1;
+            var dre = /[^d]*(dd)[^d]*/gi;
+            dre.exec(fStr);
+            var regD = RegExp.$1;
+            var hre = /[^h]*(hh)[^h]*/gi;
+            hre.exec(fStr);
+            var regH = RegExp.$1;
+            var mire = /[^m]*(mi)[^i]*/gi;
+            mire.exec(fStr);
+            var regMI = RegExp.$1;
+            var sre = /[^s]*(ss)[^s]*/gi;
+            sre.exec(fStr);
+            var regS = RegExp.$1;
+            var dwre = /[^d]*(dw)[^w]*/gi;
+            dwre.exec(fStr);
+            var regDW = RegExp.$1;
 
-		var wknames = [];
-		wknames.push("일", "월", "화", "수", "목", "금", "토");
+            if (regY === "yyyy") {
+                fStr = fStr.replace(regY, nY.right(regY.length));
+            }
+            if (regM === "mm") {
+                if (regM.length == 1) nM = (this.getMonth() + 1);
+                fStr = fStr.replace(regM, nM);
+            }
+            if (regD === "dd") {
+                if (regD.length == 1) nD = this.getDate();
+                fStr = fStr.replace(regD, nD);
+            }
+            if (regH === "hh") {
+                fStr = fStr.replace(regH, nH);
+            }
+            if (regMI === "mi") {
+                fStr = fStr.replace(regMI, nMM);
+            }
+            if (regS === "ss") {
+                fStr = fStr.replace(regS, nS);
+            }
+            if (regDW == "dw") {
+                fStr = fStr.replace(regDW, AXConfig.weekDays[nDW].label);
+            }
+            return fStr;
+        }
+    }
 
-		if (isNaN(nMinute)) {
-			rtnStr = "알수없음";
-		} else {
-			if (parseInt(nMinute / 60 / 24) >= 1) {
-				rtnStr = this.print("yyyy년 mm월 dd일") + " " + wknames[this.getDay()];
-			} else {
-				rtnStr = nMinute;
+    /**
+     * @method  Date.getTimeAgo
+     * @returns {String}
+     * @description 현재와 날짜 데이터 간의 간격을 문자열로 반환합니다.
+     * @example
+     * ```js
+     * var pDate = new Date();
+     * pDate.setTime(pDate.getTime()-1000*60);
+     * trace( pDate.getTimeAgo() );
+     * // 1분 전
+     *
+     * pDate.setTime(pDate.getTime()-1000*60*5);
+     * trace( pDate.getTimeAgo() );
+     * //  6분 전
+     *
+     * pDate.setTime(pDate.getTime()-1000*60*60);
+     * trace( pDate.getTimeAgo() );
+     * //  1시간 6분 전
+     *
+     * pDate.setTime(pDate.getTime()-1000*60*60*24);
+     * trace( pDate.getTimeAgo() );
+     * //  2013년 11월 19일 화
+     * ```
+     */
+    function getTimeAgo() {
 
-				if ((nMinute / 60) > 1) {
-					rtnStr = parseInt(nMinute / 60) + "시간 " + (nMinute % 60) + "분 전";
-				} else {
-					rtnStr = nMinute + "분 전";
-				}
-			}
-		}
-		return rtnStr;
-	}
-	function date() { return this; }
-	function axtoJSON() { return '"' + this.getUTCFullYear() + '-' + (this.getUTCMonth() + 1).setDigit(2) + '-' + this.getUTCDate().setDigit(2) + 'T' + this.getUTCHours().setDigit(2) + ':' + this.getUTCMinutes().setDigit(2) + ':' + this.getUTCSeconds().setDigit(2) + 'Z"'; }
-	/**
-	 * @method  Date.axGetDay
-	 * @param {Number} [dayOfStart=0]
-	 * @returns {Number}
-	 * @description 요일의 시작인덱스를 변경한 요일인덱스를 반환합니다.
-	 */
-	function axGetDay(dayOfStart){
-		if(dayOfStart == undefined) dayOfStart = 0;
-		var myDay = this.getDay() - dayOfStart;
-		if(myDay < 0) myDay = 7 + myDay;
-		return myDay;
-	}
-	return {
-		add: dateAdd,
-		diff: dayDiff,
-		print: toString,
-		date: date,
-		axtoJSON: axtoJSON,
-		getTimeAgo: getTimeAgo,
-		axGetDay: axGetDay
-	}
+        var rtnStr = "";
+        var nMinute = Math.abs((new Date()).diff(this, "mm"));
+
+        var wknames = [];
+        wknames.push("일", "월", "화", "수", "목", "금", "토");
+
+        if (isNaN(nMinute)) {
+            rtnStr = "알수없음";
+        }
+        else {
+            if (parseInt(nMinute / 60 / 24) >= 1) {
+                rtnStr = this.print("yyyy년 mm월 dd일") + " " + wknames[this.getDay()];
+            }
+            else {
+                rtnStr = nMinute;
+
+                if ((nMinute / 60) > 1) {
+                    rtnStr = parseInt(nMinute / 60) + "시간 " + (nMinute % 60) + "분 전";
+                }
+                else {
+                    rtnStr = nMinute + "분 전";
+                }
+            }
+        }
+        return rtnStr;
+    }
+
+    function date() {
+        return this;
+    }
+
+    function axtoJSON() {
+        return '"' + this.getUTCFullYear() + '-' + (this.getUTCMonth() + 1).setDigit(2) + '-' + this.getUTCDate().setDigit(2) + 'T' + this.getUTCHours().setDigit(2) + ':' + this.getUTCMinutes().setDigit(2) + ':' + this.getUTCSeconds().setDigit(2) + 'Z"';
+    }
+
+    /**
+     * @method  Date.axGetDay
+     * @param {Number} [dayOfStart=0]
+     * @returns {Number}
+     * @description 요일의 시작인덱스를 변경한 요일인덱스를 반환합니다.
+     */
+    function axGetDay(dayOfStart) {
+        if (dayOfStart == undefined) dayOfStart = 0;
+        var myDay = this.getDay() - dayOfStart;
+        if (myDay < 0) myDay = 7 + myDay;
+        return myDay;
+    }
+
+    return {
+        add: dateAdd,
+        diff: dayDiff,
+        print: toString,
+        date: date,
+        axtoJSON: axtoJSON,
+        getTimeAgo: getTimeAgo,
+        axGetDay: axGetDay
+    }
 })());
 
 /**
@@ -2478,17 +2993,18 @@ Object.extend(Date.prototype, (function () {
  * @namespace {Error} Error
  */
 Object.extend(Error.prototype, (function () {
-	/**
-	 * 에러넘버와 에러 객체를 리턴합니다.
-	 * @method Error.print
-	 * @returns {String}
-	 */
-	function print() {
-		return (this.number & 0xFFFF) + " : " + this;
-	}
-	return {
-		print: print
-	}
+    /**
+     * 에러넘버와 에러 객체를 리턴합니다.
+     * @method Error.print
+     * @returns {String}
+     */
+    function print() {
+        return (this.number & 0xFFFF) + " : " + this;
+    }
+
+    return {
+        print: print
+    }
 })());
 
 /**
@@ -2496,475 +3012,515 @@ Object.extend(Error.prototype, (function () {
  * @namespace {Array} Array
  */
 Object.extend(Array.prototype, (function () {
-	/**
-	 * @method Array.clear
-	 * @returns {Array}
-	 * @description Array를 빈 Array 로 변경합니다.
-	 * @example
-	 * ```js
-	 * var a = [1,2,3];
-	 * trace(a);
-	 * // [1, 2, 3]
-	 * trace(a.clear());
-	 * // []
-	 * trace(a);
-	 * // []
-	 * ```
-	 */
-	function clear() {
-		this.length = 0;
-		return this;
-	}
-	/**
-	 * @method Array.first
-	 * @returns {Object}
-	 * @description Array의 첫번째 아이템을 반환합니다.
-	 * @example
-	 * ```js
-	 * var a = [1,2,3];
-	 * trace(a.first());
-	 * // 1
-	 *
-	 * var b = [{a:"액시스제이"}, 2, 3];
-	 * trace(b.first());
-	 * // {"a":"액시스제이"}
-	 *
-	 * var c = [[1,2,3], 2, 3];
-	 * trace(c.first());
-	 * // [1, 2, 3]
-	 * ```
-	 */
-	function first() {
-		return this[0];
-	}
-	/**
-	 * @method Array.last
-	 * @returns {Object}
-	 * @description Array의 마지막 아이템을 반환합니다.
-	 * @example
-	 * ```js
-	 * var a = [1,2,3];
-	 * trace(a.last());
-	 * // 1
-	 *
-	 * var b = [1, 2, {a:"액시스제이"}];
-	 * trace(b.last());
-	 * // {"a":"액시스제이"}
-	 *
-	 * var c = [1, 2, [1,2,3]];
-	 * trace(c.last());
-	 * // [1, 2, 3]
-	 * ```
-	 */
-	function last() {
-		return this[this.length - 1];
-	}
-	/**
-	 * 인자값에 해당하는 인덱스의 아이템을 반환합니다.
-	 * @method Array.getToSeq
-	 * @param {Number} seq
-	 * @returns {Object}
-	 * @example
-	 * ```js
-	 * var a = [1,2,3];
-	 * trace(a.getToSeq(1));
-	 * // 2
-	 *
-	 * var a = [1,{a:2},3];
-	 * trace(a.getToSeq(1));
-	 * // {"a":2}
-	 * ```
-	 */
-	function getToSeq(seq) {
-		if (seq > (this.length - 1)) {
-			return null;
-		} else {
-			return this[seq];
-		}
-	}
-	function axtoJSON(qoute) {
-		var results = [];
-		for (var i = 0; i < this.length; i++) results.push(Object.toJSON(this[i], qoute));
-		return '[' + results.join(', ') + ']';
-	}
-	function toJSONforMobile() {
-		var results = [];
-		for (var i = 0; i < this.length; i++) results.push(Object.toJSONforMobile(this[i]));
-		return '[' + results.join(', ') + ']';
-	}
-	/**
-	 * 사용자가 정의한 조건에 맞는 아이템을 제거한 Array 를 반환합니다.
-	 * @method Array.remove
-	 * @param {Function} callBack - remove 처리할 대상에 return true; 하면 true 인 대상이 제거 됩니다.
-	 * @returns {Array}
-	 * @example
-	 * ```js
-	 * var a = [1,2,3,4];
-	 * trace(a);
-	 * // [1, 2, 3, 4]
-	 * a = a.remove(function(idx, item){
+    /**
+     * @method Array.clear
+     * @returns {Array}
+     * @description Array를 빈 Array 로 변경합니다.
+     * @example
+     * ```js
+     * var a = [1,2,3];
+     * trace(a);
+     * // [1, 2, 3]
+     * trace(a.clear());
+     * // []
+     * trace(a);
+     * // []
+     * ```
+     */
+    function clear() {
+        this.length = 0;
+        return this;
+    }
+
+    /**
+     * @method Array.first
+     * @returns {Object}
+     * @description Array의 첫번째 아이템을 반환합니다.
+     * @example
+     * ```js
+     * var a = [1,2,3];
+     * trace(a.first());
+     * // 1
+     *
+     * var b = [{a:"액시스제이"}, 2, 3];
+     * trace(b.first());
+     * // {"a":"액시스제이"}
+     *
+     * var c = [[1,2,3], 2, 3];
+     * trace(c.first());
+     * // [1, 2, 3]
+     * ```
+     */
+    function first() {
+        return this[0];
+    }
+
+    /**
+     * @method Array.last
+     * @returns {Object}
+     * @description Array의 마지막 아이템을 반환합니다.
+     * @example
+     * ```js
+     * var a = [1,2,3];
+     * trace(a.last());
+     * // 1
+     *
+     * var b = [1, 2, {a:"액시스제이"}];
+     * trace(b.last());
+     * // {"a":"액시스제이"}
+     *
+     * var c = [1, 2, [1,2,3]];
+     * trace(c.last());
+     * // [1, 2, 3]
+     * ```
+     */
+    function last() {
+        return this[this.length - 1];
+    }
+
+    /**
+     * 인자값에 해당하는 인덱스의 아이템을 반환합니다.
+     * @method Array.getToSeq
+     * @param {Number} seq
+     * @returns {Object}
+     * @example
+     * ```js
+     * var a = [1,2,3];
+     * trace(a.getToSeq(1));
+     * // 2
+     *
+     * var a = [1,{a:2},3];
+     * trace(a.getToSeq(1));
+     * // {"a":2}
+     * ```
+     */
+    function getToSeq(seq) {
+        if (seq > (this.length - 1)) {
+            return null;
+        }
+        else {
+            return this[seq];
+        }
+    }
+
+    function axtoJSON(qoute) {
+        var results = [];
+        for (var i = 0; i < this.length; i++) results.push(Object.toJSON(this[i], qoute));
+        return '[' + results.join(', ') + ']';
+    }
+
+    function toJSONforMobile() {
+        var results = [];
+        for (var i = 0; i < this.length; i++) results.push(Object.toJSONforMobile(this[i]));
+        return '[' + results.join(', ') + ']';
+    }
+
+    /**
+     * 사용자가 정의한 조건에 맞는 아이템을 제거한 Array 를 반환합니다.
+     * @method Array.remove
+     * @param {Function} callBack - remove 처리할 대상에 return true; 하면 true 인 대상이 제거 됩니다.
+     * @returns {Array}
+     * @example
+     * ```js
+     * var a = [1,2,3,4];
+     * trace(a);
+     * // [1, 2, 3, 4]
+     * a = a.remove(function(idx, item){
 	 *     return (item == 3);
 	 * });
-	 * trace(a);
-	 * // [1, 2, 4]
-	 *  * var b = [1,2,3,4];
-	 * trace(b);
-	 * // [1, 2, 3, 4]
-	 * b = b.remove(function(){
+     * trace(a);
+     * // [1, 2, 4]
+     *  * var b = [1,2,3,4];
+     * trace(b);
+     * // [1, 2, 3, 4]
+     * b = b.remove(function(){
 	 *     return (this.item == 3 || this.index == 0);
 	 * });
-	 * trace(b);
-	 * // [2, 4]
-	 * ```
-	 */
-	function remove(callBack) {
-		var _self = this;
-		var collect = [];
-		AXUtil.each(this, function (index, O) {
-			if (!callBack.call({ index: index, item: O }, index, O)) collect.push(O);
-		});
-		return collect;
-	}
-	/**
-	 * 사용자가 정의한 조건에 맞는 아이템 갯수를 반환합니다.
-	 * @method Array.search
-	 * @param {Function} callBack
-	 * @returns {Number}
-	 * @example
-	 * ```js
-	 * var a = [1,2,3,4];
-	 * trace(a);
-	 * // [1, 2, 3, 4]
-	 * trace(a.search(function(idx, item){
+     * trace(b);
+     * // [2, 4]
+     * ```
+     */
+    function remove(callBack) {
+        var _self = this;
+        var collect = [];
+        AXUtil.each(this, function (index, O) {
+            if (!callBack.call({index: index, item: O}, index, O)) collect.push(O);
+        });
+        return collect;
+    }
+
+    /**
+     * 사용자가 정의한 조건에 맞는 아이템 갯수를 반환합니다.
+     * @method Array.search
+     * @param {Function} callBack
+     * @returns {Number}
+     * @example
+     * ```js
+     * var a = [1,2,3,4];
+     * trace(a);
+     * // [1, 2, 3, 4]
+     * trace(a.search(function(idx, item){
 	 *     return (item < 3);
 	 * }));
-	 * // 2
-	 * ```
-	 */
-	function search(callBack) {
-		var _self = this;
-		var collect = [];
-		AXUtil.each(this, function (index, O) {
-			if (callBack.call({ index: index, item: O }, index, O)) collect.push(O);
-		});
-		return collect.length;
-	}
-	/**
-	 * 사용자가 정의한 조건에 맞는 아이템을 모두 반환합니다.
-	 * @method Array.searchObject
-	 * @param {Function} callBack
-	 * @returns {Array}
-	 * @example
-	 * ```js
-	 * var a = [1,2,3,4];
-	 * trace(a);
-	 * // [1, 2, 3, 4]
-	 * trace(a.searchObject(function(idx, item){
+     * // 2
+     * ```
+     */
+    function search(callBack) {
+        var _self = this;
+        var collect = [];
+        AXUtil.each(this, function (index, O) {
+            if (callBack.call({index: index, item: O}, index, O)) collect.push(O);
+        });
+        return collect.length;
+    }
+
+    /**
+     * 사용자가 정의한 조건에 맞는 아이템을 모두 반환합니다.
+     * @method Array.searchObject
+     * @param {Function} callBack
+     * @returns {Array}
+     * @example
+     * ```js
+     * var a = [1,2,3,4];
+     * trace(a);
+     * // [1, 2, 3, 4]
+     * trace(a.searchObject(function(idx, item){
 	 *     return (item < 3);
 	 * }));
-	 * // [1, 2]
-	 *
-	 * var b = [1,2,3,4];
-	 * trace(b);
-	 * // [1, 2, 3, 4]
-	 * trace(b.searchObject(function(idx, item){
+     * // [1, 2]
+     *
+     * var b = [1,2,3,4];
+     * trace(b);
+     * // [1, 2, 3, 4]
+     * trace(b.searchObject(function(idx, item){
 	 *     return (this.item < 3);
 	 * }));
-	 * // [1, 2]
-	 * ```
-	 */
-	function getObject(callBack) {
-		var _self = this;
-		var collect = [];
-		AXUtil.each(this, function (index, O) {
-			if (callBack.call({ index: index, item: O }, index, O)) collect.push(O);
-		});
-		return collect;
-	}
-	/**
-	 * 사용자가 정의한 조건에 맞는 아이템을 한 개만 반환합니다.
-	 * @method Array.hasObject
-	 * @param {Function} callBack
-	 * @returns {Object}
-	 * @example
-	 * ```js
-	 * var a = [1,2,3,4];
-	 * trace(a);
-	 * // [1, 2, 3, 4]
-	 * trace(a.has(function(idx, item){
+     * // [1, 2]
+     * ```
+     */
+    function getObject(callBack) {
+        var _self = this;
+        var collect = [];
+        AXUtil.each(this, function (index, O) {
+            if (callBack.call({index: index, item: O}, index, O)) collect.push(O);
+        });
+        return collect;
+    }
+
+    /**
+     * 사용자가 정의한 조건에 맞는 아이템을 한 개만 반환합니다.
+     * @method Array.hasObject
+     * @param {Function} callBack
+     * @returns {Object}
+     * @example
+     * ```js
+     * var a = [1,2,3,4];
+     * trace(a);
+     * // [1, 2, 3, 4]
+     * trace(a.has(function(idx, item){
 	 *     return (item == 3);
 	 * }));
-	 * // 3
-	 *
-	 * var b = [1,2,3,4];
-	 * trace(b);
-	 * // [1, 2, 3, 4]
-	 * trace(b.has(function(idx, item){
+     * // 3
+     *
+     * var b = [1,2,3,4];
+     * trace(b);
+     * // [1, 2, 3, 4]
+     * trace(b.has(function(idx, item){
 	 *     return (this.item == 3);
 	 * }));
-	 * // 3
-	 * ```
-	 */
-	function hasObject(callBack) {
-		var _self = this;
-		var collect = null;
-		AXUtil.each(this, function (index, O) {
-			if (callBack.call({ index: index, item: O }, index, O)) {
-				collect = O;
-				return false;
-			}
-		});
-		return collect;
-	}
-	/* 13-06-13 메소드 확장 */
+     * // 3
+     * ```
+     */
+    function hasObject(callBack) {
+        var _self = this;
+        var collect = null;
+        AXUtil.each(this, function (index, O) {
+            if (callBack.call({index: index, item: O}, index, O)) {
+                collect = O;
+                return false;
+            }
+        });
+        return collect;
+    }
 
-	/**
-	 * Object Array의 키를 정렬한후 가장 작은 값을 반환합니다.
-	 * @method Array.getMinObject
-	 * @param {String} key
-	 * @returns {Object}
-	 * @example
-	 * ```js
-	 * var myArray = [{a:99},{a:2},{a:1}];
-	 * myArray.getMinObject("a");
-	 * // Object {a: 1}
-	 * ```
-	 */
-	function getMinObject(key) {
-		var tempArray = this.concat();
-		tempArray = tempArray.sort(function (pItem, nItem) {
-			var v1 = pItem[key];
-			var v2 = nItem[key];
-			if (v1 < v2) return -1;
-			else if (v1 > v2) return 1;
-			else if (v1 == v2) return 0;
-		});
-		return (tempArray.first() || {});
-	}
-	/**
-	 * Object Array의 키를 정렬한후 가장 큰 값을 반환합니다.
-	 * @method Array.getMaxObject
-	 * @param {String} key
-	 * @returns {Object}
-	 * @example
-	 * ```js
-	 * var myArray = [{a:2},{a:99},{a:1}];
-	 * myArray.getMaxObject("a");
-	 * // Object {a: 99}
-	 * ```
-	 */
-	function getMaxObject(key) {
-		var tempArray = this.concat();
-		tempArray = tempArray.sort(function (pItem, nItem) {
-			var v1 = pItem[key];
-			var v2 = nItem[key];
-			if (v1 < v2) return 1;
-			else if (v1 > v2) return -1;
-			else if (v1 == v2) return 0;
-		});
-		return (tempArray.first() || {});
-	}
+    /* 13-06-13 메소드 확장 */
 
-	function m_notall(context) {
-		context = context || function (x) { return x; };
-		var result = true;
-		var i = 0;
-		while (i < this.length) {
-			result = !Boolean(context(this[i]));
-			if (!result) break;
-			i++;
-		}
-		return result;
-	}
-	function m_any(context) {
-		context = context || function (x) { return x; };
-		var result = false;
-		var i = 0;
-		while (i < this.length) {
-			result = Boolean(context(this[i], i));
-			if (result) break;
-			i++;
-		}
-		return result;
-	}
-	function m_find(context) {
-		context = context || function (x) { return false; };
-		var myselect;
-		var i = 0;
-		while (i < this.length) {
-			if (context(this[i], i)) {
-				myselect = this[i];
-				break;
-			}
-			i++;
-		}
-		return myselect;
-	}
-	function m_find2(context) {
-		if (!Object.isFunction(context)) {
-			findObj = context;
-			context = function (x) { return (x == findObj); }
-		}
-		var myselect, myindex;
-		var i = 0;
-		while (i < this.length) {
-			if (context(this[i], i)) {
-				myselect = this[i];
-				myindex = i;
-				break;
-			}
-			i++;
-		}
-		return { obj: myselect, index: myindex };
-	}
-	function m_findAll(context) {
-		context = context || function (x) { return false; };
-		var myselect = [];;
-		var i = 0;
-		while (i < this.length) {
-			if (context(this[i], i)) myselect.push(this[i]);
-			i++;
-		}
-		return myselect;
-	}
-	/**
-	 * 리스트형 데이터를 부모 참조키와 자식 참조키를 이용하여 트리형 데이터로 변환처리 합니다.
-	 * @method Array.convertTree
-	 * @param {String} parentKey
-	 * @param {String} childKey
-	 * @param {String} [hashDigit=3] - 트리의 주소값에 해당하는 hash 의 자릿수 단위 설정 (기본값 3)
-	 * @returns {Object}
-	 * @example
-	 * ```js
-	 * var a = [
-	 *     {pno:0, no:1, name:"장기영"},
-	 *     {pno:1, no:2, name:"장기영"},
-	 *     {pno:1, no:3, name:"장기영"},
-	 *     {pno:3, no:4, name:"장기영"},
-	 *     {pno:3, no:5, name:"장기영"},
-	 *     {pno:5, no:6, name:"장기영"},
-	 *     {pno:5, no:7, name:"장기영"}
-	 * ];
-	 *
-	 * var myTree = a.convertTree("pno", "no");
-	 * trace(myTree);
-	 * //[{"pno":0, "no":1, "name":"장기영", "subTree":[{"pno":1, "no":2, "name":"장기영", "__subTreeLength":0, "subTree":[], "pHash":"000_000", "hash":"000_000_000"}, {"pno":1, "no":3, "name":"장기영", "__subTreeLength":2, "subTree":[{"pno":3, "no":4, "name":"장기영", "__subTreeLength":0, "subTree":[], "pHash":"000_000_001", "hash":"000_000_001_000"}, {"pno":3, "no":5, "name":"장기영", "__subTreeLength":2, "subTree":[{"pno":5, "no":6, "name":"장기영", "__subTreeLength":0, "subTree":[], "pHash":"000_000_001_001", "hash":"000_000_001_001_000"}, {"pno":5, "no":7, "name":"장기영", "__subTreeLength":0, "subTree":[], "pHash":"000_000_001_001", "hash":"000_000_001_001_001"}], "pHash":"000_000_001", "hash":"000_000_001_001"}], "pHash":"000_000", "hash":"000_000_001"}], "__subTreeLength":2, "pHash":"000", "hash":"000_000"}]
-	 * ```
-	 */
-	function convertTree(parentKey, childKey, hashDigit) {
-		var tree = [];
-		var pointer = {};
-		var seq = 0;
-		var hashDigit = hashDigit || 3;
-		for (var idx = 0; idx < this.length; idx++) {
-			var L = this[idx];
-			if (!L.isRoot) {
-				pointer[L[childKey]] = idx;
+    /**
+     * Object Array의 키를 정렬한후 가장 작은 값을 반환합니다.
+     * @method Array.getMinObject
+     * @param {String} key
+     * @returns {Object}
+     * @example
+     * ```js
+     * var myArray = [{a:99},{a:2},{a:1}];
+     * myArray.getMinObject("a");
+     * // Object {a: 1}
+     * ```
+     */
+    function getMinObject(key) {
+        var tempArray = this.concat();
+        tempArray = tempArray.sort(function (pItem, nItem) {
+            var v1 = pItem[key];
+            var v2 = nItem[key];
+            if (v1 < v2) return -1;
+            else if (v1 > v2) return 1;
+            else if (v1 == v2) return 0;
+        });
+        return (tempArray.first() || {});
+    }
 
-				if (typeof L[parentKey] === "undefined" || L[parentKey] == "" || L[parentKey].number() == 0) {
-					L["subTree"] = [];
-					L.__subTreeLength = 0;
-					L["pHash"] = "0".setDigit(hashDigit);
-					L["hash"] = "0".setDigit(hashDigit) + "_" + seq.setDigit(hashDigit);
-					tree.push(AXUtil.copyObject(L));
-					seq++;
-				} else {
-					L.__subTreeLength = 0;
-				}
-			}
-		}
+    /**
+     * Object Array의 키를 정렬한후 가장 큰 값을 반환합니다.
+     * @method Array.getMaxObject
+     * @param {String} key
+     * @returns {Object}
+     * @example
+     * ```js
+     * var myArray = [{a:2},{a:99},{a:1}];
+     * myArray.getMaxObject("a");
+     * // Object {a: 99}
+     * ```
+     */
+    function getMaxObject(key) {
+        var tempArray = this.concat();
+        tempArray = tempArray.sort(function (pItem, nItem) {
+            var v1 = pItem[key];
+            var v2 = nItem[key];
+            if (v1 < v2) return 1;
+            else if (v1 > v2) return -1;
+            else if (v1 == v2) return 0;
+        });
+        return (tempArray.first() || {});
+    }
 
-		for (var idx = 0; idx < this.length; idx++) {
-			var L = this[idx];
-			if (L["pHash"] == undefined && !L.isRoot) {
-				var pItem = this[pointer[L[parentKey]]];
-				var pHash = pItem["hash"];
-				var pHashs = pHash.split(/_/g);
-				var pTree = tree;
-				var pTreeItem;
-				axf.each(pHashs, function (idx, T) {
-					if (idx > 0) {
-						pTreeItem = pTree[T.number()];
-						pTree = pTree[T.number()].subTree;
-					}
-				});
-				L["subTree"] = [];
-				var __subTreeLength = pItem.__subTreeLength;
+    function m_notall(context) {
+        context = context || function (x) {
+                return x;
+            };
+        var result = true;
+        var i = 0;
+        while (i < this.length) {
+            result = !Boolean(context(this[i]));
+            if (!result) break;
+            i++;
+        }
+        return result;
+    }
 
-				L["pHash"] = pHash;
-				L["hash"] = pHash + "_" + __subTreeLength.setDigit(hashDigit);
-				pTree.push(AXUtil.copyObject(L));
-				pItem.__subTreeLength++;
-				pTreeItem.__subTreeLength = pItem.__subTreeLength;
-			}
-		}
-		return tree;
-	}
-	/**
-	 * 조건에 맞는 아이템을 index 값과 함께 반환합니다.
-	 * @method Array.getIndex
-	 * @param {Function} context
-	 * @returns {Object}
-	 * @example
-	 * ```js
-	 * var b = [1,2,3,4];
-	 * trace(b);
-	 * // [1, 2, 3, 4]
-	 * trace(b.getIndex(function(idx, item){
+    function m_any(context) {
+        context = context || function (x) {
+                return x;
+            };
+        var result = false;
+        var i = 0;
+        while (i < this.length) {
+            result = Boolean(context(this[i], i));
+            if (result) break;
+            i++;
+        }
+        return result;
+    }
+
+    function m_find(context) {
+        context = context || function (x) {
+                return false;
+            };
+        var myselect;
+        var i = 0;
+        while (i < this.length) {
+            if (context(this[i], i)) {
+                myselect = this[i];
+                break;
+            }
+            i++;
+        }
+        return myselect;
+    }
+
+    function m_find2(context) {
+        if (!Object.isFunction(context)) {
+            findObj = context;
+            context = function (x) {
+                return (x == findObj);
+            }
+        }
+        var myselect, myindex;
+        var i = 0;
+        while (i < this.length) {
+            if (context(this[i], i)) {
+                myselect = this[i];
+                myindex = i;
+                break;
+            }
+            i++;
+        }
+        return {obj: myselect, index: myindex};
+    }
+
+    function m_findAll(context) {
+        context = context || function (x) {
+                return false;
+            };
+        var myselect = [];
+        ;
+        var i = 0;
+        while (i < this.length) {
+            if (context(this[i], i)) myselect.push(this[i]);
+            i++;
+        }
+        return myselect;
+    }
+
+    /**
+     * 리스트형 데이터를 부모 참조키와 자식 참조키를 이용하여 트리형 데이터로 변환처리 합니다.
+     * @method Array.convertTree
+     * @param {String} parentKey
+     * @param {String} childKey
+     * @param {String} [hashDigit=3] - 트리의 주소값에 해당하는 hash 의 자릿수 단위 설정 (기본값 3)
+     * @returns {Object}
+     * @example
+     * ```js
+     * var a = [
+     *     {pno:0, no:1, name:"장기영"},
+     *     {pno:1, no:2, name:"장기영"},
+     *     {pno:1, no:3, name:"장기영"},
+     *     {pno:3, no:4, name:"장기영"},
+     *     {pno:3, no:5, name:"장기영"},
+     *     {pno:5, no:6, name:"장기영"},
+     *     {pno:5, no:7, name:"장기영"}
+     * ];
+     *
+     * var myTree = a.convertTree("pno", "no");
+     * trace(myTree);
+     * //[{"pno":0, "no":1, "name":"장기영", "subTree":[{"pno":1, "no":2, "name":"장기영", "__subTreeLength":0, "subTree":[], "pHash":"000_000", "hash":"000_000_000"}, {"pno":1, "no":3, "name":"장기영", "__subTreeLength":2, "subTree":[{"pno":3, "no":4, "name":"장기영", "__subTreeLength":0, "subTree":[], "pHash":"000_000_001", "hash":"000_000_001_000"}, {"pno":3, "no":5, "name":"장기영", "__subTreeLength":2, "subTree":[{"pno":5, "no":6, "name":"장기영", "__subTreeLength":0, "subTree":[], "pHash":"000_000_001_001", "hash":"000_000_001_001_000"}, {"pno":5, "no":7, "name":"장기영", "__subTreeLength":0, "subTree":[], "pHash":"000_000_001_001", "hash":"000_000_001_001_001"}], "pHash":"000_000_001", "hash":"000_000_001_001"}], "pHash":"000_000", "hash":"000_000_001"}], "__subTreeLength":2, "pHash":"000", "hash":"000_000"}]
+     * ```
+     */
+    function convertTree(parentKey, childKey, hashDigit) {
+        var tree = [];
+        var pointer = {};
+        var seq = 0;
+        var hashDigit = hashDigit || 3;
+        for (var idx = 0; idx < this.length; idx++) {
+            var L = this[idx];
+            if (!L.isRoot) {
+                pointer[L[childKey]] = idx;
+
+                if (typeof L[parentKey] === "undefined" || L[parentKey] == "" || L[parentKey].number() == 0) {
+                    L["subTree"] = [];
+                    L.__subTreeLength = 0;
+                    L["pHash"] = "0".setDigit(hashDigit);
+                    L["hash"] = "0".setDigit(hashDigit) + "_" + seq.setDigit(hashDigit);
+                    tree.push(AXUtil.copyObject(L));
+                    seq++;
+                }
+                else {
+                    L.__subTreeLength = 0;
+                }
+            }
+        }
+
+        for (var idx = 0; idx < this.length; idx++) {
+            var L = this[idx];
+            if (L["pHash"] == undefined && !L.isRoot) {
+                var pItem = this[pointer[L[parentKey]]];
+                var pHash = pItem["hash"];
+                var pHashs = pHash.split(/_/g);
+                var pTree = tree;
+                var pTreeItem;
+                axf.each(pHashs, function (idx, T) {
+                    if (idx > 0) {
+                        pTreeItem = pTree[T.number()];
+                        pTree = pTree[T.number()].subTree;
+                    }
+                });
+                L["subTree"] = [];
+                var __subTreeLength = pItem.__subTreeLength;
+
+                L["pHash"] = pHash;
+                L["hash"] = pHash + "_" + __subTreeLength.setDigit(hashDigit);
+                pTree.push(AXUtil.copyObject(L));
+                pItem.__subTreeLength++;
+                pTreeItem.__subTreeLength = pItem.__subTreeLength;
+            }
+        }
+        return tree;
+    }
+
+    /**
+     * 조건에 맞는 아이템을 index 값과 함께 반환합니다.
+     * @method Array.getIndex
+     * @param {Function} context
+     * @returns {Object}
+     * @example
+     * ```js
+     * var b = [1,2,3,4];
+     * trace(b);
+     * // [1, 2, 3, 4]
+     * trace(b.getIndex(function(idx, item){
 	 *     return (this.item >= 3);
 	 * }));
-	 * //  {"item":3, "index":2}
-	 * ```
-	 */
-	function getIndex(context) {
-		if (!Object.isFunction(context)) {
-			findObj = context;
-			context = function (x) { return (x == findObj); }
-		}
-		var findObject, findIndex;
-		var i = 0;
-		while (i < this.length) {
-			var sobj = {
-				index: i,
-				item: this[i]
-			};
-			if (context.call(sobj, sobj)) {
-				findObject = this[i];
-				findIndex = i;
-				break;
-			}
-			i++;
-		}
-		return { item: findObject, index: findIndex };
-	}
+     * //  {"item":3, "index":2}
+     * ```
+     */
+    function getIndex(context) {
+        if (!Object.isFunction(context)) {
+            findObj = context;
+            context = function (x) {
+                return (x == findObj);
+            }
+        }
+        var findObject, findIndex;
+        var i = 0;
+        while (i < this.length) {
+            var sobj = {
+                index: i,
+                item: this[i]
+            };
+            if (context.call(sobj, sobj)) {
+                findObject = this[i];
+                findIndex = i;
+                break;
+            }
+            i++;
+        }
+        return {item: findObject, index: findIndex};
+    }
 
-	return {
-		clear: clear,
-		first: first,
-		last: last,
-		getToSeq: getToSeq,
-		axtoJSON: axtoJSON,
-		toJSONforMobile: toJSONforMobile,
-		remove: remove,
-		search: search,
-		has: hasObject,
-		searchObject: getObject,
-		getMinObject: getMinObject,
-		getMaxObject: getMaxObject,
+    return {
+        clear: clear,
+        first: first,
+        last: last,
+        getToSeq: getToSeq,
+        axtoJSON: axtoJSON,
+        toJSONforMobile: toJSONforMobile,
+        remove: remove,
+        search: search,
+        has: hasObject,
+        searchObject: getObject,
+        getMinObject: getMinObject,
+        getMaxObject: getMaxObject,
 
-		not: m_notall,
-		or: m_any,
-		get: m_find,
-		gets: m_findAll,
-		getObj: m_find2,
-		getIndex: getIndex,
-		convertTree: convertTree
-	}
+        not: m_notall,
+        or: m_any,
+        get: m_find,
+        gets: m_findAll,
+        getObj: m_find2,
+        getIndex: getIndex,
+        convertTree: convertTree
+    }
 })());
 
 //JSON.stringify = Object.toJSON;
-function AXgetId(id) { return document.getElementById(id); }
-function AX_A(iterable) { if (!iterable) return []; if ('toArray' in Object(iterable)) return iterable.toArray(); var length = iterable.length || 0, results = new Array(length); while (length--) results[length] = iterable[length]; return results; }
+function AXgetId(id) {
+    return document.getElementById(id);
+}
+function AX_A(iterable) {
+    if (!iterable) return [];
+    if ('toArray' in Object(iterable)) return iterable.toArray();
+    var length = iterable.length || 0, results = new Array(length);
+    while (length--) results[length] = iterable[length];
+    return results;
+}
 
 var trace = axf.console;
 var getUrlInfo = axf.getUrlInfo;
@@ -8207,4517 +8763,4838 @@ axdom(document.body).ready(function () {
 });
 /* ---------------------------- */
 var AXInputConverter = Class.create(AXJ, {
-	initialize: function (AXJ_super) {
-		AXJ_super();
-		this.objects = [];
-		this.inputTypes = [
-			{ type: "search" }, { type: "number" }, { type: "money" }, { type: "slider" }, { type: "twinSlider" },
-			{ type: "selector" }, { type: "switch" }, { type: "segment" },
-			{ type: "date" }, { type: "dateTime" }, { type: "twinDate" }, { type: "twinDateTime" },
-			{ type: "checked" }, { type: "pattern" }
-		];
-		this.config.anchorClassName = "AXanchor";
-		this.config.anchorPlaceHolderClassName = "AXanchorPlaceHolder";
-		this.config.anchorSearchClassName = "AXanchorSearch";
-		this.config.anchorNumberContainerClassName = "AXanchorNumberContainer";
-		this.config.anchorIncreaseClassName = "AXanchorIncrease";
-		this.config.anchorDecreaseClassName = "AXanchorDecrease";
-		this.config.anchorSelectorHandleContainerClassName = "AXanchorSelectorHandleContainer";
-		this.config.anchorSelectorFinderContainerClassName = "AXanchorSelectorFinderContainer";
-		this.config.anchorSelectorHandleClassName = "AXanchorSelectorHandle";
-		this.config.anchorSelectorFinderClassName = "AXanchorSelectorFinder";
-		this.config.anchorSelectorExpandBoxClassName = "AXanchorSelectorExpandBox";
-		this.config.anchorSelectorExpandScrollClassName = "AXanchorSelectorExpandScroll"
-		this.config.anchorSliderBoxClassName = "AXanchorSliderBox";
-		this.config.anchorSwitchBoxClassName = "AXanchorSwitchBox";
-		this.config.anchorSegmentBoxClassName = "AXanchorSegmentBox";
-		this.config.anchorDateHandleClassName = "AXanchorDateHandle";
-		this.config.bindDateExpandBoxClassName = "AXbindDateExpandBox";
-		this.config.bindTwinDateExpandBoxClassName = "AXbindTwinDateExpandBox";
-		this.config.anchorCheckedContainerClassName = "AXbindCheckedHandle";
-		/* 모바일 반응 너비 */
-		this.config.responsiveMobile = AXConfig.mobile.responsiveWidth;
-
-		this.config.reserveKeys = {
-			options: (AXConfig.AXSelect && AXConfig.AXSelect.keyOptions) || "options",
-			optionValue: (AXConfig.AXSelect && AXConfig.AXSelect.keyOptionValue) || "optionValue",
-			optionText: (AXConfig.AXSelect && AXConfig.AXSelect.keyOptionText) || "optionText",
-			optionData: (AXConfig.AXSelect && AXConfig.AXSelect.keyOptionData) || "optionData"
-		};
-	},
-	init: function () {
-		axdom(window).resize(this.alignAllAnchor.bind(this));
-
-		// 예약어 초기화
-		this.config.reserveKeys = {
-			options: (AXConfig.AXInput && AXConfig.AXInput.keyOptions) || "options",
-			optionValue: (AXConfig.AXInput && AXConfig.AXInput.keyOptionValue) || "optionValue",
-			optionText: (AXConfig.AXInput && AXConfig.AXInput.keyOptionText) || "optionText"
-		};
-	},
-	windowResize: function () {
-		// 사용안함
-		var windowResizeApply = this.windowResizeApply.bind(this);
-		if (this.windowResizeObserver) clearTimeout(this.windowResizeObserver);
-		this.windowResizeObserver = setTimeout(function () {
-			windowResizeApply();
-		}, 1);
-	},
-	windowResizeApply: function(){
-		// 사용안함
-		if (this.windowResizeObserver) clearTimeout(this.windowResizeObserver);
-		this.alignAllAnchor();
-	},
-	alignAllAnchor: function () {
-		for(var i=0;i<this.objects.length;i++){
-			this.alignAnchor(this.objects[i].id, i);
-		}
-	},
-	msgAlert: function (msg) {
-		var errorPrintType = "toast";
-		if (AXConfig.AXInput) {
-			errorPrintType = (AXConfig.AXInput.errorPrintType || "toast");
-		}
-		if (errorPrintType == "toast") toast.push(msg);
-		else if (errorPrintType == "dialog") dialog.push(msg);
-		else if (errorPrintType == "alert") AXUtil.alert(msg);
-	},
-	bindSetConfig: function (objID, configs) {
-		var findIndex = null;
-		axf.each(this.objects, function (index, O) {
-			if (O.id == objID) {
-				findIndex = index;
-				return false;
-			}
-		});
-		if (findIndex == null) {
-			//trace("바인드 된 오브젝트를 찾을 수 없습니다.");
-			return;
-		} else {
-			var _self = this.objects[findIndex];
-			axf.each(configs, function (k, v) {
-				_self.config[k] = v;
-			});
-		}
-	},
-	bind: function (obj) {
-		var cfg = this.config;
-		if (!AXgetId(obj.id)) {
-			trace("bind 대상이 없어 bind 처리할 수 없습니다.");
-			return;
-		}
-
-		if(obj.reserveKeys) cfg.reserveKeys = jQuery.extend(cfg.reserveKeys, obj.reserveKeys, true);
-		var objID = obj.id;
-		var objSeq = null;
-
-		axf.each(this.objects, function (idx, O) {
-			//if (this.id == objID && this.isDel == true) objSeq = idx;
-			if (this.id == objID) {
-				objSeq = idx;
-				return false;
-			}
-		});
-
-		if (obj.href == undefined) obj.href = cfg.href;
-
-		if (objSeq == null) {
-			objSeq = this.objects.length;
-			this.objects.push({ id: objID, anchorID: cfg.targetID + "_AX_" + objID, config: obj, bindType: obj.bindType });
-		} else {
-			this.objects[objSeq].isDel = undefined;
-			this.objects[objSeq].config = obj;
-		}
-
-		//if (obj.bindType != "checked") {
-		//	this.appendAnchor(objID, objSeq, obj.bindType);
-		//}
-		// bind checked anchor 연결
-		this.appendAnchor(objID, objSeq, obj.bindType);
-
-		if (obj.bindType == "placeHolder") {
-			this.bindPlaceHolder(objID, objSeq);
-		} else if (obj.bindType == "search") {
-			this.bindSearch(objID, objSeq);
-		} else if (obj.bindType == "number") {
-			this.bindNumber(objID, objSeq);
-		} else if (obj.bindType == "money") {
-			this.bindMoney(objID, objSeq);
-		} else if (obj.bindType == "selector") {
-			this.bindSelector(objID, objSeq);
-		} else if (obj.bindType == "slider") {
-			this.bindSlider(objID, objSeq);
-		} else if (obj.bindType == "twinSlider") {
-			this.bindTwinSlider(objID, objSeq);
-		} else if (obj.bindType == "switch") {
-			this.bindSwitch(objID, objSeq);
-		} else if (obj.bindType == "segment") {
-			this.bindSegment(objID, objSeq);
-		} else if (obj.bindType == "date") {
-			this.bindDate(objID, objSeq);
-		} else if (obj.bindType == "twinDate") {
-			this.bindTwinDate(objID, objSeq);
-		} else if (obj.bindType == "twinDateTime") {
-			this.bindTwinDate(objID, objSeq, "time");
-		} else if (obj.bindType == "checked") {
-			this.bindChecked(objID, objSeq);
-		} else if (obj.bindType == "pattern") {
-			this.bindPattern(objID, objSeq);
-		}
-	},
-	unbind: function (obj) {
-		var cfg = this.config;
-		var removeAnchorId;
-		var removeIdx;
-		axf.each(this.objects, function (idx, O) {
-			if (O.id != obj.id) {
-				// collect.push(this);
-			} else {
-				if (O.isDel != true) {
-					removeAnchorId = this.anchorID;
-					removeIdx = idx;
-				}
-			}
-		});
-
-		var objID = obj.id;
-		var obj = this.objects[removeIdx];
-		if(obj) {
-			if (obj.documentclickEvent) axdom(document).unbind("click.AXInput", obj.documentclickEvent);
-			var objDom = axdom("#" + objID);
-			objDom.unbind("keydown.AXInput");
-			objDom.unbind("keydown.AXInputCheck");
-			objDom.unbind("change.AXInput");
-			objDom.unbind("focus.AXInput");
-			objDom.unbind("blur.AXInput");
-		}
-
-
-		if (removeAnchorId) {
-			this.objects[removeIdx].isDel = true;
-			axdom("#" + obj.id).removeAttr("data-axbind");
-			axdom("#" + removeAnchorId).remove();
-
-
-			if (obj.bindSliderMouseMove) axdom(document.body).unbind("mousemove.AXInput", obj.bindSliderMouseMove);
-			if (obj.bindSliderMouseUp) axdom(document.body).unbind("mouseup.AXInput", obj.bindSliderMouseUp);
-			if (obj.bindSliderTouchMove) document.removeEventListener("touchmove.AXInput", obj.bindSliderTouchMove, false);
-			if (obj.bindSliderTouchEnd) document.removeEventListener("touchend.AXInput", obj.bindSliderTouchEnd, false);
-			if (obj.bindTwinSliderMouseMove) axdom(document.body).unbind("mousemove.AXInput", obj.bindTwinSliderMouseMove);
-			if (obj.bindTwinSliderMouseUp) axdom(document.body).unbind("mouseup.AXInput", obj.bindTwinSliderMouseUp);
-
-			if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
-			}
-		}
-	},
-	bindInputDisabled: function(objID, _disabled){
-		var findIndex = null;
-		for (var O, index = 0; (index < this.objects.length && (O = this.objects[index])); index++) {
-			if (O.id == objID && O.isDel != true) {
-				findIndex = index;
-				break;
-			}
-		};
-
-		if (findIndex == null) {
-			//trace("바인드 된 오브젝트를 찾을 수 없습니다.");
-			return;
-		} else {
-			var obj = this.objects[findIndex];
-			var cfg = this.config;
-
-			if(typeof _disabled == "boolean"){
-				axf.getId(objID).disabled = _disabled;
-			}else{
-				axf.getId(objID).disabled = !AXgetId(objID).disabled;
-			}
-
-			obj.bindAnchorTarget.data("disabled", axf.getId(objID).disabled);
-			if(axf.getId(objID).disabled){
-				obj.bindAnchorTarget.addClass("disable");
-				obj.bindAnchorTarget.attr("disable", "disable");
-
-				obj.bindAnchorTarget.find("a").bind("mousedown.AXInputDisabled", function(e){
-					//alert("block");
-					var event = window.event || e;
-					if (event.preventDefault) event.preventDefault();
-					if (event.stopPropagation) event.stopPropagation();
-					event.cancelBubble = true;
-					return false;
-				});
-			}else{
-				obj.bindAnchorTarget.removeClass("disable");
-				obj.bindAnchorTarget.removeAttr("disable");
-
-				obj.bindAnchorTarget.find("a").unbind("mousedown.AXInputDisabled");
-			}
-		}
-	},
-	appendAnchor: function (objID, objSeq, bindType) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-		//trace("appendAnchor");
-		axdom("#" + cfg.targetID + "_AX_" + objID).remove();
-		var anchorNode = axdom("<div id=\"" + cfg.targetID + "_AX_" + objID + "\" class=\"" + cfg.anchorClassName + "\" style=\"display:none;\"></div>");
-		var iobj = axdom("#" + objID);
-		iobj.attr("data-axbind", bindType);
-		iobj.after(anchorNode);
-
-		obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		obj.bindTarget = iobj;
-
-		//var offSetParent = iobj.offsetParent();
-		var iobjPosition = iobj.position();
-		var l = iobjPosition.left, t = iobjPosition.top, w = 0, h = 0;
-
-		var borderW = iobj.css("border-left-width").number();
-		var borderH = iobj.css("border-top-width").number();
-		var marginW = iobj.css("margin-left").number();
-		var marginH = iobj.css("margin-top").number();
-		l = l + marginW;
-		/*t = t;*/
-		w = iobj.outerWidth();
-		h = iobj.outerHeight();
-
-		var css = { left: l, top: t, width: w, height: 0 };
-		//trace(css);
-		obj.bindAnchorTarget.css(css);
-		obj.bindAnchorTarget.data("height", h);
-
-		var _this = this;
-		setTimeout(function () {
-			_this.alignAnchor(objID, objSeq);
-		});
-		setTimeout(function () {
-			_this.alignAnchor(objID, objSeq);
-		}, 500);
-	},
-	alignAnchor: function (objID, objSeq) {
-		var cfg = this.config;
-
-		if(typeof objSeq == "undefined"){
-			for(var i=0;i<this.objects.length;i++){
-				if(this.objects[i].id == objID && !this.objects[i].isDel) {
-					objSeq = i;
-					break;
-				}
-			}
-		}
-
-		var obj = this.objects[objSeq];
-
-		if (!AXgetId(objID)) return; /* 엘리먼트 존재 여부 확인 */
-
-		if(!obj.bindTarget) {
-			obj.bindTarget = axdom("#" + objID);
-			obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		}
-
-		var iobjPosition = obj.bindTarget.position();
-		var l = iobjPosition.left, t = iobjPosition.top;
-		var w = obj.bindTarget.outerWidth();
-		var h = obj.bindTarget.outerHeight();
-		if (obj.bindTarget.css("display") == "none") {
-			h = obj.bindAnchorTarget.data("height");
-			var css = { width: w };
-		} else {
-			var css = { left: l, top: t, width: w, height: 0 };
-		}
-		//trace(css);
-		if(!obj.bindAnchorTarget){
-			obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-			obj.bindTarget = axdom("#" + objID);
-		}
-		if(obj.bindAnchorTarget) {
-			obj.bindAnchorTarget.css(css);
-			obj.bindAnchorTarget.data("height", h);
-		}
-
-		if (obj.bindType == "placeHolder") {
-
-		} else if (obj.bindType == "search") {
-
-		} else if (obj.bindType == "number") {
-			var UPh = parseInt((h - 2) / 2) - 1;
-			var DNh = parseInt((h - 2) / 2) - 2;
-			var handleWidth = h - 2;
-			if (handleWidth > 20) handleWidth = 20;
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_HandleContainer").css({ width: handleWidth, height: h - 2 });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_increase").css({ width: handleWidth, height: UPh });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_decrease").css({ top: (UPh + 1), width: handleWidth, height: DNh });
-			//trace({top:(UPh+1), width:h, height:DNh});
-		} else if (obj.bindType == "money") {
-
-		} else if (obj.bindType == "selector") {
-			h -= 2;
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_HandleContainer").css({ width: h, height: h });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").css({ width: h, height: h });
-
-			if (obj.config.finder) {
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_FinderContainer").css({ right: h, width: h, height: h });
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Finder").css({ width: h, height: h });
-			}
-		} else if (obj.bindType == "slider") {
-
-		} else if (obj.bindType == "twinSlider") {
-
-		} else if (obj.bindType == "switch") {
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox").css({ width: w, height: h });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay").css({ height: h, "line-height": h + "px" });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchHandle").css({ height: h });
-			obj.bindAnchorTarget.css({ height: h });
-		} else if (obj.bindType == "segment") {
-			obj.bindAnchorTarget.css({ height: h + "px", "position": "relative", display: "inline-block", left: "auto", top: "auto" });
-			var borderTop = obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css("border-top-width").number();
-			var borderBot = obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css("border-bottom-width").number();
-			obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css({ height: (obj.bindAnchorTarget.innerHeight() - borderTop - borderBot) + "px", "line-height": (obj.bindAnchorTarget.innerHeight() - borderTop - borderBot) + "px" });
-		} else if (obj.bindType == "date") {
-			var handleWidth = h - 2;
-			if (handleWidth > 20) handleWidth = 20;
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").css({ width: h, height: h });
-		} else if (obj.bindType == "twinDate") {
-
-		} else if (obj.bindType == "twinDateTime") {
-
-		} else if (obj.bindType == "checked") {
-
-		}
-	},
-	bindSetValue: function (objID, value) {
-		var cfg = this.config;
-		var objSeq = null;
-		axf.each(this.objects, function (index, O) {
-			if (O.id == objID) {
-				objSeq = index;
-				return false;
-			}
-		});
-		if (objSeq == null) {
-			//trace("바인드 된 오브젝트를 찾을 수 없습니다.");
-			return;
-		} else {
-			var obj = this.objects[objSeq];
-
-			if (obj.bindType == "search") {
-				//	this.bindSearch(objID, objSeq);
-			} else if (obj.bindType == "number") {
-				//	this.bindNumber(objID, objSeq);
-			} else if (obj.bindType == "money") {
-				//	this.bindMoney(objID, objSeq);
-			} else if (obj.bindType == "selector") {
-				this.bindSelectorSetValue(objID, objSeq, value);
-			} else if (obj.bindType == "slider") {
-				this.bindSliderSetValue(objID, objSeq, value);
-			} else if (obj.bindType == "twinSlider") {
-				this.bindTwinSliderSetValue(objID, objSeq, value);
-			} else if (obj.bindType == "switch") {
-				this.bindSwitchSetValue(objID, objSeq, value);
-			} else if (obj.bindType == "segment") {
-				this.bindSegmentSetValue(objID, objSeq, value);
-			} else if (obj.bindType == "date") {
-				//	this.bindDate(objID, objSeq);
-			} else if (obj.bindType == "twinDate") {
-				//	this.bindTwinDate(objID, objSeq);
-			}
-		}
-	},
-
-	// onlyHolder ~~~~~~~~~~~~~~~
-	bindPlaceHolder: function (objID, objSeq) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		// 브라우저 체크
-		if (AXUtil.browser.name != "ie") return;
-		if (AXUtil.browser.name == "ie" && AXUtil.browser.version > 9) return;
-
-		var w = axdom("#" + cfg.targetID + "_AX_" + objID).width();
-		var h = axdom("#" + cfg.targetID + "_AX_" + objID).data("height");
-
-		var placeholder = axdom("#" + objID).attr("placeholder");
-		if (placeholder == "undefined") placeholder = "";
-
-		var po = ["<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_PlaceHolder\" class=\"" + cfg.anchorPlaceHolderClassName + "\" style=\"left:0px;top:0px;width:" + w + "px;height:" + h + "px;line-height:" + h + "px;\">" + placeholder + "</a>"];
-		//append to anchor
-		axdom("#" + cfg.targetID + "_AX_" + objID).append(po.join(''));
-		//bind handle
-		var bindPlaceHolderKeyup = this.bindPlaceHolderSyncAnchor.bind(this);
-		axdom("#" + objID).unbind("keyup.AXInput").bind("keyup.AXInput", function () {
-			bindPlaceHolderKeyup(objID, objSeq);
-		});
-		bindPlaceHolderKeyup(objID, objSeq);
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_PlaceHolder").unbind("click.AXInput").bind("click.AXInput", function () {
-			//axdom("#"+objID).val("");
-			axdom("#" + objID).focus();
-			bindPlaceHolderKeyup(objID, objSeq);
-		});
-		//------------------------------------
-	},
-	bindPlaceHolderSyncAnchor: function (objID, objSeq) {
-		var cfg = this.config;
-		if (axdom("#" + objID).val().trim() == "") {
-			//if(AXgetId(cfg.targetID+"_AX_"+objID).style.display == "none") 
-			axdom("#" + cfg.targetID + "_AX_" + objID).show();
-		} else {
-			//if(AXgetId(cfg.targetID+"_AX_"+objID).style.display != "none") 
-			axdom("#" + cfg.targetID + "_AX_" + objID).hide();
-		}
-	},
-	// onlyHolder ~~~~~~~~~~~~~~
-
-	// search
-	bindSearch: function (objID, objSeq) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		var w = axdom("#" + cfg.targetID + "_AX_" + objID).width();
-		var h = axdom("#" + cfg.targetID + "_AX_" + objID).data("height");
-		var placeholder = axdom("#" + objID).attr("placeholder");
-		if (placeholder == undefined) placeholder = "";
-		var po = [];
-
-		if (AXUtil.browser.name == "ie" && AXUtil.browser.version < 10 && placeholder != "") {
-			po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_PlaceHolder\" class=\"" + cfg.anchorPlaceHolderClassName + "\" ");
-			po.push(" style=\"left:0px;top:0px;width:" + w + "px;height:" + h + "px;line-height:" + h + "px;\">" + placeholder + "</a>");
-		}
-		po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_Search\" class=\"" + cfg.anchorSearchClassName + "\" ");
-		po.push(" style=\"right:0px;top:0px;width:" + h + "px;height:" + h + "px;\">Search</a>");
-		//append to anchor
-		axdom("#" + cfg.targetID + "_AX_" + objID).append(po.join(''));
-		//bind handle
-		var bindSearchKeyup = this.bindSearchSyncAnchor.bind(this);
-		axdom("#" + objID).unbind("keydown.AXInput").bind("keydown.AXInput", function () {
-			bindSearchKeyup(objID, objSeq);
-		});
-		bindSearchKeyup(objID, objSeq);
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Search").unbind("click.AXInput").bind("click.AXInput", function () {
-			axdom("#" + objID).val("");
-			axdom("#" + objID).focus();
-			bindSearchKeyup(objID, objSeq);
-		});
-		//------------------------------------
-	},
-	bindSearchSyncAnchor: function (objID, objSeq) {
-		var cfg = this.config;
-		axdom("#" + cfg.targetID + "_AX_" + objID).show();
-
-		if (axdom("#" + objID).val() == "") {
-			//if(AXgetId(cfg.targetID+"_AX_"+objID).style.display != "none") axdom("#"+cfg.targetID+"_AX_"+objID).hide();
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Search").hide();
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_PlaceHolder").show();
-		} else {
-			//if(AXgetId(cfg.targetID+"_AX_"+objID).style.display == "none") axdom("#"+cfg.targetID+"_AX_"+objID).fadeIn();
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Search").show();
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_PlaceHolder").hide();
-		}
-	},
-
-	// number
-	bindNumber: function (objID, objSeq) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if(!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-
-		var h = obj.bindAnchorTarget.data("height");
-		//trace(objID+"//"+h);
-		var po = [];
-		var UPh = parseInt((h - 2) / 2) - 1;
-		var DNh = parseInt((h - 2) / 2) - 2;
-		//trace(UPh+"//"+DNh);
-		var handleWidth = h - 2;
-		if (handleWidth > 20) handleWidth = 20;
-
-		po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_HandleContainer\" class=\"" + cfg.anchorNumberContainerClassName + "\" style=\"right:0px;top:0px;width:" + handleWidth + "px;height:" + (h - 2) + "px;\" onselectstart=\"return false;\">");
-		po.push("	<a id=\"" + cfg.targetID + "_AX_" + objID + "_AX_increase\" class=\"" + cfg.anchorIncreaseClassName + "\" style=\"right:0px;top:0px;width:" + handleWidth + "px;height:" + UPh + "px;\">increase</a>");
-		po.push("	<a id=\"" + cfg.targetID + "_AX_" + objID + "_AX_decrease\" class=\"" + cfg.anchorDecreaseClassName + "\" style=\"right:0px;top:" + (UPh + 1) + "px;width:" + handleWidth + "px;height:" + DNh + "px;\">decrease</a>");
-		po.push("</div>");
-		obj.bindAnchorTarget.append(po.join(''));
-		obj.bindAnchorTarget.show();
-		//alert("show");
-
-		var bindNumberAdd = this.bindNumberAdd.bind(this);
-		var bindNumberCheck = this.bindNumberCheck.bind(this);
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_increase").unbind("mousedown.AXInput").bind("mousedown.AXInput", function (event) {
-			bindNumberAdd(objID, 1, objSeq);
-			bindNumberCheck(objID, objSeq, event);
-		});
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_decrease").unbind("mousedown.AXInput").bind("mousedown.AXInput", function (event) {
-			bindNumberAdd(objID, -1, objSeq);
-			bindNumberCheck(objID, objSeq, event);
-		});
-		/*
-		 obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function (event) {
-		 bindNumberCheck(objID, objSeq, event);
-		 });
-		 */
-		obj.bindTarget.unbind("keydown.AXInput").bind("keydown.AXInput", function (event) {
-			if (event.keyCode == AXUtil.Event.KEY_UP) bindNumberAdd(objID, 1, objSeq);
-			else if (event.keyCode == AXUtil.Event.KEY_DOWN) bindNumberAdd(objID, -1, objSeq);
-			//else bindNumberCheck(objID, objSeq, event);
-		});
-		obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function (event) {
-			bindNumberCheck(objID, objSeq, event);
-		});
-	},
-	bindNumberAdd: function (objID, adder, objSeq) {
-		var obj = this.objects[objSeq];
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-		var maxval = obj.config.max;
-		var minval = obj.config.min;
-		var nval = obj.bindTarget.val().number();
-		if (adder > 0) {
-			//max 를 초과 하는지 확인
-			if ((nval + adder) < minval) nval = minval;
-			if (maxval != undefined && maxval != null) {
-				if ((nval + adder) > maxval) return;
-			}
-		} else {
-			//min 를 초과 하는지 확인
-			if (minval != undefined && minval != null) {
-				if ((nval + adder) < minval) return;
-			}
-		}
-		obj.bindTarget.val(nval + adder);
-		obj.bindTarget.change();
-	},
-	bindNumberCheck: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-		if(this.numbercheck_obs) clearTimeout(this.numbercheck_obs);
-		this.numbercheck_obs = setTimeout(function(){
-			var maxval = obj.config.max;
-			var minval = obj.config.min;
-			var nval;
-			if (obj.bindTarget.val() == "") {
-				if (minval != undefined && minval != null) {
-					nval = minval;
-				} else {
-					nval = obj.bindTarget.val().number();
-				}
-			} else {
-				nval = obj.bindTarget.val().number();
-			}
-
-			if (maxval != undefined && maxval != null) {
-				if ((nval) > maxval) {
-					obj.bindTarget.val("");
-					try {
-						this.msgAlert("설정된 최대값을 넘어서는 입력입니다.");
-					} catch (e) {
-					}
-				} else {
-					if (minval != undefined && minval != null) {
-						if ((nval) < minval) {
-							obj.bindTarget.val("");
-							try {
-								this.msgAlert("설정된 최소값보다 작은 입력입니다.");
-							} catch (e) {
-							}
-						} else {
-							obj.bindTarget.val(nval);
-						}
-					}
-				}
-			}
-			else {
-				if (minval != undefined && minval != null) {
-					if ((nval) < minval) {
-						obj.bindTarget.val("");
-						try {
-							this.msgAlert("설정된 최소값보다 작은 입력입니다.");
-						} catch (e) {
-						}
-					}
-				} else {
-					obj.bindTarget.val(nval);
-				}
-			}
-			obj.bindTarget.trigger("change");
-			
-			if (event && event.type == "mousedown") {
-				obj.bindTarget.setCaret();
-			}
-
-			if (obj.config.onChange) {
-				obj.config.onChange.call({objID: objID, objSeq: objSeq, value: axdom("#" + objID).val()});
-			}
-			if (obj.config.onchange) {
-				obj.config.onchange.call({objID: objID, objSeq: objSeq, value: axdom("#" + objID).val()});
-			}
-		}, 1);
-		
-	},
-
-	// money
-	bindMoney: function (objID, objSeq) {
-		var obj = this.objects[objSeq];
-		obj.bindTarget.css({ "text-align": "right" });
-		var bindMoneyCheck = this.bindMoneyCheck.bind(this);
-		var val = obj.bindTarget.val().trim();
-		if (val != "") val = obj.bindTarget.val().number().money();
-		obj.bindTarget.val(val);
-
-		obj.bindTarget.unbind("keydown.AXInput").bind("keydown.AXInput", function (event) {
-			if ( (event.ctrlKey || event.metaKey) ){
-				obj.bindTarget.data("ctrlKey", "T");
-			}else{
-				obj.bindTarget.data("ctrlKey", "F");
-			}
-		});
-		obj.bindTarget.unbind("keyup.AXInput").bind("keyup.AXInput", function (event) {
-			var elem = obj.bindTarget.get(0);
-
-			if(elem.type != "number") {
-				event = window.event || event;
-
-				// ignore tab & shift key 스킵 & ctrl
-				if (
-					(!event.keyCode || event.keyCode == 9 || event.keyCode == 16 || event.keyCode == 17) ||
-					((obj.bindTarget.data("ctrlKey") == "T") && (event.keyCode == 65 || event.keyCode == 91))
-				){
-					jQuery.removeData(obj.bindTarget.get(0), "focusPosition");
-				}
-				else{
-					var elemFocusPosition;
-					if ('selectionStart' in elem) {
-						// Standard-compliant browsers
-						elemFocusPosition = elem.selectionStart;
-					} else if (document.selection) {
-						// IE
-						//elem.focus();
-						var sel = document.selection.createRange();
-						var selLen = document.selection.createRange().text.length;
-						sel.moveStart('character', -elem.value.length);
-						elemFocusPosition = sel.text.length - selLen;
-					}
-					//trace(elemFocusPosition);
-					// 계산된 포커스 위치 앞에 쉼표 갯수를 구합니다.
-
-					obj.bindTarget.data("focusPosition", elemFocusPosition);
-					obj.bindTarget.data("prevLen", elem.value.length);
-
-					if (event.keyCode != AXUtil.Event.KEY_DELETE && event.keyCode != AXUtil.Event.KEY_BACKSPACE && event.keyCode != AXUtil.Event.KEY_LEFT && event.keyCode != AXUtil.Event.KEY_RIGHT) {
-						bindMoneyCheck(objID, objSeq, "keyup");
-					} else if (event.keyCode == AXUtil.Event.KEY_DELETE || event.keyCode == AXUtil.Event.KEY_BACKSPACE) {
-						bindMoneyCheck(objID, objSeq, "keyup");
-					}
-				}
-			}
-		});
-
-		/* blur 이벤트 처리 이상 작동으로 제거 - 15-01-16
-		 obj.bindTarget.unbind("change.AXInput").bind("change.AXInput", function (event) {
-		 if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-		 return false;
-		 }
-		 if(event.target.type != "number") {
-		 bindMoneyCheck(objID, objSeq, "change");
-		 }
-		 });
-		 */
-	},
-	bindMoneyCheck: function (objID, objSeq, eventType) {
-		var obj = this.objects[objSeq];
-		var maxval = obj.config.max;
-		var minval = obj.config.min;
-		var nval;
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-		if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
-
-		if (obj.bindTarget.val() == "") {
-			if (minval != undefined && minval != null) {
-				nval = minval;
-			} else {
-				nval = "";
-			}
-		} else {
-			if(obj.bindTarget.val() != "-") {
-				nval = obj.bindTarget.val().number();
-			}else{
-				nval = "";
-			}
-		}
-		if (maxval != undefined && maxval != null) {
-			if ((nval) > maxval) {
-				obj.bindTarget.val(maxval.money());
-				try {
-					if(eventType == "change") this.msgAlert("설정된 최대값{" + maxval.number().money() + "} 을 넘어서는 입력입니다.");
-				} catch (e) { }
-			} else {
-				if (minval != undefined && minval != null) {
-					if ((nval) < minval) {
-						obj.bindTarget.val(minval.money());
-						try {
-							if(eventType == "change") this.msgAlert("설정된 최소값{" + minval.number().money() + "}보다 작은 입력입니다.");
-						} catch (e) { }
-					} else {
-						obj.bindTarget.val(nval.money());
-					}
-				}else{
-					obj.bindTarget.val(nval.money());
-				}
-			}
-		}
-		else
-		{
-			if (minval != undefined && minval != null) {
-				if ((nval) < minval) {
-					obj.bindTarget.val(minval.money());
-					try {
-						if(eventType == "change") this.msgAlert("설정된 최소값{" + minval.number().money() + "}보다 작은 입력입니다.");
-					} catch (e) { }
-				} else {
-					if(nval != "" && nval != "-") obj.bindTarget.val(nval.money());
-				}
-			} else {
-				if(nval != "" && nval != "-") obj.bindTarget.val(nval.money());
-			}
-		}
-		obj.bindTarget.trigger("change");
-
-		if( !axf.isEmpty( obj.bindTarget.data("focusPosition") ) ){
-			obj.bindTarget.setCaret( obj.bindTarget.data("focusPosition").number() + ( obj.bindTarget.val().length - obj.bindTarget.data("prevLen") ) );
-		}
-
-		if (obj.config.onChange) {
-			obj.config.onChange.call({ objID: objID, objSeq: objSeq, value: obj.bindTarget.val().number() });
-		}
-
-		if(eventType == "change"){
-			if(obj.bindTarget.val() == "-") obj.bindTarget.val('');
-		}
-	},
-
-	// selector
-	bindSelector: function (objID, objSeq) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
-
-		if(!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-
-		obj.bindTarget.data("val", obj.bindTarget.val());
-
-
-		var reserveKeys = jQuery.extend({}, cfg.reserveKeys);
-		if(typeof obj.config.reserveKeys == "undefined") obj.config.reserveKeys = {};
-		obj.config.reserveKeys = jQuery.extend(reserveKeys, obj.config.reserveKeys, true);
-
-		var h = obj.bindAnchorTarget.data("height") - 2;
-		var po = [];
-		po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_HandleContainer\" class=\"bindSelectorNodes " + cfg.anchorSelectorHandleContainerClassName + "\" style=\"right:0px;top:0px;width:" + h + "px;height:" + h + "px;\">");
-		po.push("	<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_Handle\" class=\"bindSelectorNodes " + cfg.anchorSelectorHandleClassName + "\" style=\"right:0px;top:0px;width:" + h + "px;height:" + h + "px;\">expand</a>");
-		po.push("</div>");
-		if (obj.config.finder) {
-			po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_FinderContainer\" class=\"bindSelectorNodes " + cfg.anchorSelectorFinderContainerClassName + "\" style=\"right:" + h + "px;top:0px;width:" + h + "px;height:" + h + "px;\">");
-			po.push("	<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_Finder\" class=\"bindSelectorNodes " + cfg.anchorSelectorFinderClassName + "\" style=\"right:0px;top:0px;width:" + h + "px;height:" + h + "px;\">finder</a>");
-			po.push("</div>");
-		}
-
-		obj.bindAnchorTarget.append(po.join(''));
-		obj.bindAnchorTarget.show();
-
-		var bindSelectorExpand = this.bindSelectorExpand.bind(this);
-		var bindSelectorClose = this.bindSelectorClose.bind(this);
-
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").unbind("click.AXInput").bind("click.AXInput", function (event) {
-			if (!AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-				axdom("#" + objID).focus();
-			} else {
-				//bindSelectorExpand(objID, objSeq, true, event);
-				bindSelectorClose(objID, objSeq, event);
-			}
-		});
-		obj.bindTarget.unbind("focus.AXInput").bind("focus.AXInput", function (event) {
-			if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-				return false;
-			}
-			try {
-				this.select();
-			} catch (e) {
-			}
-			if (!AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-				bindSelectorExpand(objID, objSeq, false, event);
-			}
-		});
-		obj.bindTarget.unbind("keydown.AXInputCheck").bind("keydown.AXInputCheck", function(event){
-			if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-				return false;
-			}
-			if (!AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-				bindSelectorExpand(objID, objSeq, false, event);
-			}
-		});
-
-		if (obj.config.finder) {
-			if (obj.config.finder.onclick) {
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Finder").unbind("click.AXInput").bind("click.AXInput", function (event) {
-					if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-						return false;
-					}
-					obj.config.finder.onclick.call({
-						targetID: objID,
-						value: axdom("#" + objID).val()
-					}, objID);
-					bindSelectorClose(objID, objSeq, event);
-				});
-			}
-		}
-
-		/*
-		 var bindSelectorInputChange = this.bindSelectorInputChange.bind(this);
-		 obj.inputChange = function(event){
-		 bindSelectorInputChange(objID, objSeq, event);
-		 }
-		 axdom("#"+objID).bind("change.AXInput", obj.inputChange);
-		 */
-	},
-	bindSelectorExpand: function (objID, objSeq, isToggle, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-		var reserveKeys = obj.config.reserveKeys;
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-		obj.bindTarget.data("val", obj.bindTarget.val().enc());
-
-		//alert(obj.bindTarget.data("val").end());
-
-		if (this.opendExpandBox) {
-			this.bindSelectorClose(this.opendExpandBox.objID, this.opendExpandBox.objSeq, event); // 셀럭터 외의 영역이 므로 닫기
-		}
-
-		var jqueryTargetObjID = axdom("#" + cfg.targetID + "_AX_" + objID);
-		//trace({objID:objID, objSeq:objSeq});
-
-		if (axdom("#" + cfg.targetID + "_AX_" + objID).data("blurEvent")) {
-			//blur event 발생 상태 메소드 작동 중지
-			return;
-		}
-
-		//Selector Option box Expand
-		if (isToggle) { // 활성화 여부가 토글 이면
-			if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
-				//비활성 처리후 메소드 종료
-				return;
-			}
-		}
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 활성화 전에 개체 삭제 처리
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
-		//Expand Box 생성 구문 작성
-		var anchorWidth = jqueryTargetObjID.width() - 2; // anchor width
-		var anchorHeight = jqueryTargetObjID.data("height") - 1;
-		var styles = [];
-		styles.push("top:" + anchorHeight + "px");
-		styles.push("width:" + (obj.config.anchorWidth || anchorWidth) + "px");
-		styles.push("z-index:5100");
-
-		var po = [];
-		po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandBox\" class=\"bindSelectorNodes " + cfg.anchorSelectorExpandBoxClassName + "\" style=\"" + styles.join(";") + "\">");
-		po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandScroll\" class=\"bindSelectorNodes " + cfg.anchorSelectorExpandScrollClassName + "\">");
-		po.push("	<div class=\"AXLoadingSmall bindSelectorNodes\"></div>");
-		po.push("</div>");
-		po.push("</div>");
-		axdom(document.body).append(po.join(''));
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").addClass("on");
-
-		var expandBox = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox");
-		if (obj.config.positionFixed) {
-			expandBox.css({ "position": "fixed" });
-		}
-		var expBoxHeight = expandBox.outerHeight();
-		var offset = (obj.config.positionFixed) ? jqueryTargetObjID.position() : jqueryTargetObjID.offset();
-		if (obj.config.position) {
-			offset = jqueryTargetObjID.offset();
-			if (obj.config.position.top != undefined) {
-				offset.top = obj.config.position.top;
-			}
-		}
-		var css = {};
-		css.top = offset.top + anchorHeight;
-		if (obj.config.direction == "bottom") {
-			css.top -= expandBox.outerHeight();
-		}
-
-		css.left = offset.left;
-		expandBox.css(css);
-
-		this.opendExpandBox = { objID: objID, objSeq: objSeq };
-
-		//_AX_expandBox set options
-		//trace(obj.config.ajaxUrl);
-		if (obj.config.onsearch) {
-			this.bindSelectorKeyupChargingUp(objID, objSeq, event);
-		} else if (obj.config.ajaxUrl) {
-			// AJAX호출
-			this.bindSelectorKeyupChargingUp(objID, objSeq, event);
-		} else {
-			if (!obj.config.options) {
-				trace("options 항목이 없어 bind selector 를 완성 할 수 없습니다.");
-				return;
-			}
-			this.bindSelectorSetOptions(objID, objSeq);
-			this.bindSelectorKeyupChargingUp(objID, objSeq, event);
-		}
-
-		var bindSelectorOptionsClick = this.bindSelectorOptionsClick.bind(this);
-		obj.documentclickEvent = function (event) {
-			bindSelectorOptionsClick(objID, objSeq, event);
-		};
-		axdom(document).unbind("click.AXInput").bind("click.AXInput", obj.documentclickEvent);
-
-	},
-	bindSelectorBlur: function (objID) {
-		var cfg = this.config;
-		var objSeq = null;
-		axf.each(this.objects, function (idx, O) {
-			//if (this.id == objID && this.isDel == true) objSeq = idx;
-			if (this.id == objID) {
-				objSeq = idx;
-			}
-		});
-		if (objSeq != null) this.bindSelectorClose(objID, objSeq);
-	},
-	bindSelectorClose: function (objID, objSeq, event, originChangeCall) {
-
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-		var reserveKeys = obj.config.reserveKeys;
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-
-		if(obj.inProgress) AXReqAbort(); // AJAX 호출 중지 하기
-
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-
-		if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
-
-			//비활성 처리후 메소드 종료
-
-			axdom(document).unbind("click.AXInput");
-			obj.bindTarget.unbind("keydown.AXInput");
-			obj.bindTarget.unbind("change.AXInput");
-
-			if(obj.bindTarget.data("val") == obj.bindTarget.val().enc() && !obj.config.isSelectorClick) {
-				//return obj.bindTarget.val();
-			}
-
-			if (obj.config.isChangedSelect) {
-
-				var myVal = "";
-				if (obj.config.selectedObject) {
-					myVal = obj.config.selectedObject[reserveKeys.optionText];
-				}
-
-				if (obj.config.appendable) {
-					//trace(myVal);
-					if (myVal != "") axdom("#" + objID).val(myVal);
-				} else {
-					axdom("#" + objID).val(myVal);
-				}
-
-				if (obj.config.onChange) {
-					var sendObj = {
-						targetID: objID,
-						options: obj.config.options,
-						selectedIndex: obj.config.selectedIndex,
-						selectedOption: obj.config.selectedObject
-					}
-					if (obj.config.onChange) obj.config.onChange.call(sendObj);
-					else if (obj.config.onchange) obj.config.onchange.call(sendObj);
-				}
-				obj.config.isChangedSelect = false;
-				if(originChangeCall) obj.bindTarget.change();
-			}
-			//trace(obj.config.selectedObject);
-			if (obj.config.selectedObject) this.bindSelectorInputChange(objID, objSeq);
-			else {
-				if (!obj.config.appendable) {
-					if (!obj.config.selectedObject && !obj.inProgress) axdom("#" + objID).val("");
-				}
-			}
-			//if(event) event.stopPropagation(); // disableevent
-			//return;
-		}
-	},
-	bindSelectorSetOptions: function (objID, objSeq) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var reserveKeys = obj.config.reserveKeys;
-		var maxHeight = obj.config.maxHeight || 130;
-		var optionPrintLength = obj.config.optionPrintLength || 100;
-		if (!obj.config.options) return;
-
-		var expandBox = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox");
-		var jqueryTargetObjID = axdom("#" + cfg.targetID + "_AX_" + objID);
-		var po = [];
-		axf.each(obj.config.options, function (index, O) {
-			if (!isNaN(optionPrintLength)) {
-				if (index > optionPrintLength - 1) return false;
-			}
-
-			// options의 optionText, optionDesc의 참조값을 디코딩해서 디코딩은 한 번만 사용하도록 변경
-			O[reserveKeys.optionText] = (O[reserveKeys.optionText] ? O[reserveKeys.optionText].dec() : "");
-			O.desc = (O.desc ? O.desc.dec() : "");
-			O.optionDesc = (O.optionDesc ? O.optionDesc.dec() : "");
-
-			var descStr = O.desc || O.optionDesc;
-			if (descStr != "") descStr = "<span>" + descStr + "</span>";
-			po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_" + index + "_AX_option\" class=\"bindSelectorNodes\">" + O[reserveKeys.optionText] + descStr + "</a>");
-		});
-		if (po.length == 0) {
-			var selectorOptionEmpty = "";
-			if (AXConfig.AXInput) selectorOptionEmpty = (AXConfig.AXInput.selectorOptionEmpty || "empty options");
-			po.push("<div class=\"empty\">" + selectorOptionEmpty + "</div>");
-		}
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandScroll").html(po.join(''));
-		obj.config.isSelectorClick = false;
-
-		var expandScrollHeight = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandScroll").outerHeight();
-		if (expandScrollHeight > maxHeight) expandScrollHeight = maxHeight;
-		expandBox.css({ height: expandScrollHeight + "px" });
-
-		var bindSelectorOptionsClick = this.bindSelectorOptionsClick.bind(this);
-		obj.documentclickEvent = function (event) {
-			bindSelectorOptionsClick(objID, objSeq, event);
-		};
-		var bindSelectorKeyup = this.bindSelectorKeyup.bind(this);
-		obj.inputKeyup = function (event) {
-			bindSelectorKeyup(objID, objSeq, event);
-		};
-
-		axdom(document).unbind("click.AXInput").bind("click.AXInput", obj.documentclickEvent);
-		axdom("#" + objID).unbind("keydown.AXInput").bind("keydown.AXInput", obj.inputKeyup);
-
-		if (obj.myUIScroll) obj.myUIScroll.unbind();
-		obj.myUIScroll = new AXScroll();
-		obj.myUIScroll.setConfig({
-			CT_className: "AXScrollSmall",
-			targetID: cfg.targetID + "_AX_" + objID + "_AX_expandBox",
-			scrollID: cfg.targetID + "_AX_" + objID + "_AX_expandScroll",
-			touchDirection: false
-		});
-		obj.myUIScroll.scrollTop(0);
-
-		if (obj.config.selectedIndex != undefined) {
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + obj.config.selectedIndex + "_AX_option").addClass("on");
-			obj.myUIScroll.focusElement(cfg.targetID + "_AX_" + objID + "_AX_" + obj.config.selectedIndex + "_AX_option"); //focus
-			obj.config.focusedIndex = obj.config.selectedIndex;
-		}
-
-		if (obj.config.direction == "bottom") {
-			var offset = (obj.config.positionFixed) ? jqueryTargetObjID.position() : jqueryTargetObjID.offset();
-			if (obj.config.position) {
-				offset = jqueryTargetObjID.offset();
-				if (obj.config.position.top != undefined) {
-					offset.top = obj.config.position.top;
-				}
-			}
-			expandBox.css({top:offset.top - expandBox.outerHeight() });
-		}
-	},
-	bindSelectorOptionsClick: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var reserveKeys = obj.config.reserveKeys;
-		var eid = event.target.id.split(/_AX_/g);
-		var eventTarget = event.target;
-
-		var myTarget = this.getEventTarget({
-			evt: eventTarget,
-			until: function (evt, evtIDs) {
-				return (evt.parentNode.tagName == "body") ? true : false;
-			},
-			find: function (evt, evtIDs) {
-				if (evt.id == "") return false;
-				if (evt.id == objID || axdom(evt).hasClass("bindSelectorNodes")) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
-		var isSelectorClick = (myTarget) ? true : false;
-		if (!isSelectorClick) {
-			this.bindSelectorClose(objID, objSeq, event); // 셀럭터 외의 영역이 므로 닫기
-		} else {
-			eid = myTarget.id.split(/_AX_/g);
-
-			if (eid.last() == "option") {
-				var selectedIndex = eid[eid.length - 2];
-				obj.config.selectedIndex = selectedIndex;
-				obj.config.focusedIndex = selectedIndex;
-				obj.config.selectedObject = obj.config.options[selectedIndex];
-				obj.config.isChangedSelect = true;
-				obj.config.isSelectorClick = true;
-				this.bindSelectorClose(objID, objSeq, event, "bindTarget_onchange"); // 값 전달 후 닫기
-			}
-		}
-	},
-	bindSelectorKeyup: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq], _this = this;
-		var cfg = this.config;
-		var reserveKeys = obj.config.reserveKeys;
-		if (obj.inProgress) {
-			obj.inProgressReACT = true;
-			return;
-		}
-
-		if (event.keyCode == AXUtil.Event.KEY_TAB) {
-			this.bindSelectorClose(objID, objSeq, event); // 닫기
-			return;
-		}
-
-		if (event.keyCode == AXUtil.Event.KEY_UP) {
-			if (!obj.config.options) return;
-			if (obj.config.options.length == 0) return;
-			var focusIndex = obj.config.options.length - 1;
-			if (obj.config.focusedIndex == undefined || obj.config.focusedIndex == 0) {
-				//trace(obj.config.selectedIndex+"//"+focusIndex);
-			} else {
-				focusIndex = (obj.config.focusedIndex) - 1;
-				//trace(obj.config.selectedIndex+"//"+focusIndex);
-			}
-			this.bindSelectorSelect(objID, objSeq, focusIndex);
-		} else if (event.keyCode == AXUtil.Event.KEY_DOWN) {
-			if (!obj.config.options) return;
-			if (obj.config.options.length == 0) return;
-			var focusIndex = 0;
-			if (obj.config.focusedIndex == undefined || obj.config.focusedIndex == obj.config.options.length - 1) {
-				//trace(obj.config.selectedIndex+"//"+focusIndex);
-			} else {
-				focusIndex = (obj.config.focusedIndex).number() + 1;
-				//trace(obj.config.selectedIndex+"//"+focusIndex);
-			}
-			this.bindSelectorSelect(objID, objSeq, focusIndex);
-		} else if (event.keyCode == AXUtil.Event.KEY_RETURN) {
-
-			if (obj.config.focusedIndex == null) {
-				/*axdom("#" + objID).blur();*/
-				_this.bindSelectorClose(objID, objSeq, event); // 닫기
-			} else {
-				//trace(obj.config.focusedIndex);
-				obj.config.selectedObject = obj.config.options[obj.config.focusedIndex];
-				obj.config.selectedIndex = obj.config.focusedIndex;
-				obj.config.isChangedSelect = true;
-				axdom("#" + objID).val(obj.config.selectedObject[reserveKeys.optionText]);
-				/*axdom("#" + objID).blur();*/
-				_this.bindSelectorClose(objID, objSeq, event, "bindTarget_onchange"); // 닫기
-			}
-
-		} else {
-			//1. 반복입력 제어 하기
-			var bindSelectorKeyupChargingUp = this.bindSelectorKeyupChargingUp.bind(this);
-			if (obj.Observer) clearTimeout(obj.Observer); //명령 제거
-			obj.Observer = setTimeout(function () {
-				bindSelectorKeyupChargingUp(objID, objSeq, event);
-			}, 500);
-		}
-	},
-	bindSelectorKeyupChargingUp: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var reserveKeys = obj.config.reserveKeys;
-		var objVal = axdom("#" + objID).val();
-		var bindSelectorSearch = this.bindSelectorSearch.bind(this);
-
-		if (obj.config.onsearch) {
-
-			var res = obj.config.onsearch.call(
-				{
-					id: objID,
-					value: objVal
-				},
-				objID,
-				objVal,
-				(function(res){
-					obj.config.options = res.options;
-					obj.config.focusedIndex = null;
-					this.bindSelectorSetOptions(objID, objSeq);
-					this.bindSelectorSearch(objID, objSeq, objVal);
-				}).bind(this)
-			);
-
-			/*
-			 callBack 함수를 이용하는 경우와 return 하는 두 가지 경우가 존재 하겠다. 아래는 obj.config.onsearch 에서 return 한 경우이고 위의 함수는 callBack 함수인 경우이다.
-			 */
-			if (res) {
-				res.options = res.options || [];
-				obj.config.options = res.options;
-				obj.config.focusedIndex = null;
-				this.bindSelectorSetOptions(objID, objSeq);
-				this.bindSelectorSearch(objID, objSeq, objVal);
-			}
-
-		} else if (obj.config.ajaxUrl) {
-			// AJAX호출
-			// 2. AJAX request
-			// 3. AJAX 결과로 bindSelectorSetOptions 처리하기
-			//this.bindSelectorSetOptions(objID, objSeq);
-			// 4. 입력어로 bindSelectorSearch 실행하기
-			obj.inProgress = true; //진행중 상태 변경
-			var bindSelectorSetOptions = this.bindSelectorSetOptions.bind(this);
-			var bindSelectorKeyupChargingUp = this.bindSelectorKeyupChargingUp.bind(this);
-
-			var url = obj.config.ajaxUrl;
-			var pars = obj.config.ajaxPars || {};
-			var _method = "post";
-			var _headers = {};
-			var _contentType = AXConfig.AXReq.contentType;
-			var _responseType = AXConfig.AXReq.responseType;
-			var _dataType = AXConfig.AXReq.dataType;
-			var _async = AXConfig.AXReq.async;
-
-			// ajax 옵션 확장
-			if (obj.config.method) _method = obj.config.method;
-			if (obj.config.headers) _headers = obj.config.headers;
-			if (obj.config.contentType) _contentType = obj.config.contentType;
-			if (obj.config.responseType) _responseType = obj.config.responseType;
-			if (obj.config.dataType) _dataType = obj.config.dataType;
-			if (obj.config.ajaxAsync) _async = obj.config.ajaxAsync;
-
-
-			var selectorName = obj.config.selectorName || axdom("#" + objID).attr("name");
-			if (pars == "") {
-				pars = selectorName + "=" + (objVal||"").enc();
-			} else if ((typeof pars).toLowerCase() == "string") {
-				pars += "&" + selectorName + "=" + objVal.enc();
-			} else if ((typeof pars).toLowerCase() == "object") {
-				pars[selectorName] = objVal.enc();
-			}
-
-			var msgAlert = this.msgAlert.bind(this);
-			new AXReq(url, {
-				type: _method,
-				headers: _headers,
-				contentType: _contentType,
-				responseType: _responseType,
-				dataType: _dataType,
-				async: _async,
-				debug: ((typeof obj.config.debug !== "undefined") ? obj.config.debug : false),
-				pars: pars,
-				onsucc: function (res) {
-					if ((res.result && res.result == AXConfig.AXReq.okCode) || (res.result == undefined && !res.error)) {
-
-						//obj.config.options = (res.options || []);
-						obj.config.options = (res[reserveKeys.options] || []);
-						obj.config.focusedIndex = null;
-
-						bindSelectorSetOptions(objID, objSeq);
-						bindSelectorSearch(objID, objSeq, objVal);
-
-						if (obj.inProgressReACT) {
-							bindSelectorKeyupChargingUp(objID, objSeq, event);
-						}
-					} else {
-						msgAlert(res);
-					}
-					obj.inProgress = false;
-					obj.inProgressReACT = false;
-				}
-			});
-		} else {
-			// 입력어로 bindSelectorSearch 실행하기
-			//alert(objVal);
-			bindSelectorSearch(objID, objSeq, objVal);
-		}
-	},
-	bindSelectorInputChange: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var reserveKeys = obj.config.reserveKeys;
-		if (axdom("#" + objID).val() != obj.config.selectedObject[reserveKeys.optionText]) {
-			if (!obj.config.appendable) axdom("#" + objID).val("");
-			obj.config.selectedObject = null;
-			obj.config.selectedIndex = null;
-			obj.config.focusedIndex = null;
-			if (obj.config.onChange) {
-				obj.config.onChange(null);
-			}
-		}
-	},
-	bindSelectorSetValue: function (objID, objSeq, value) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var reserveKeys = obj.config.reserveKeys;
-
-		if (!obj.config.options) return;
-
-		var selectedIndex = null;
-		axf.each(obj.config.options, function (oidx, opt) {
-			if (opt[reserveKeys.optionValue] == value) selectedIndex = oidx;
-		});
-
-		if (selectedIndex != null) {
-			obj.config.focusedIndex = selectedIndex;
-			obj.config.selectedObject = obj.config.options[selectedIndex];
-			obj.config.isChangedSelect = true;
-			axdom("#" + objID).val(obj.config.selectedObject[reserveKeys.optionText]);
-
-			if (obj.config.onChange || obj.config.onchange) {
-				var sendObj = {
-					targetID: objID,
-					options: obj.config.options,
-					selectedIndex: obj.config.selectedIndex,
-					selectedOption: obj.config.selectedObject
-				};
-				if (obj.config.onChange) obj.config.onChange.call(sendObj);
-				else if (obj.config.onchange) obj.config.onchange.call(sendObj);
-			}
-		}
-	},
-	bindSelectorSearch: function (objID, objSeq, kword) { // 입력된 값으로 검색 하기
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var reserveKeys = obj.config.reserveKeys;
-		if (kword == "") {
-			this.bindSelectorSelectClear(objID, objSeq);
-			return;
-		}
-		kword = kword.replace(/\//g, "\\\/");
-		var sw = AXUtil.consonantKR((kword || "").dec());
-		var reAt = new RegExp("^" + sw + ".*", "i");
-
-		var ix = null;
-		for (var a = 0; a < obj.config.options.length; a++) {
-			if (reAt.test((obj.config.options[a][reserveKeys.optionText] || ""))) {
-				ix = a;
-				break;
-			}
-		}
-		if (ix != null) {
-			this.bindSelectorSelect(objID, objSeq, ix, "dont change value");
-		} else {
-			this.bindSelectorSelectClear(objID, objSeq);
-		}
-	},
-	bindSelectorSelect: function (objID, objSeq, index, changeValue) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var reserveKeys = obj.config.reserveKeys;
-		if (obj.config.focusedIndex != undefined) {
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + obj.config.focusedIndex + "_AX_option").removeClass("on");
-		}
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + index + "_AX_option").addClass("on");
-		obj.config.focusedIndex = index;
-		//obj.config.selectedObject = obj.config.options[index];
-		//obj.config.isChangedSelect = true;
-		//if(!changeValue) axdom("#"+objID).val(obj.config.selectedObject.optionText.dec());
-		obj.myUIScroll.focusElement(cfg.targetID + "_AX_" + objID + "_AX_" + index + "_AX_option"); //focus
-	},
-	bindSelectorSelectClear: function (objID, objSeq) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var reserveKeys = obj.config.reserveKeys;
-		if (obj.config.selectedIndex != undefined) {
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + obj.config.selectedIndex + "_AX_option").removeClass("on");
-		}
-		obj.config.selectedIndex = null;
-		obj.config.focusedIndex = null;
-		obj.config.selectedObject = null;
-		obj.config.isChangedSelect = true;
-	},
-
-
-
-	// slider
-	bindSlider: function (objID, objSeq) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if(!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderBox").remove();
-
-		var w = obj.bindAnchorTarget.width();
-		var h = obj.bindAnchorTarget.data("height");
-		//trace(h);
-		var objVal = obj.bindTarget.val().number().money();
-		if (objVal.number() < obj.config.min.number()) objVal = obj.config.min;
-		else if (objVal.number() > obj.config.max.number()) objVal = obj.config.max;
-
-		if (!obj.config.unit) obj.config.unit = "";
-
-		var po = [];
-		po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderBox\" class=\"" + cfg.anchorSliderBoxClassName + "\" style=\"left:0px;width:" + w + "px;height:" + h + "px;\">");
-		po.push("	<div class=\"AXanchorSliderMinTitle\">" + obj.config.min.number().money() + obj.config.unit + "</div>");
-		po.push("	<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar\" class=\"AXanchorSliderBar\">");
-		po.push("		<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside\" class=\"AXanchorSliderBarInside\"><div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle\" class=\"AXanchorSliderHandleTitle\">" + objVal.number().money() + obj.config.unit + "</div></div>");
-		po.push("		<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle\" class=\"AXanchorSliderHandle\">handle</a>");
-		po.push("	</div>");
-		po.push("	<div class=\"AXanchorSliderMaxTitle\">" + obj.config.max.number().money() + obj.config.unit + "</div>");
-		po.push("</div>");
-
-		//append to anchor
-		obj.bindAnchorTarget.append(po.join(''));
-		//obj.bindAnchorTarget.css({ height: h + "px", "position": "relative", display: "inline-block", left: "auto", top: "auto" });
-		obj.bindAnchorTarget.css({ height: h + "px", "position": "relative", display: "inline-block", left: "auto", top: "auto" });
-		//, background:"#eee"
-
-
-		var maxTitleWidth = axdom("#" + cfg.targetID + "_AX_" + objID).find(".AXanchorSliderMaxTitle").outerWidth().number() + 10;
-		var minTitleWidth = axdom("#" + cfg.targetID + "_AX_" + objID).find(".AXanchorSliderMinTitle").outerWidth().number() + 10;
-		if (maxTitleWidth < 30) maxTitleWidth = 30;
-		if (minTitleWidth < 30) minTitleWidth = 30;
-		axdom("#" + cfg.targetID + "_AX_" + objID).find(".AXanchorSliderMinTitle").css({ width: minTitleWidth + "px" });
-		axdom("#" + cfg.targetID + "_AX_" + objID).find(".AXanchorSliderMaxTitle").css({ width: maxTitleWidth + "px" });
-		var sliderBarWidth = w - minTitleWidth - maxTitleWidth;
-		obj.bindAnchorTarget.find(".AXanchorSliderBar").css({ width: sliderBarWidth + "px", left: minTitleWidth + "px", top: h / 2 + 2 });
-		//------------------------------------
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").css({ width: maxTitleWidth });
-		obj.config._maxTitleWidth = maxTitleWidth;
-		obj.config._handleWidth = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").width();
-		obj.config._trackWidth = sliderBarWidth;
-		this.bindSliderSetValue(objID, objSeq);
-
-		var onmousedown = this.bindSliderMouseDown.bind(this);
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").unbind("mousedown.AXInput").bind("mousedown.AXInput", function () {
-			onmousedown(objID, objSeq);
-		});
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").unbind("dragstart.AXInput").bind("dragstart.AXInput", function (event) {
-			event.stopPropagation(); // disable  event
-			return false;
-		});
-
-		//add touch event
-		if (document.addEventListener) {
-			var ontouchstart = this.sliderTouchStart.bind(this);
-			obj.bindSliderTouchStart = function (event) { ontouchstart(objID, objSeq); }
-
-			AXgetId(cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").addEventListener("touchstart", obj.bindSliderTouchStart, false);
-		}
-
-		obj.bindAnchorTarget.show();
-		obj.bindTarget.hide();
-
-	},
-	bindSliderMouseDown: function (objID, objSeq) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-		if (!obj.config.isMoving) {
-			var bindSliderMouseMove = this.bindSliderMouseMove.bind(this);
-			obj.bindSliderMouseMove = function (event) {
-				bindSliderMouseMove(objID, objSeq, event);
-			};
-			var bindSliderMouseUp = this.bindSliderMouseUp.bind(this);
-			obj.bindSliderMouseUp = function (event) {
-				bindSliderMouseUp(objID, objSeq, event);
-			};
-			axdom(document.body).unbind("mousemove.AXInput").bind("mousemove.AXInput", obj.bindSliderMouseMove);
-			axdom(document.body).unbind("mouseup.AXInput").bind("mouseup.AXInput", obj.bindSliderMouseUp);
-			obj.config.isMoving = true;
-		}
-
-	},
-	bindSliderMouseMove: function (objID, objSeq, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		var eX = event.pageX;
-		var cX = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar").offset().left;
-
-		var rX = eX - cX;
-
-		var valueWidth = obj.config.max.number() - obj.config.min.number();
-		var pixelWidth = obj.config._trackWidth;
-		var objVal = (rX * valueWidth) / pixelWidth;
-		var snap = obj.config.snap;
-		if (typeof snap == "undefined") snap = 1;
-
-		if (snap >= 1) {
-			objVal = (objVal.number() + obj.config.min.number()).round();
-			objVal = (parseInt(objVal / (snap), 10) * (snap));
-		} else {
-			objVal = (objVal.number() + obj.config.min.number()).round((snap.toString().length - 2));
-			objVal = (parseFloat(objVal / (snap)) * (snap)).round((snap.toString().length - 2));
-		}
-
-		var rX = ((objVal - obj.config.min) * pixelWidth) / valueWidth;
-
-		if (objVal < obj.config.min) {
-			objVal = obj.config.min;
-			rX = 0;
-		} else if (objVal > obj.config.max) {
-			objVal = obj.config.max;
-			rX = pixelWidth;
-		}
-		if (rX > pixelWidth) rX = pixelWidth;
-
-		var sX = rX - (obj.config._handleWidth / 2);
-		var stX = rX - (obj.config._maxTitleWidth / 2);
-
-		//trace({rX:rX, pixelWidth:pixelWidth, objVal:objVal, valueWidth:valueWidth});
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").css({ left: sX });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({ width: rX });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").css({ left: stX });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").text(objVal.number().money() + obj.config.unit);
-		axdom("#" + objID).val(objVal);
-	},
-	bindSliderMouseUp: function (objID, objSeq, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-		var objVal = axdom("#" + objID).val();
-		if (obj.config.onChange || obj.config.onchange) {
-			var onchange = obj.config.onChange || obj.config.onchange;
-			onchange.call({ id: objID, value: objVal }, objID, objVal);
-		}
-
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTarget.change();
-
-		axdom(document.body).unbind("mousemove.AXInput");
-		axdom(document.body).unbind("mouseup.AXInput");
-		obj.config.isMoving = false;
-	},
-	bindSliderSetValue: function (objID, objSeq, value) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if (value != undefined) {
-			var objVal = value;
-		} else {
-			var objVal = axdom("#" + objID).val();
-		}
-
-		if (objVal.number() < obj.config.min.number()) objVal = obj.config.min;
-		else if (objVal.number() > obj.config.max.number()) objVal = obj.config.max;
-		var valueWidth = obj.config.max.number() - obj.config.min.number();
-		var pixelWidth = obj.config._trackWidth;
-		var pixelLeft = ((objVal - obj.config.min) * pixelWidth) / valueWidth;
-
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").css({ left: pixelLeft - (obj.config._handleWidth / 2) });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({ width: pixelLeft });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").css({ left: pixelLeft - (obj.config._maxTitleWidth / 2) });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").text(objVal.number().money() + obj.config.unit);
-
-		axdom("#" + objID).val(objVal);
-	},
-	sliderTouchStart: function (objID, objSeq) {
-		//alert(objID+"_"+ objSeq);
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-		if (!obj.config.isMoving) {
-			var bindSliderTouchMove = this.sliderTouchMove.bind(this);
-			obj.bindSliderTouchMove = function (event) {
-				bindSliderTouchMove(objID, objSeq, event);
-			};
-			var bindSliderTouchEnd = this.sliderTouchEnd.bind(this);
-			obj.bindSliderTouchEnd = function (event) {
-				bindSliderTouchEnd(objID, objSeq, event);
-			};
-
-			if (document.addEventListener) {
-				document.addEventListener("touchmove", obj.bindSliderTouchMove, false);
-				document.addEventListener("touchend", obj.bindSliderTouchEnd, false);
-
-			}
-			obj.config.isMoving = true;
-
-		}
-
-	},
-	sliderTouchMove: function (objID, objSeq, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		event.preventDefault();
-		var touch = event.touches[0];
-
-		var eX = touch.pageX;
-		var cX = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar").offset().left;
-		var rX = eX - cX;
-
-		var valueWidth = obj.config.max.number() - obj.config.min.number();
-		var pixelWidth = obj.config._trackWidth;
-		var objVal = (rX * valueWidth) / pixelWidth;
-		var snap = obj.config.snap;
-		if (!snap) snap = 1;
-		objVal = (objVal.number() + obj.config.min.number()).round();
-		objVal = parseInt(objVal / (snap)) * (snap);
-		var rX = ((objVal - obj.config.min) * pixelWidth) / valueWidth;
-
-		if (objVal < obj.config.min) {
-			objVal = obj.config.min;
-			rX = 0;
-		} else if (objVal > obj.config.max) {
-			objVal = obj.config.max;
-			rX = pixelWidth;
-		}
-		if (rX > pixelWidth) rX = pixelWidth;
-
-		var sX = rX - (obj.config._handleWidth / 2);
-		var stX = rX - (obj.config._maxTitleWidth / 2);
-
-		//trace({rX:rX, pixelWidth:pixelWidth, objVal:objVal, valueWidth:valueWidth});
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").css({ left: sX });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({ width: rX });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").css({ left: stX });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").text(objVal.number().money() + obj.config.unit);
-		axdom("#" + objID).val(objVal);
-		if (obj.config.onChange) obj.config.onChange(objID, objVal);
-		else if (obj.config.onchange) obj.config.onchange(objID, objVal);
-
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTarget.change();
-	},
-	sliderTouchEnd: function (objID, objSeq, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-		var objVal = axdom("#" + objID).val();
-
-		if (obj.config.onChange || obj.config.onchange) {
-			var onchange = obj.config.onChange || obj.config.onchange;
-			onchange.call({ id: objID, value: objVal }, objID, objVal);
-		}
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTarget.change();
-
-		if (document.addEventListener) {
-			document.removeEventListener("touchmove", obj.bindSliderTouchMove, false);
-			document.removeEventListener("touchend", obj.bindSliderTouchEnd, false);
-		}
-		obj.config.isMoving = false;
-	},
-
-	// twinSlider
-	bindTwinSliderGetVals: function (objValString, separator) {
-		var objVals = objValString.split(separator);
-		var objVal = { min: 0, max: 0 };
-		if (objVals.length < 2) {
-			objVal = { min: objVals[0], max: objVals[0] };
-		} else {
-			objVal = { min: objVals[0], max: objVals[1] };
-		}
-		return objVal;
-	},
-	bindTwinSlider: function (objID, objSeq) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if(!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-
-		var w = obj.bindAnchorTarget.width();
-		var h = obj.bindAnchorTarget.data("height");
-		var objValString = obj.bindTarget.val();
-		var separator = obj.config.separator || "~";
-		var objVal = this.bindTwinSliderGetVals(objValString, separator);
-		obj.vals = objVal;
-
-		if (objVal.min.number() < obj.config.min.number()) objVal.min = obj.config.min;
-		else if (objVal.min.number() > obj.config.max.number()) objVal.min = obj.config.max;
-		if (objVal.max.number() < obj.config.min.number()) objVal.max = obj.config.min;
-		else if (objVal.max.number() > obj.config.max.number()) objVal.max = obj.config.max;
-
-		if (!obj.config.unit) obj.config.unit = "";
-
-		var po = [];
-		po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderBox\" class=\"" + cfg.anchorSliderBoxClassName + "\" style=\"left:0px;width:" + w + "px;height:" + h + "px;\">");
-		po.push("	<a " + obj.config.href + " class=\"AXanchorSliderMinTitle\">" + obj.config.min.number().money() + obj.config.unit + "</a>");
-		po.push("	<a " + obj.config.href + " class=\"AXanchorSliderMaxTitle\">" + obj.config.max.number().money() + obj.config.unit + "</a>");
-		po.push("	<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar\" class=\"AXanchorSliderBar\">");
-		po.push("		<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside\" class=\"AXanchorSliderBarInside\"></div>");
-		po.push("		<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle\" class=\"AXanchorSliderHandleMinTitle\">" + objVal.min.number().money() + obj.config.unit + "</div>");
-		po.push("		<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle\" class=\"AXanchorSliderHandleMaxTitle\">" + objVal.max.number().money() + obj.config.unit + "</div>");
-		po.push("		<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin\" class=\"AXanchorSliderHandleMin\">handleMin</a>");
-		po.push("		<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax\" class=\"AXanchorSliderHandleMax\">handleMax</a>");
-		po.push("	</div>");
-		po.push("</div>");
-
-		//append to anchor
-		obj.bindAnchorTarget.append(po.join(''));
-		obj.bindAnchorTarget.css({ height: h + "px", "position": "relative", display: "inline-block", left: "auto", top: "auto" });
-		//, background:"#eee"
-		obj.bindAnchorTarget.show();
-		obj.bindTarget.hide();
-
-		var maxTitleWidth = obj.bindAnchorTarget.find(".AXanchorSliderMaxTitle").outerWidth().number() + 10;
-		var minTitleWidth = obj.bindAnchorTarget.find(".AXanchorSliderMinTitle").outerWidth().number() + 10;
-		obj.bindAnchorTarget.find(".AXanchorSliderMinTitle").css({ width: minTitleWidth + "px" });
-		obj.bindAnchorTarget.find(".AXanchorSliderMaxTitle").css({ width: maxTitleWidth + "px" });
-		var sliderBarWidth = w - minTitleWidth - maxTitleWidth;
-		obj.bindAnchorTarget.find(".AXanchorSliderBar").css({ width: sliderBarWidth + "px", left: minTitleWidth + "px", top: h / 2 + 2 });
-		//------------------------------------
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").css({ width: maxTitleWidth });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").css({ width: maxTitleWidth });
-		obj.config._maxTitleWidth = maxTitleWidth;
-		obj.config._handleWidth = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").width();
-		obj.config._trackWidth = sliderBarWidth;
-		this.bindTwinSliderSetValue(objID, objSeq);
-
-		var onmousedown = this.bindTwinSliderMouseDown.bind(this);
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").unbind("mousedown.AXInput").bind("mousedown.AXInput", function () {
-			onmousedown(objID, objSeq, "min");
-		});
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").unbind("mousedown.AXInput").bind("mousedown.AXInput", function () {
-			onmousedown(objID, objSeq, "max");
-		});
-
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").unbind("dragstart.AXInput").bind("dragstart.AXInput", function (event) {
-			event.stopPropagation(); // disable  event
-			return false;
-		});
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").unbind("dragstart.AXInput").bind("dragstart.AXInput", function (event) {
-			event.stopPropagation(); // disable  event
-			return false;
-		});
-
-		//add touch event
-		if (document.addEventListener) {
-			var ontouchstart = this.twinSliderTouchStart.bind(this);
-			obj.bindTwinSliderTouchStartMin = function (event) { ontouchstart(objID, objSeq, "min"); }
-			obj.bindTwinSliderTouchStartMax = function (event) { ontouchstart(objID, objSeq, "max"); }
-
-			AXgetId(cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").addEventListener("touchstart", obj.bindTwinSliderTouchStartMin, false);
-			AXgetId(cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").addEventListener("touchstart", obj.bindTwinSliderTouchStartMax, false);
-		}
-
-	},
-	bindTwinSliderMouseDown: function (objID, objSeq, handleName) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-		if (!obj.config.isMoving) {
-			var bindTwinSliderMouseMove = this.bindTwinSliderMouseMove.bind(this);
-			obj.bindTwinSliderMouseMove = function (event) {
-				bindTwinSliderMouseMove(objID, objSeq, event, handleName);
-			};
-			var bindTwinSliderMouseUp = this.bindTwinSliderMouseUp.bind(this);
-			obj.bindTwinSliderMouseUp = function (event) {
-				bindTwinSliderMouseUp(objID, objSeq, event, handleName);
-			};
-			axdom(document.body).unbind("mousemove.AXInput").bind("mousemove.AXInput", obj.bindTwinSliderMouseMove);
-			axdom(document.body).unbind("mouseup.AXInput").bind("mouseup.AXInput", obj.bindTwinSliderMouseUp);
-			obj.config.isMoving = true;
-		}
-
-	},
-	bindTwinSliderMouseMove: function (objID, objSeq, event, handleName) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		var eX = event.pageX;
-		var cX = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar").offset().left;
-
-		var rX = eX - cX;
-
-		var valueWidth = obj.config.max.number() - obj.config.min.number();
-		var pixelWidth = obj.config._trackWidth;
-		var objVal = (rX * valueWidth) / pixelWidth;
-		var snap = obj.config.snap;
-		if (!snap) snap = 1;
-		objVal = (objVal.number() + obj.config.min.number()).round();
-		objVal = parseInt(objVal / (snap)) * (snap);
-		var rX = ((objVal - obj.config.min) * pixelWidth) / valueWidth;
-
-		if (objVal < obj.config.min) {
-			objVal = obj.config.min;
-			rX = 0;
-		} else if (objVal > obj.config.max) {
-			objVal = obj.config.max;
-			rX = pixelWidth;
-		}
-		if (rX > pixelWidth) rX = pixelWidth;
-
-		//trace({rX:rX, pixelWidth:pixelWidth, objVal:objVal, valueWidth:valueWidth});
-		if (handleName == "min") {
-			if (objVal > obj.vals.max) {
-				objVal = obj.vals.max;
-				rX = obj.handleMaxLeft;
-			}
-			var sX = rX - (obj.config._handleWidth);
-			var stX = rX - (obj.config._maxTitleWidth);
-			obj.handleMinLeft = rX;
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").css({ left: sX });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").css({ left: stX });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").text(objVal.number().money() + obj.config.unit);
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({ width: rX });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({ left: obj.handleMinLeft, width: obj.handleMaxLeft - obj.handleMinLeft });
-			//axdom("#"+objID).val(objVal);
-			obj.vals.min = objVal;
-		} else {
-			if (objVal < obj.vals.min) {
-				objVal = obj.vals.min;
-				rX = obj.handleMinLeft;
-			}
-			var sX = rX;
-			var stX = rX;
-			obj.handleMaxLeft = rX;
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").css({ left: sX });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").css({ left: stX });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").text(objVal.number().money() + obj.config.unit);
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({ left: obj.handleMinLeft, width: obj.handleMaxLeft - obj.handleMinLeft });
-			//axdom("#"+objID).val(objVal);
-			obj.vals.max = objVal;
-		}
-		var separator = obj.config.separator || "~";
-		axdom("#" + objID).val(obj.vals.min + separator + obj.vals.max);
-
-	},
-	bindTwinSliderMouseUp: function (objID, objSeq, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		var objVal = axdom("#" + objID).val();
-		if (obj.config.onChange || obj.config.onchange) {
-			var onchange = obj.config.onChange || obj.config.onchange;
-			onchange.call({ id: objID, value: objVal }, objID, objVal);
-		}
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTarget.change();
-
-		axdom(document.body).unbind("mousemove.AXInput");
-		axdom(document.body).unbind("mouseup.AXInput");
-		obj.config.isMoving = false;
-	},
-	bindTwinSliderSetValue: function (objID, objSeq, value) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-		if (value != undefined) {
-			var objValString = value;
-		} else {
-			var objValString = axdom("#" + objID).val();
-		}
-
-		var separator = obj.config.separator || "~";
-		var objVal = this.bindTwinSliderGetVals(objValString, separator);
-		obj.vals = objVal;
-
-		if (objVal.min.number() < obj.config.min.number()) objVal.min = obj.config.min;
-		else if (objVal.min.number() > obj.config.max.number()) objVal.min = obj.config.max;
-		if (objVal.max.number() < obj.config.min.number()) objVal.max = obj.config.min;
-		else if (objVal.max.number() > obj.config.max.number()) objVal.max = obj.config.max;
-
-		var valueWidth = obj.config.max.number() - obj.config.min.number();
-		var pixelWidth = obj.config._trackWidth;
-		var pixelMinLeft = ((objVal.min - obj.config.min) * pixelWidth) / valueWidth;
-		var pixelMaxLeft = ((objVal.max - obj.config.min) * pixelWidth) / valueWidth;
-
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").css({ left: pixelMinLeft - (obj.config._handleWidth) });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").css({ left: pixelMinLeft - (obj.config._maxTitleWidth) });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").text(objVal.min.number().money() + obj.config.unit);
-
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").css({ left: pixelMaxLeft });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").css({ left: pixelMaxLeft });
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").text(objVal.max.number().money() + obj.config.unit);
-
-		obj.handleMinLeft = pixelMinLeft;
-		obj.handleMaxLeft = pixelMaxLeft;
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({ left: pixelMinLeft, width: pixelMaxLeft - pixelMinLeft });
-
-		axdom("#" + objID).val(obj.vals.min + separator + obj.vals.max);
-	},
-	// -- add touch event
-	twinSliderTouchStart: function (objID, objSeq, handleName) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-
-		if (!obj.config.isMoving) {
-			var bindTwinSliderTouchMove = this.twinSliderTouchMove.bind(this);
-			obj.bindTwinSliderTouchMove = function (event) {
-				bindTwinSliderTouchMove(objID, objSeq, event, handleName);
-			};
-			var bindTwinSliderTouchEnd = this.twinSliderTouchEnd.bind(this);
-			obj.bindTwinSliderTouchEnd = function (event) {
-				bindTwinSliderTouchEnd(objID, objSeq, event, handleName);
-			};
-
-			if (document.addEventListener) {
-				document.addEventListener("touchmove", obj.bindTwinSliderTouchMove, false);
-				document.addEventListener("touchend", obj.bindTwinSliderTouchEnd, false);
-
-			}
-			obj.config.isMoving = true;
-
-		}
-
-	},
-	twinSliderTouchMove: function (objID, objSeq, event, handleName) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		event.preventDefault();
-		var touch = event.touches[0];
-
-		//var eX = event.pageX;
-		var eX = touch.pageX;
-		var cX = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar").offset().left;
-		var rX = eX - cX;
-
-		var valueWidth = obj.config.max.number() - obj.config.min.number();
-		var pixelWidth = obj.config._trackWidth;
-		var objVal = (rX * valueWidth) / pixelWidth;
-		var snap = obj.config.snap;
-		if (!snap) snap = 1;
-		objVal = (objVal.number() + obj.config.min.number()).round();
-		objVal = parseInt(objVal / (snap)) * (snap);
-		var rX = ((objVal - obj.config.min) * pixelWidth) / valueWidth;
-
-		if (objVal < obj.config.min) {
-			objVal = obj.config.min;
-			rX = 0;
-		} else if (objVal > obj.config.max) {
-			objVal = obj.config.max;
-			rX = pixelWidth;
-		}
-		if (rX > pixelWidth) rX = pixelWidth;
-
-		//trace({rX:rX, pixelWidth:pixelWidth, objVal:objVal, valueWidth:valueWidth});
-
-		if (handleName == "min") {
-			if (objVal > obj.vals.max) {
-				objVal = obj.vals.max;
-				rX = obj.handleMaxLeft;
-			}
-			var sX = rX - (obj.config._handleWidth);
-			var stX = rX - (obj.config._maxTitleWidth);
-			obj.handleMinLeft = rX;
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").css({ left: sX });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").css({ left: stX });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").text(objVal.number().money() + obj.config.unit);
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({ width: rX });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({ left: obj.handleMinLeft, width: obj.handleMaxLeft - obj.handleMinLeft });
-			//axdom("#"+objID).val(objVal);
-			obj.vals.min = objVal;
-		} else {
-			if (objVal < obj.vals.min) {
-				objVal = obj.vals.min;
-				rX = obj.handleMinLeft;
-			}
-			var sX = rX;
-			var stX = rX;
-			obj.handleMaxLeft = rX;
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").css({ left: sX });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").css({ left: stX });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").text(objVal.number().money() + obj.config.unit);
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({ left: obj.handleMinLeft, width: obj.handleMaxLeft - obj.handleMinLeft });
-			//axdom("#"+objID).val(objVal);
-			obj.vals.max = objVal;
-		}
-		var separator = obj.config.separator || "~";
-		axdom("#" + objID).val(obj.vals.min + separator + obj.vals.max);
-		if (obj.config.onChange) obj.config.onChange(objID, obj.vals.min + separator + obj.vals.max);
-		else if (obj.config.onchange) obj.config.onchange(objID, obj.vals.min + separator + obj.vals.max);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTarget.change();
-	},
-	twinSliderTouchEnd: function (objID, objSeq, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		var objVal = axdom("#" + objID).val();
-		if (obj.config.onChange || obj.config.onchange) {
-			var onchange = obj.config.onChange || obj.config.onchange;
-			onchange.call({ id: objID, value: objVal }, objID, objVal);
-		}
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTarget.change();
-		document.removeEventListener("touchmove", obj.bindTwinSliderTouchMove, false);
-		document.removeEventListener("touchend", obj.bindTwinSliderTouchEnd, false);
-
-		obj.config.isMoving = false;
-	},
-
-	// switch
-	bindSwitch: function (objID, objSeq) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if(!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-
-		var w = obj.bindAnchorTarget.width();
-		var h = obj.bindAnchorTarget.data("height");
-		var objVal = obj.bindTarget.val();
-		var switchValue = obj.config.on;
-		if (objVal == switchValue) {
-			obj.switchValue = "on";
-		} else {
-			switchValue = obj.config.off;
-			obj.switchValue = "off";
-		}
-		obj.bindTarget.val(switchValue);
-
-		var po = [];
-		po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox\" class=\"" + cfg.anchorSwitchBoxClassName + "\" style=\"left:0px;top:0px;width:" + w + "px;height:" + h + "px;\">");
-		po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay\" class=\"AXanchorSwitchDisplay\" style=\"height:" + h + "px;line-height:" + h + "px;\">" + switchValue + "</div>");
-		po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SwitchHandle\" class=\"AXanchorSwitchHandle\" style=\"height:" + h + "px;\">handle</a>");
-		po.push("</div>");
-
-		//append to anchor
-		obj.bindAnchorTarget.append(po.join(''));
-		obj.bindAnchorTarget.css({ height: h + "px", "position": "relative", display: "inline-block", left: "auto", top: "auto" });
-
-		obj.bindTarget_switchBox = obj.bindAnchorTarget.find("." + cfg.anchorSwitchBoxClassName);
-		obj.bindTarget_switchDisplay = obj.bindAnchorTarget.find(".AXanchorSwitchDisplay");
-		obj.bindTarget_switchHandle = obj.bindAnchorTarget.find(".AXanchorSwitchHandle");
-
-		if (obj.switchValue == "on") {
-			obj.bindAnchorTarget.find("." + cfg.anchorSwitchBoxClassName).addClass("on");
-		}
-
-		//, background:"#eee"
-		obj.bindAnchorTarget.show();
-		obj.bindTarget.hide();
-
-		var bindSwitchClick = this.bindSwitchClick.bind(this);
-		obj.bindSwitchClick = function (event) {
-			bindSwitchClick(objID, objSeq, event);
-		};
-		obj.bindAnchorTarget.find("." + cfg.anchorSwitchBoxClassName).unbind("click.AXInput").bind("click.AXInput", obj.bindSwitchClick);
-
-	},
-	bindSwitchClick: function (objID, objSeq, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-
-		if (obj.switchValue == "on") {
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox").removeClass("on");
-			obj.switchValue = "off";
-			axdom("#" + objID).val(obj.config.off);
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay").html(obj.config.off);
-		} else {
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox").addClass("on");
-			obj.switchValue = "on";
-			axdom("#" + objID).val(obj.config.on);
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay").html(obj.config.on);
-		}
-		if (obj.config.onChange || obj.config.onchange) {
-			var sendObj = {
-				targetID: objID,
-				on: obj.config.on,
-				off: obj.config.off,
-				value: axdom("#" + objID).val()
-			}
-			if (obj.config.onChange) obj.config.onChange.call(sendObj);
-			if (obj.config.onchange) obj.config.onchange.call(sendObj);
-		}
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTarget.change();
-	},
-	bindSwitchSetValue: function (objID, objSeq, value) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		var objVal = value;
-		var switchValue = obj.config.on;
-		if (objVal == switchValue) {
-			obj.switchValue = "on";
-		} else {
-			switchValue = obj.config.off;
-			obj.switchValue = "off";
-		}
-		axdom("#" + objID).val(switchValue);
-
-		if (obj.switchValue == "off") {
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox").removeClass("on");
-			obj.switchValue = "off";
-			axdom("#" + objID).val(obj.config.off);
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay").html(obj.config.off);
-		} else {
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox").addClass("on");
-			obj.switchValue = "on";
-			axdom("#" + objID).val(obj.config.on);
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay").html(obj.config.on);
-		}
-		if (obj.config.onChange || obj.config.onchange) {
-			var sendObj = {
-				targetID: objID,
-				on: obj.config.on,
-				off: obj.config.off,
-				value: axdom("#" + objID).val()
-			}
-			if (obj.config.onChange) obj.config.onChange.call(sendObj);
-			else if (obj.config.onchange) obj.config.onchange.call(sendObj);
-		}
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTarget.change();
-	},
-	bindSwitch_touchstart: function () {
-
-	},
-	bindSwitch_touchMove: function () {
-
-	},
-	bindSwitch_touchEnd: function () {
-
-	},
-
-	// segment
-	bindSegment: function (objID, objSeq) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if(!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-
-		var w = obj.bindAnchorTarget.width();
-		var h = obj.bindAnchorTarget.data("height");
-		var objVal = obj.bindTarget.val();
-		var segmentOptions = obj.config.options;
-		obj.selectedSegmentIndex = null;
-		axf.each(segmentOptions, function (idx, seg) {
-			//trace({optionValue:this.optionValue, objVal:objVal});
-			if (this.optionValue == objVal) {
-				obj.selectedSegmentIndex = idx;
-				obj.selectedSegment = seg;
-			}
-		});
-		if (obj.selectedSegmentIndex == null) {
-			obj.selectedSegmentIndex = 0;
-			obj.selectedSegment = segmentOptions[0];
-		}
-		obj.bindTarget.val(obj.selectedSegment.optionValue);
-
-		var handleWidth = (w / segmentOptions.length).round() - 2;
-		var po = [];
-		var theme = obj.config.theme || cfg.anchorSegmentBoxClassName;
-		po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SegmentBox\" class=\"" + theme + "\" style=\"left:0px;top:0px;width:" + w + "px;\">");
-		axf.each(segmentOptions, function (idx, seg) {
-			var addClass = "";
-			if (idx == 0) addClass = " segmentLeft";
-			else if (idx == segmentOptions.length - 1) addClass = " segmentRight";
-			if (obj.selectedSegmentIndex == idx) addClass += " on";
-			if (seg.addClass) addClass += " " + seg.addClass;
-			po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SegmentHandle_AX_" + idx + "\" class=\"AXanchorSegmentHandle" + addClass + "\" style=\"width:" + handleWidth + "px;\">" + seg.optionText + "</a>");
-		});
-		po.push("</div>");
-
-		//append to anchor
-		obj.bindAnchorTarget.append(po.join(''));
-		obj.bindAnchorTarget.css({ height: h + "px", "position": "relative", display: "inline-block", left: "auto", top: "auto" });
-		var borderTop = obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css("border-top-width").number();
-		var borderBot = obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css("border-bottom-width").number();
-		obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css({ height: (obj.bindAnchorTarget.innerHeight() - borderTop - borderBot) + "px", "line-height": (obj.bindAnchorTarget.innerHeight() - borderTop - borderBot) + "px" });
-
-		//, background:"#eee"
-		obj.bindAnchorTarget.show();
-		obj.bindTarget.hide();
-
-		var bindSegmentClick = this.bindSegmentClick.bind(this);
-		obj.bindSegmentClick = function (event) {
-			bindSegmentClick(objID, objSeq, event);
-		};
-
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SegmentBox").find(".AXanchorSegmentHandle").unbind("click.AXInput").bind("click.AXInput", obj.bindSegmentClick);
-	},
-	bindSegmentClick: function (objID, objSeq, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-
-		var segmentOptions = obj.config.options;
-
-		var myTarget = axf.get_event_target(event.target, {tagname:"a", clazz:"AXanchorSegmentHandle"});
-		if (myTarget) {
-
-			var seq = myTarget.id.split(/_AX_/g).last();
-			if (obj.selectedSegmentIndex != seq) {
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SegmentHandle_AX_" + obj.selectedSegmentIndex).removeClass("on");
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SegmentHandle_AX_" + seq).addClass("on");
-				obj.selectedSegmentIndex = seq;
-				obj.selectedSegment = segmentOptions[seq];
-			}
-			//strace(obj.selectedSegment.optionValue);
-			axdom("#" + objID).val(obj.selectedSegment.optionValue);
-			//trace(axdom("#"+objID).val());
-			if (obj.config.onChange || obj.config.onchange) {
-				var sendObj = {
-					targetID: objID,
-					options: segmentOptions,
-					selectedIndex: obj.selectedSegmentIndex,
-					selectedOption: obj.selectedSegment
-				};
-				if (obj.config.onChange) obj.config.onChange.call(sendObj);
-				else if (obj.config.onchange) obj.config.onchange.call(sendObj);
-			}
-			if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-			obj.bindTarget.change();
-		}
-	},
-	bindSegmentSetValue: function (objID, objSeq, value) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		var selectedSegmentIndex = obj.selectedSegmentIndex;
-
-		var objVal = value;
-		var segmentOptions = obj.config.options;
-		obj.selectedSegmentIndex = null;
-		axf.each(segmentOptions, function (idx, seg) {
-			if (this.optionValue == objVal) {
-				obj.selectedSegmentIndex = idx;
-				obj.selectedSegment = seg;
-			}
-		});
-		if (obj.selectedSegmentIndex == null) {
-			obj.selectedSegmentIndex = 0;
-			obj.selectedSegment = segmentOptions[0];
-		}
-		axdom("#" + objID).val(obj.selectedSegment.optionValue);
-
-		if (selectedSegmentIndex != obj.selectedSegmentIndex) {
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SegmentHandle_AX_" + selectedSegmentIndex).removeClass("on");
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SegmentHandle_AX_" + obj.selectedSegmentIndex).addClass("on");
-		}
-
-		if (obj.config.onChange || obj.config.onchange) {
-			var sendObj = {
-				targetID: objID,
-				options: segmentOptions,
-				selectedIndex: obj.selectedSegmentIndex,
-				selectedOption: obj.selectedSegment
-			};
-			if (obj.config.onChange) obj.config.onChange.call(sendObj);
-			else if (obj.config.onchange) obj.config.onchange.call(sendObj);
-		}
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTarget.change();
-	},
-
-	// date
-	bindDate: function (objID, objSeq) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if(!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-
-		var h = obj.bindAnchorTarget.data("height");
-		var po = [];
-		po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle\" class=\"" + cfg.anchorDateHandleClassName + "\" style=\"right:0px;top:0px;width:" + h + "px;height:" + h + "px;\">handle</a>");
-		obj.bindAnchorTarget.append(po.join(''));
-		obj.bindAnchorTarget.show();
-
-		var bindDateExpand = this.bindDateExpand.bind(this);
-		var bindDateExpandClose = this.bindDateExpandClose.bind(this);
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").unbind("click.AXInput").bind("click.AXInput", function (event) {
-			if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-				bindDateExpandClose(objID, objSeq, event);
-			}else{
-				bindDateExpand(objID, objSeq, true, event);
-			}
-		});
-		obj.bindTarget.unbind("focus.AXInput").bind("focus.AXInput", function (event) {
-			setTimeout(function(){
-				obj.bindTarget.select();
-			},1);
-		});
-
-		var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-
-		//trace(obj.config);
-
-		obj.bindTarget.unbind("keydown.AXInput").bind("keydown.AXInput", function (event) {
-			var _this = this;
-			setTimeout(function(){
-				if(event.keyCode == axf.Event.KEY_RETURN){
-					//bindDateInputBlur(objID, objSeq, event);
-					_this.blur();
-				}else if (event.keyCode != AXUtil.Event.KEY_BACKSPACE && event.keyCode != AXUtil.Event.KEY_DELETE && event.keyCode != AXUtil.Event.KEY_LEFT && event.keyCode != AXUtil.Event.KEY_RIGHT) {
-					var va = _this.value.replace(/\D/gi, ""); //숫자 이외의 문자를 제거 합니다.
-					if (obj.config.selectType == "y") {
-						if (va.length > 4) _this.value = va.left(4);
-					} else if (obj.config.selectType == "m") {
-						if (va.length == 4) {
-							va = va + separator;
-							_this.value = va;
-						} else if (va.length > 4) {
-							va = va.substr(0, 4) + separator + va.substr(4, 2);
-							_this.value = va;
-						}
-					} else {
-						if (va.length < 4) {
-							_this.value = va;
-						}
-						else
-						if (va.length == 4) {
-							va = va + separator;
-							_this.value = va;
-						}
-						else
-						if (va.length <= 6) {
-							va = va.substr(0, 4) + separator + va.substr(4, 2) + separator;
-							_this.value = va;
-						}
-						else
-						if (va.length <= 8) {
-							va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2);
-							if (obj.config.expandTime) va += " ";
-							_this.value = va;
-						}
-						else
-						{
-							if(obj.config.expandTime){
-								if (va.length <= 10) {
-									va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2) + " " + va.substr(8, 2) + ":";
-									_this.value = va;
-								} else if (va.length > 12) {
-									va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2) + " " + va.substr(8, 2) + ":" + va.substr(10, 2);
-									_this.value = va;
-								}
-							}else{
-								va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2);
-								_this.value = va;
-							}
-						}
-					}
-				}
-			});
-		});
-
-		var bindDateInputBlur = this.bindDateInputBlur.bind(this);
-		obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function (event) {
-			bindDateInputBlur(objID, objSeq, event);
-		});
-
-		// config.expand : true, 속성 bindDateExpand
-		if(obj.config.expand === true){
-			bindDateExpand(objID, objSeq, true, event);
-			setTimeout(function(){
-				obj.bindTarget.focus();
-			}, 100);
-		}
-	},
-	bindDateExpand: function (objID, objSeq, isToggle, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-
-		for (var OO, oidx = 0, __arr = this.objects; (oidx < __arr.length && (OO = __arr[oidx])); oidx++) {
-			if(OO.expandBox_axdom){
-				OO.expandBox_axdom.remove();
-				OO.expandBox_axdom = null;
-			}
-		}
-
-		if (AXUtil.clientWidth() < cfg.responsiveMobile) {
-			this.bindDateExpandMobile(objID, objSeq, isToggle, event);
-			return;
-			/* 클라이언트 너비가 모바일 너비이면 프로세스 중지 */
-		}
-		var obj = this.objects[objSeq];
-		var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-
-		//Selector Option box Expand
-		if (isToggle) { // 활성화 여부가 토글 이면
-			if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
-				//비활성 처리후 메소드 종료
-				return;
-			}
-		}
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 활성화 전에 개체 삭제 처리
-
-		//Expand Box 생성 구문 작성
-		var objVal = axdom("#" + objID).val(), objHours = "";
-		if (obj.config.expandTime) obj.config.selectType == "d"; //시간 확장 시 selectType : d 로 고정
-
-		var today = new Date();
-		if (obj.config.selectType == "y") {
-			if (objVal != "") {
-				objVal = objVal.left(4) + separator + "01" + separator + "01";
-			}
-		} else if (obj.config.selectType == "m") {
-			if (objVal != "") {
-				objVal = objVal + separator + "02";
-			}
-		}
-
-		var dfDate = (obj.config.defaultDate || "").date();
-		var myDate = objVal.date(separator, dfDate);
-
-		var myYear = myDate.getUTCFullYear();
-		var myMonth = (myDate.getUTCMonth() + 1).setDigit(2);
-
-		var po = [];
-		po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandBox\" class=\"" + cfg.bindDateExpandBoxClassName + "\" style=\"z-index:5100;\">");
-		po.push("	<div>");
-		po.push("		<div class=\"dateControlBox\">");
-		po.push("			<a " + obj.config.href + " class=\"yearbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlYear\">" + myYear + "년</a>");
-		po.push("			<a " + obj.config.href + " class=\"monthbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth\">" + myMonth + "월</a>");
-		po.push("			<a " + obj.config.href + " class=\"prevbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandPrev\">P</a>");
-		po.push("			<a " + obj.config.href + " class=\"nextbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandNext\">N</a>");
-		po.push("		</div>");
-		po.push("		<div class=\"dateDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayBox\"></div>");
-		if (obj.config.expandTime) { //시간 선택 기능 확장시
-			po.push("		<div class=\"timeDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox\"></div>");
-		}
-		po.push("	</div>");
-		po.push("</div>");
-
-		axdom(document.body).append(po.join('')); // bindDateExpandBox append
-		//axdom("#"+cfg.targetID + "_AX_" + objID+"_AX_Handle").addClass("on");
-
-		// AXCalendar display
-		obj.nDate = myDate;
-		obj.mycalendar = new AXCalendar();
-		obj.mycalendar.setConfig({
-			targetID: cfg.targetID + "_AX_" + objID + "_AX_displayBox",
-			basicDate: myDate,
-			href: obj.config.href,
-			minDate: obj.config.minDate,
-			maxDate: obj.config.maxDate,
-			onBeforeShowDay: obj.config.onBeforeShowDay
-		});
-		if (obj.config.expandTime) { //시간 선택 기능 확장시
-			obj.nDate = myDate;
-			var mycalendartimeChange = this.bindDateTimeChange.bind(this);
-			obj.mycalendartimeChange = function (myTime) {
-				mycalendartimeChange(objID, objSeq, myTime);
-			};
-			obj.mycalendartime = new AXCalendar();
-			obj.mycalendartime.setConfig({
-				targetID: cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox",
-				onChange: obj.mycalendartimeChange
-			});
-			var apm = "AM";
-			var myTimes = myDate.print("hh:mi").split(":");
-			var myHH = myTimes[0].number();
-			var myMI = myTimes[1];
-
-			if (myHH == 12 && myMI > 0){
-				apm = "PM";
-			}
-			else if (myHH > 12) {
-				apm = "PM";
-				myHH -= 12;
-			}
-			obj.mycalendartime.printTimePage(myHH.setDigit(2) + ":" + myMI.setDigit(2) + " " + apm);
-		}
-
-		var printDate = "";
-		if (obj.config.selectType == "y") {
-			obj.mycalendarPageType = "y";
-			obj.mycalendar.printYearPage(myDate.print("yyyy"));
-			printDate = myDate.print("yyyy");
-			axdom("#" + objID).val(printDate);
-		} else if (obj.config.selectType == "m") {
-			obj.mycalendarPageType = "m";
-			obj.mycalendar.printMonthPage(myDate);
-			printDate = myDate.print("yyyy" + separator + "mm");
-			axdom("#" + objID).val(printDate);
-		} else {
-			if (obj.config.defaultSelectType) {
-				if (obj.config.defaultSelectType == "y") {
-					obj.mycalendarPageType = "y";
-					obj.mycalendar.printYearPage(myDate.print("yyyy"));
-				} else if (obj.config.defaultSelectType == "m") {
-					obj.mycalendarPageType = "m";
-					obj.mycalendar.printMonthPage(myDate);
-				} else {
-					obj.mycalendarPageType = "d";
-					obj.mycalendar.printDayPage(myDate);
-				}
-				printDate = myDate.print("yyyy" + separator + "mm" + separator + "dd");
-				if (obj.config.expandTime) {
-					printDate += " " + myDate.print("hh:mi");
-				}
-				axdom("#" + objID).val(printDate);
-
-			}
-			else
-			{
-				obj.mycalendarPageType = "d";
-				obj.mycalendar.printDayPage(myDate);
-				printDate = myDate.print("yyyy" + separator + "mm" + separator + "dd");
-				if (obj.config.expandTime) {
-					printDate += " " + myDate.print("hh:mi");
-				}
-				axdom("#" + objID).val(printDate);
-			}
-		}
-		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ AXCalendar display
-
-		// expandBox set Position ~~~~~~~~~~~~~~~~~~~~~~~~~
-		var expandBox = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox");
-		var expBoxWidth = expandBox.outerWidth();
-		var expBoxHeight = expandBox.outerHeight();
-		var offset = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").offset();
-		var handleWidth = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").width();
-		var handleHeight = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").height();
-
-		var css = {};
-		if (obj.config.align == "left") {
-			css.left = offset.left.number() - expBoxWidth;
-		} else if (obj.config.align == "center") {
-			css.left = offset.left.number() - expBoxWidth / 2 + handleWidth;
-		} else if (obj.config.align == "right") {
-			css.left = offset.left.number() + handleWidth;
-		} else {
-			css.left = offset.left.number() + handleWidth;
-		}
-		if (obj.config.valign == "top") {
-			css.top = offset.top;
-		} else if (obj.config.valign == "middle") {
-			css.top = offset.top.number() - expBoxHeight / 2 + handleWidth / 2;
-		} else if (obj.config.valign == "bottom") {
-			css.top = offset.top.number() - expBoxHeight + handleWidth;
-		} else {
-			css.top = offset.top;
-		}
-
-		if (obj.config.customPos != undefined) {
-			css.top = css.top + obj.config.customPos.top;
-			css.left = css.left + obj.config.customPos.left;
-		}
-
-		var pElement = expandBox.offsetParent();
-		var pBox = { width: pElement.width(), height: pElement.height() };
-
-		var clientHeight = (AXUtil.docTD == "Q") ? document.body.scrollHeight : document.documentElement.scrollHeight;
-		var clienWidth = (AXUtil.docTD == "Q") ? document.body.scrollWidth : document.documentElement.scrollWidth;
-		if (clienWidth > pBox.width) pBox.width = clienWidth;
-		if (clientHeight > pBox.height) pBox.height = clientHeight;
-		var _box = { width: expandBox.outerWidth() + 10, height: expandBox.outerHeight() + 10 };
-
-		if ((_box.height.number() + css.top.number()) > pBox.height) {
-			css.top = css.top - ((_box.height.number() + css.top.number()) - pBox.height);
-		}
-		if (css.top < 0) {
-			css.top = 0;
-		}
-
-		if ((_box.width.number() + css.left.number()) > pBox.width) {
-			css.left = css.left - ((_box.width.number() + css.left.number()) - pBox.width);
-		}
-		if (css.left < 0) {
-			css.left = 0;
-		}
-
-		expandBox.css(css);
-		obj.expandBox_axdom = expandBox;
-
-		// ~~~~~~~~~~~~~~~~~~~~~~~~~ expandBox set Position ~~~~~~~~~~~~~~~~~~~~~~~~~
-
-		var bindDateExpandBoxClick = this.bindDateExpandBoxClick.bind(this);
-		obj.documentclickEvent = function (event) {
-			//trace(objID);
-			bindDateExpandBoxClick(objID, objSeq, event);
-		}
-		var bindDateKeyup = this.bindDateKeyup.bind(this);
-		obj.inputKeyup = function (event) {
-			bindDateKeyup(objID, objSeq, event);
-		}
-		if (obj.config.selectType == "y") {
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear").css({ left: "70px" });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth").hide();
-		}
-
-		//trace("event bind");
-		axdom(document).unbind("click.AXInput").bind("click.AXInput", obj.documentclickEvent);
-		axdom("#" + objID).bind("keydown.AXInput", obj.inputKeyup);
-	},
-	// -- bindDate for mobile
-	bindDateExpandMobile: function (objID, objSeq, isToggle, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-
-		axdom("#" + objID).unbind("keydown.AXInput").bind("keydown.AXInput", obj.inputKeyup);
-
-		//Selector Option box Expand
-		if (isToggle) { // 활성화 여부가 토글 이면
-			if (obj.modal && obj.modal.opened) {
-				obj.modal.close();
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
-				//비활성 처리후 메소드 종료
-				return;
-			}
-		}
-
-		/* mobile modal ready */
-		obj.modal = new AXMobileModal();
-		obj.modal.setConfig({
-			addClass: "",
-			height: (obj.config.expandTime) ? 532 : 388,
-			width: 300,
-			head: {},
-			onclose: function () { }
-		});
-
-		var initBindDateMobileModal = this.initBindDateMobileModal.bind(this);
-		var onLoad = function (modalObj) {
-			initBindDateMobileModal(objID, objSeq, modalObj);
-		};
-		obj.modal.open(null, onLoad);
-	},
-	initBindDateMobileModal: function (objID, objSeq, modalObj) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-		var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-
-		//Expand Box 생성 구문 작성
-		var objVal = axdom("#" + objID).val();
-		if (obj.config.expandTime) obj.config.selectType == "d"; //시간 확장 시 selectType : d 로 고정			
-
-		var today = new Date();
-		if (obj.config.selectType == "y") {
-			if (objVal != "") {
-				objVal = objVal.left(4) + separator + "01" + separator + "01";
-			}
-		} else if (obj.config.selectType == "m") {
-			if (objVal != "") {
-				objVal = objVal + separator + "01";
-			}
-		}
-
-		var dfDate = (obj.config.defaultDate || "").date();
-		var myDate = objVal.date(separator, dfDate);
-
-		var myYear = myDate.getFullYear();
-		var myMonth = (myDate.getMonth() + 1).setDigit(2);
-
-		/* head 만들기 */
-		var headPo = [];
-		/* 현재 선택된 메뉴 선택 하는 기능구현 필요 */
-		headPo.push("<div class=\"AXDateControlBox\">");
-		headPo.push("	<a " + obj.config.href + " class=\"AXDateControl yearbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlYear\">" + (AXConfig.AXInput.yearText || "{year}년").replace("{year}", myYear) + "</a>");
-		headPo.push("	<a " + obj.config.href + " class=\"AXDateControl monthbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth\">" + (AXConfig.AXInput.monthText || "{month}월").replace("{month}", myMonth) + "</a>");
-		headPo.push("	<a " + obj.config.href + " class=\"AXDateControl prevbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandPrev\">P</a>");
-		headPo.push("	<a " + obj.config.href + " class=\"AXDateControl nextbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandNext\">N</a>");
-		headPo.push("</div>");
-
-		var bodyPo = [];
-		bodyPo.push('<div class="AXDateContainer">');
-		bodyPo.push('<div class="AXDateDisplayBox" id="' + cfg.targetID + '_AX_' + objID + '_AX_displayBox"></div>');
-		if (obj.config.expandTime) { //시간 선택 기능 확장시
-			bodyPo.push('		<div class="AXTimeDisplayBox" id="' + cfg.targetID + '_AX_' + objID + '_AX_displayTimeBox"></div>');
-		}
-		bodyPo.push('</div>');
-
-		var footPo = [];
-		footPo.push('<div class="AXDateButtonBox" id="' + cfg.targetID + '_AX_' + objID + '_AX_buttonBox">');
-		footPo.push('	<button class="AXButtonSmall W80 AXBindDateConfirm" type="button" id="' + cfg.targetID + '_AX_' + objID + '_AX_button_AX_confirm">' + (AXConfig.AXInput.confirmText || "확인") + '</button>');
-		footPo.push('</div>');
-
-		/* modal에 캘린더 장착 */
-		modalObj.modalHead.empty();
-		modalObj.modalHead.append(headPo.join(''));
-		modalObj.modalBody.empty();
-		modalObj.modalBody.append(bodyPo.join(''));
-		modalObj.modalFoot.empty();
-		modalObj.modalFoot.append(footPo.join(''));
-
-		/* 캘린더 클래스 로드 */
-		// AXCalendar display
-		obj.nDate = myDate;
-		obj.mycalendar = new AXCalendar();
-		obj.mycalendar.setConfig({
-			targetID: cfg.targetID + "_AX_" + objID + "_AX_displayBox",
-			basicDate: myDate,
-			href: obj.config.href
-		});
-		if (obj.config.expandTime) { //시간 선택 기능 확장시
-			obj.nDate = myDate;
-			var mycalendartimeChange = this.bindDateTimeChange.bind(this);
-			obj.mycalendartimeChange = function (myTime) {
-				mycalendartimeChange(objID, objSeq, myTime);
-			};
-			obj.mycalendartime = new AXCalendar();
-			obj.mycalendartime.setConfig({
-				targetID: cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox",
-				onChange: obj.mycalendartimeChange
-			});
-			var apm = "AM";
-			var myTimes = myDate.print("hh:mi").split(":");
-			var myHH = myTimes[0].number();
-			var myMI = myTimes[1];
-
-			if (myHH == 12 && myMI > 0){
-				apm = "PM";
-			}
-			else if (myHH > 12) {
-				apm = "PM";
-				myHH -= 12;
-			}
-			obj.mycalendartime.printTimePage(myHH.setDigit(2) + ":" + myMI.setDigit(2) + " " + apm);
-		}
-
-		var printDate = "";
-		if (obj.config.selectType == "y") {
-			obj.mycalendarPageType = "y";
-			obj.mycalendar.printYearPage(myDate.print("yyyy"));
-			printDate = myDate.print("yyyy");
-			axdom("#" + objID).val(printDate);
-		} else if (obj.config.selectType == "m") {
-			obj.mycalendarPageType = "m";
-			obj.mycalendar.printMonthPage(myDate);
-			printDate = myDate.print("yyyy" + separator + "mm");
-			axdom("#" + objID).val(printDate);
-		} else {
-			if (obj.config.defaultSelectType) {
-				if (obj.config.defaultSelectType == "y") {
-					obj.mycalendarPageType = "y";
-					obj.mycalendar.printYearPage(myDate.print("yyyy"));
-				} else if (obj.config.defaultSelectType == "m") {
-					obj.mycalendarPageType = "m";
-					obj.mycalendar.printMonthPage(myDate);
-				} else {
-					obj.mycalendarPageType = "d";
-					obj.mycalendar.printDayPage(myDate);
-				}
-				printDate = myDate.print("yyyy" + separator + "mm" + separator + "dd");
-				if (obj.config.expandTime) {
-					printDate += " " + myDate.print("hh:mi");
-				}
-				axdom("#" + objID).val(printDate);
-
-			} else {
-				obj.mycalendarPageType = "d";
-				obj.mycalendar.printDayPage(myDate);
-				printDate = myDate.print("yyyy" + separator + "mm" + separator + "dd");
-				if (obj.config.expandTime) {
-					printDate += " " + myDate.print("hh:mi");
-				}
-				axdom("#" + objID).val(printDate);
-			}
-		}
-		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ AXCalendar display
-
-		// control event bind
-		var _this = this;
-		/*var bindDateMobileModalHeadClick = this.bindDateMobileModalHeadClick.bind(this);*/
-		modalObj.modalHead.unbind("click.AXInput").bind("click.AXInput", function (event) {
-			_this.bindDateMobileModalHeadClick(objID, objSeq, event);
-		});
-		/*var bindDateMobileModalBodyClick = this.bindDateMobileModalBodyClick.bind(this);*/
-		modalObj.modalBody.unbind("click.AXInput").bind("click.AXInput", function (event) {
-			_this.bindDateMobileModalBodyClick(objID, objSeq, event);
-		});
-		/*var bindDateMobileModalFootClick = this.bindDateMobileModalFootClick.bind(this);*/
-		modalObj.modalFoot.unbind("click.AXInput").bind("click.AXInput", function (event) {
-			_this.bindDateMobileModalFootClick(objID, objSeq, event);
-		});
-		// control event bind
-	},
-	bindDateMobileModalHeadClick: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var eid = event.target.id.split(/_AX_/g);
-		var eventTarget = event.target;
-		var myTarget = this.getEventTarget({
-			evt: eventTarget, evtIDs: eid,
-			until: function (evt, evtIDs) { return (axdom(evt.parentNode).hasClass("AXDateControlBox")) ? true : false; },
-			find: function (evt, evtIDs) { return (axdom(evt).hasClass("AXDateControl")) ? true : false; }
-		});
-		if (myTarget) {
-			var act = myTarget.id.split(/_AX_/g).last();
-			var nDate = obj.nDate;
-
-			if (act == "controlYear") {
-				this.bindDateChangePage(objID, objSeq, nDate, "y");
-			} else if (act == "controlMonth") {
-				if (obj.config.selectType != "y") {
-					this.bindDateChangePage(objID, objSeq, nDate, "m");
-				}
-			} else if (act == "expandPrev") {
-				if (obj.mycalendarPageType == "d") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(-1, "m"), "d");
-				} else if (obj.mycalendarPageType == "m") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(-1, "y"), "m");
-				} else if (obj.mycalendarPageType == "y") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(-12, "y"), "y");
-				}
-			} else if (act == "expandNext") {
-				if (obj.mycalendarPageType == "d") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(1, "m"), "d");
-				} else if (obj.mycalendarPageType == "m") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(1, "y"), "m");
-				} else if (obj.mycalendarPageType == "y") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(12, "y"), "y");
-				}
-			}
-		}
-	},
-	bindDateMobileModalBodyClick: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var eid = event.target.id.split(/_AX_/g);
-		var eventTarget = event.target;
-		var myTarget = this.getEventTarget({
-			evt: eventTarget, evtIDs: eid,
-			until: function (evt, evtIDs) { return (axdom(evt.parentNode).hasClass("AXDateContainer")) ? true : false; },
-			find: function (evt, evtIDs) { return (axdom(evt).hasClass("calendarDate") || axdom(evt).hasClass("calendarMonth")) ? true : false; }
-		});
-		if (myTarget) {
-			var ids = myTarget.id.split(/_AX_/g);
-			var act = ids.last();
-			var nDate = obj.nDate;
-			var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-			if (act == "date") {
-				//trace(ids[ids.length-2]);
-				obj.nDate = ids[ids.length - 2].date();
-				var printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
-				if (obj.config.expandTime) {
-					printDate += " " + obj.mycalendartime.getTime();
-				}
-				axdom("#" + objID).val(printDate);
-				//obj.modal.close();
-				this.bindDateExpandClose(objID, objSeq, event);
-			} else if (act == "month") {
-				var myMonth = ids[ids.length - 2].number() - 1;
-				if (obj.config.selectType == "m") {
-					var yy = nDate.getFullYear();
-					var dd = 1;
-					obj.nDate = new Date(Date.UTC(yy, myMonth, dd));
-					//obj.modal.close();
-					this.bindDateExpandClose(objID, objSeq, event);
-				} else {
-					var yy = nDate.getFullYear();
-					var dd = 1;
-					obj.nDate = new Date(Date.UTC(yy, myMonth, dd));
-					this.bindDateChangePage(objID, objSeq, obj.nDate, "d");
-				}
-			} else if (act == "year") {
-				var myYear = ids[ids.length - 2];
-				if (obj.config.selectType == "y") {
-					var mm = 0;
-					var dd = 1;
-					obj.nDate = new Date(Date.UTC(myYear, mm, dd));
-					//obj.modal.close();
-					this.bindDateExpandClose(objID, objSeq, event);
-				} else {
-					var mm = 0;
-					var dd = 1;
-					obj.nDate = new Date(Date.UTC(myYear, mm, dd));
-					this.bindDateChangePage(objID, objSeq, obj.nDate, "m");
-				}
-			}
-
-		}
-	},
-	bindDateMobileModalFootClick: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var eid = event.target.id.split(/_AX_/g);
-		var eventTarget = event.target;
-		var myTarget = this.getEventTarget({
-			evt: eventTarget, evtIDs: eid,
-			until: function (evt, evtIDs) { return (axdom(evt.parentNode).hasClass("AXDateButtonBox")) ? true : false; },
-			find: function (evt, evtIDs) { return (axdom(evt).hasClass("AXBindDateConfirm")) ? true : false; }
-		});
-		if (myTarget) {
-			var act = myTarget.id.split(/_AX_/g).last();
-			if (act == "confirm") {
-				obj.modal.close();
-			}
-		}
-	},
-	// -- bindDate for mobile
-	bindDateExpandClose: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-
-		if (!obj){
-			//비활성 처리후 메소드 종료
-			axdom(document).unbind("click.AXInput");
-			//axdom("#" + objID).unbind("keydown.AXInput");
-			return;
-		}
-
-		if (obj.modal && obj.modal.opened) { /* mobile modal close */
-			var objVal = axdom("#" + objID).val();
-			if (objVal == "") {
-
-			} else {
-				var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-				if (obj.config.selectType == "y") {
-					axdom("#" + objID).val(obj.nDate.print("yyyy"));
-				} else if (obj.config.selectType == "m") {
-					axdom("#" + objID).val(obj.nDate.print("yyyy" + separator + "mm"));
-				} else {
-					//axdom("#"+objID).val(obj.nDate.print("yyyy"+separator+"mm"+separator+"dd"));
-					printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
-					if (obj.config.expandTime) {
-						printDate += " " + obj.mycalendartime.getTime();
-					}
-					axdom("#" + objID).val(printDate);
-				}
-			}
-
-			if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
-
-			if (obj.config.onChange) {
-				if (axdom.isFunction(obj.config.onChange)) {
-					obj.config.onChange.call({
-						objID: objID,
-						value: axdom("#" + objID).val()
-					});
-				} else {
-					var st_date, ed_date;
-					if (obj.config.onChange.earlierThan) {
-						st_date = axdom("#" + objID).val();
-						ed_date = axdom("#" + obj.config.onChange.earlierThan).val();
-					} else if (obj.config.onChange.laterThan) {
-						ed_date = axdom("#" + objID).val();
-						st_date = axdom("#" + obj.config.onChange.laterThan).val();
-					}
-					if (st_date != "" && ed_date != "") {
-						if (st_date.date().diff(ed_date) < 0) {
-							this.msgAlert(obj.config.onChange.err);
-							axdom("#" + objID).val("");
-							return;
-						}
-					}
-
-					obj.config.onChange.onChange.call({
-						objID: objID,
-						value: axdom("#" + objID).val(),
-						eventType: "expandClose"
-					});
-				}
-			}
-
-			if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-			obj.bindTarget.change();
-
-			obj.modal.close();
-			//axdom("#" + objID).unbind("keydown.AXInput");
-
-			//비활성 처리후 메소드 종료
-			axdom(document).unbind("click.AXInput");
-			//axdom("#" + objID).unbind("keydown.AXInput");
-			return;
-		}
-		if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-			var objVal = axdom("#" + objID).val();
-
-			if (objVal == "") {
-
-			} else {
-				var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-				if (obj.config.selectType == "y") {
-					axdom("#" + objID).val(obj.nDate.print("yyyy"));
-				} else if (obj.config.selectType == "m") {
-					axdom("#" + objID).val(obj.nDate.print("yyyy" + separator + "mm"));
-				} else {
-					//axdom("#"+objID).val(obj.nDate.print("yyyy"+separator+"mm"+separator+"dd"));
-					printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
-					if (obj.config.expandTime) {
-						printDate += " " + obj.mycalendartime.getTime();
-					}
-					axdom("#" + objID).val(printDate);
-				}
-			}
-
-			if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
-
-			if (obj.config.onChange) {
-				if (axdom.isFunction(obj.config.onChange)) {
-					obj.config.onChange.call({
-						objID: objID,
-						value: axdom("#" + objID).val()
-					});
-				} else {
-					var st_date, ed_date;
-					if (obj.config.onChange.earlierThan) {
-						st_date = axdom("#" + objID).val();
-						ed_date = axdom("#" + obj.config.onChange.earlierThan).val();
-					} else if (obj.config.onChange.laterThan) {
-						ed_date = axdom("#" + objID).val();
-						st_date = axdom("#" + obj.config.onChange.laterThan).val();
-					}
-					if (st_date != "" && ed_date != "") {
-						if (st_date.date().diff(ed_date) < 0) {
-							this.msgAlert(obj.config.onChange.err);
-							axdom("#" + objID).val("");
-							return;
-						}
-					}
-					if (obj.config.onChange.onChange) {
-						obj.config.onChange.onChange.call({
-							objID: objID,
-							value: axdom("#" + objID).val()
-						});
-					} else if (obj.config.onChange.onchange) {
-						obj.config.onChange.onchange.call({
-							objID: objID,
-							value: axdom("#" + objID).val()
-						});
-					}
-				}
-			}
-			if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-			obj.bindTarget.change();
-
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
-			obj.expandBox_axdom = null;
-			obj.mycalendartime = null;
-
-			//비활성 처리후 메소드 종료
-			axdom(document).unbind("click.AXInput");
-			//axdom("#" + objID).unbind("keydown.AXInput");
-
-			event.stopPropagation(); // disableevent
-			return;
-		}
-	},
-	bindDateInputBlur: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var objVal = axdom("#" + objID).val();
-		/*
-		 if(obj.config.expand === true) {
-		 //return false;
-		 }
-		 */
-
-		if (objVal == "") {
-
-		}
-		else
-		{
-			var clearDate = false;
-			var nDate = (obj.nDate || new Date());
-			var va = axdom("#" + objID).val().replace(/\D/gi, ""); //숫자 이외의 문자를 제거 합니다.
-			if (va.search(/\d+/g) == -1) {
-				clearDate = true;
-			}
-
-			if (clearDate) {
-				axdom("#" + objID).val("");
-			} else {
-				var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-				if (obj.config.selectType == "y") {
-
-					var yy = va.left(4).number();
-					if (yy == 0) yy = nDate.getFullYear();
-					if (yy < 1000) yy += 2000;
-					var mm = nDate.getMonth();
-					var dd = nDate.getDate();
-					obj.nDate = new Date(Date.UTC(yy, mm, dd, 12));
-
-					axdom("#" + objID).val(obj.nDate.print("yyyy"));
-
-				} else if (obj.config.selectType == "m") {
-
-					if (va.length > 4) {
-						var yy = va.left(4).number();
-						var mm = va.substr(4, 2).number() - 1;
-						var dd = 1;
-					} else {
-						var yy = va.left(4).number();
-						var mm = 0;
-						var dd = 1;
-					}
-					if (yy == 0) yy = nDate.getFullYear();
-					if (yy < 1000) yy += 2000;
-					obj.nDate = new Date(Date.UTC(yy, mm, dd, 12));
-
-					axdom("#" + objID).val(obj.nDate.print("yyyy" + separator + "mm"));
-
-				} else {
-					var needAlert = false;
-					if (va.length > 5) {
-						var yy = va.left(4).number();
-						var mm = va.substr(4, 2).number() - 1;
-						var dd = va.substr(6, 2).number();
-					} else if (va.length > 3) {
-						var yy = "20" + va.substr(0, 2);
-						var mm = va.substr(2, 2).number() - 1;
-						var dd = va.substr(4, 2).number();
-					} else if (va.length > 2) {
-						var yy = nDate.getFullYear();
-						var mm = va.substr(0, 2).number() - 1;
-						var dd = va.substr(2, 2).number();
-					} else {
-						var yy = nDate.getFullYear(); //va.left(4).number();
-						var mm = nDate.getMonth();
-						var dd = va.substr(0, 2).number();
-					}
-					if (yy == 0) needAlert = true;
-					if (yy == 0) yy = nDate.getFullYear();
-					if (yy < 1000) yy += 2000;
-
-					obj.nDate = new Date(Date.UTC(yy, mm, dd, 12));
-
-					//trace(obj.nDate.getFullYear() != yy.number());
-					//trace(obj.nDate.getMonth() != mm.number());
-					//trace(obj.nDate.getDate(), dd.number());
-
-					if (obj.nDate.getFullYear() != yy.number()
-						|| obj.nDate.getMonth() != mm.number()
-						|| obj.nDate.getDate() != dd.number()) {
-						needAlert = true;
-						obj.nDate = new Date();
-					}
-
-					printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
-					
-					if (obj.config.expandTime) {
-						var hh, mi;
-						try {
-							printDate += " " + obj.mycalendartime.getTime();
-							trace(printDate);
-							
-						} catch (e) {
-							if (va.length > 11) { // hh,mm
-								hh = va.substr(8, 2).number();
-								mi = va.substr(10, 2).number();
-							} else if (va.length > 9) {
-								hh = va.substr(8, 2).number();
-								mi = "00";
-							} else {
-								hh = "12";
-								mi = "00";
-							}
-							printDate += " " + hh.setDigit(2) + ":" + mi.setDigit(2);
-						}
-					}
-
-					if (needAlert) {
-						this.msgAlert("날짜 형식이 올바르지 않습니다.");
-					}
-					axdom("#" + objID).val(printDate);
-				}
-			}
-		}
-
-		if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
-		if (obj.config.onChange) {
-
-			if (axdom("#" + objID).data("val") && axdom("#" + objID).data("val") != axdom("#" + objID).val()) {
-
-				if (axdom.isFunction(obj.config.onChange)) {
-					obj.config.onChange.call({
-						objID: objID,
-						value: axdom("#" + objID).val()
-					});
-				} else {
-					var st_date, ed_date;
-					if (obj.config.onChange.earlierThan) {
-						st_date = axdom("#" + objID).val();
-						ed_date = axdom("#" + obj.config.onChange.earlierThan).val();
-					} else if (obj.config.onChange.laterThan) {
-						ed_date = axdom("#" + objID).val();
-						st_date = axdom("#" + obj.config.onChange.laterThan).val();
-					}
-					if (st_date != "" && ed_date != "") {
-						if (st_date.date().diff(ed_date) < 0) {
-							this.msgAlert(obj.config.onChange.err);
-							axdom("#" + objID).val("");
-						}
-					}
-
-					obj.config.onChange.onChange.call({
-						objID: objID,
-						value: axdom("#" + objID).val(),
-						eventType: "blur"
-					});
-				}
-				axdom("#" + objID).data("val", axdom("#" + objID).val());
-
-			}
-		}
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTarget.change();
-		/* ie10 버그
-		 axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
-
-		 //비활성 처리후 메소드 종료
-		 axdom(document).unbind("click.AXInput");
-		 axdom("#" + objID).unbind("keydown.AXInput");
-		 */
-
-		event.stopPropagation(); // disableevent
-		return;
-	},
-	unbindDate: function (obj) {
-		var cfg = this.config;
-		var objID = obj.id;
-		var objSeq = null;
-
-		axf.each(this.objects, function (oidx, O) {
-			if (this.id == objID) {
-				objSeq = oidx;
-				return false;
-			}
-		});
-
-		if (objSeq != null) {
-			var obj = this.objects[objSeq];
-
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
-
-			//비활성 처리후 메소드 종료
-			axdom(document).unbind("click.AXInput");
-			axdom("#" + objID).unbind("keydown.AXInput");
-		}
-
-		var collect = [];
-		var removeAnchorId;
-		axf.each(this.objects, function () {
-			if (this.id != obj.id) collect.push(this);
-			else {
-				removeAnchorId = this.anchorID;
-			}
-		});
-		this.objects = collect;
-
-		axdom("#" + removeAnchorId).remove();
-
-	},
-	bindDateTimeChange: function (objID, objSeq, myTime) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-		var printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
-		if (obj.config.expandTime) {
-			printDate += " " + obj.mycalendartime.getTime();
-		}
-		axdom("#" + objID).val(printDate);
-	},
-	bindDateExpandBoxClick: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var isDateClick = false;
-
-		var eventTarget = event.target;
-		var myTarget = this.getEventTarget({
-			evt: eventTarget,
-			until: function (evt, evtIDs) {
-				return (evt.parentNode.tagName == "BODY") ? true : false;
-			},
-			find: function (evt, evtIDs) {
-				if (!evt.id) return false;
-				var checkID = cfg.targetID + "_AX_" + objID;
-				if (evt.id == objID || evt.id.substr(0, checkID.length) == checkID) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
-
-		isDateClick = (myTarget) ? true : false;
-		if (!isDateClick) {
-			this.bindDateExpandClose(objID, objSeq, event);
-		} else {
-			if (axdom(myTarget).hasClass("disabled")) { return; } // disabled 대상은 선택 불가
-
-			var ids = myTarget.id.split(/_AX_/g);
-			var ename = ids.last();
-
-			var nDate = obj.nDate;
-			var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-			if (ename == "expandPrev") {
-				if (obj.mycalendarPageType == "d") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(-1, "m"), "d");
-				} else if (obj.mycalendarPageType == "m") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(-1, "y"), "m");
-				} else if (obj.mycalendarPageType == "y") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(-12, "y"), "y");
-				}
-			} else if (ename == "expandNext") {
-				if (obj.mycalendarPageType == "d") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(1, "m"), "d");
-				} else if (obj.mycalendarPageType == "m") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(1, "y"), "m");
-				} else if (obj.mycalendarPageType == "y") {
-					this.bindDateChangePage(objID, objSeq, nDate.add(12, "y"), "y");
-				}
-			} else if (ename == "controlYear") {
-				this.bindDateChangePage(objID, objSeq, nDate, "y");
-			} else if (ename == "controlMonth") {
-				if (obj.config.selectType != "y") {
-					this.bindDateChangePage(objID, objSeq, nDate, "m");
-				}
-			} else if (ename == "date") {
-				//trace(ids[ids.length-2]);
-				obj.nDate = ids[ids.length - 2].date();
-				var printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
-				if (obj.config.expandTime) {
-					printDate += " " + obj.mycalendartime.getTime();
-				}
-				axdom("#" + objID).val(printDate);
-				this.bindDateExpandClose(objID, objSeq, event);
-			} else if (ename == "month") {
-				var myMonth = ids[ids.length - 2].number() - 1;
-				if (obj.config.selectType == "m") {
-					var yy = nDate.getFullYear();
-					var dd = 1;
-					obj.nDate = new Date(Date.UTC(yy, myMonth, dd, 12));
-					this.bindDateExpandClose(objID, objSeq, event);
-				} else {
-					var yy = nDate.getFullYear();
-					var dd = 1;
-					obj.nDate = new Date(Date.UTC(yy, myMonth, dd, 12));
-					this.bindDateChangePage(objID, objSeq, obj.nDate, "d");
-				}
-			} else if (ename == "year") {
-				var myYear = ids[ids.length - 2];
-				if (obj.config.selectType == "y") {
-					var mm = 0;
-					var dd = 1;
-					obj.nDate = new Date(Date.UTC(myYear, mm, dd, 12));
-					this.bindDateExpandClose(objID, objSeq, event);
-				} else {
-					var mm = 0;
-					var dd = 1;
-					obj.nDate = new Date(Date.UTC(myYear, mm, dd, 12));
-					this.bindDateChangePage(objID, objSeq, obj.nDate, "m");
-				}
-			}
-		}
-	},
-	bindDateKeyup: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		if (obj.config.selectType == "y") {
-
-		} else if (obj.config.selectType == "m") {
-
-		} else {
-
-		}
-	},
-	bindDateChangePage: function (objID, objSeq, setDate, pageType) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-
-		if (pageType == "m") {
-			//alert(setDate);
-			obj.mycalendarPageType = "m";
-			obj.nDate = setDate;
-			obj.mycalendar.printMonthPage(setDate);
-			var myYear = setDate.getFullYear();
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear").html(myYear + "년");
-		} else if (pageType == "y") {
-			obj.mycalendarPageType = "y";
-			obj.nDate = setDate;
-			obj.mycalendar.printYearPage(setDate.getFullYear());
-			var myYear = setDate.getFullYear();
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear").html(myYear + "년");
-		} else {
-			obj.mycalendarPageType = "d";
-			obj.nDate = setDate;
-			obj.mycalendar.printDayPage(setDate);
-			var myYear = setDate.getFullYear();
-			var myMonth = (setDate.getMonth() + 1).setDigit(2);
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear").html(myYear + "년");
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth").html(myMonth + "월");
-		}
-
-		if (obj.config.selectType == "y") {
-			axdom("#" + objID).val(obj.nDate.print("yyyy"));
-		} else if (obj.config.selectType == "m") {
-			axdom("#" + objID).val(obj.nDate.print("yyyy" + separator + "mm"));
-		} else {
-			//axdom("#"+objID).val(obj.nDate.print("yyyy"+separator+"mm"+separator+"dd"));
-			var printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
-			if (obj.config.expandTime) {
-				printDate += " " + obj.mycalendartime.getTime();
-			}
-			axdom("#" + objID).val(printDate);
-		}
-	},
-
-	// twinDate
-	bindTwinDate: function (objID, objSeq, option) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		if(!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTargetStart = axdom("#" + obj.config.startTargetID);
-
-		var h = obj.bindAnchorTarget.data("height");
-		var po = [];
-		var handleLeft = 0;
-		if(obj.config) handleLeft = (obj.config.handleLeft||0).number();
-
-		po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle\" class=\"" + cfg.anchorDateHandleClassName + "\" style=\"right:"+ (0-handleLeft) +"px;top:0px;width:" + h + "px;height:" + h + "px;\">handle</a>");
-		obj.bindAnchorTarget.append(po.join(''));
-		obj.bindAnchorTarget.show();
-
-		var bindDateExpand = this.bindTwinDateExpand.bind(this);
-		var bindTwinDateExpandClose = this.bindTwinDateExpandClose.bind(this);
-
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").unbind("click.AXInput").bind("click.AXInput", function (event) {
-			if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-				bindTwinDateExpandClose(objID, objSeq, event);
-			}else{
-				bindDateExpand(objID, objSeq, true, event);
-			}
-		});
-		obj.bindTarget.unbind("focus.AXInput").bind("focus.AXInput", function (event) {
-			setTimeout(function() {
-				obj.bindTarget.select();
-			}, 1);
-			/*
-			 if(!AXgetId(cfg.targetID + "_AX_"+objID+"_AX_expandBox")){
-			 bindDateExpand(objID, objSeq, false, event);
-			 }
-			 */
-		});
-		obj.bindTargetStart.unbind("focus.AXInput").bind("focus.AXInput", function (event) {
-			setTimeout(function(){
-				obj.bindTargetStart.select();
-			}, 1);
-			/*
-			 if(!AXgetId(cfg.targetID + "_AX_"+objID+"_AX_expandBox")){
-			 bindDateExpand(objID, objSeq, false, event);
-			 }
-			 */
-		});
-
-
-		var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-		axdom("#" + objID + ", #" + obj.config.startTargetID).unbind("keyup.AXInput").bind("keyup.AXInput", function (event) {
-			//alert(this.value);
-			if(event.keyCode == axf.Event.KEY_RETURN){
-				//bindDateInputBlur(objID, objSeq, event);
-				this.blur();
-			}else if (event.keyCode != AXUtil.Event.KEY_BACKSPACE && event.keyCode != AXUtil.Event.KEY_DELETE && event.keyCode != AXUtil.Event.KEY_LEFT && event.keyCode != AXUtil.Event.KEY_RIGHT) {
-
-				var va = this.value.replace(/\D/gi, ""); //숫자 이외의 문자를 제거 합니다.
-				var _this = this;
-
-				if (obj.config.selectType == "y") {
-					if (va.length > 4) _this.value = va.left(4);
-				} else if (obj.config.selectType == "m") {
-					if (va.length == 4) {
-						va = va + separator;
-						_this.value = va;
-					} else if (va.length > 4) {
-						va = va.substr(0, 4) + separator + va.substr(4, 2);
-						_this.value = va;
-					}
-				} else {
-					if (va.length < 4) {
-						_this.value = va;
-					} else if (va.length <= 6) {
-						va = va.substr(0, 4) + separator + va.substr(4, 2);
-						_this.value = va;
-					} else if (va.length <= 8) {
-						va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2);
-						_this.value = va;
-					} else if (va.length <= 10) {
-						if (obj.config.expandTime) {
-							va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2) + " " + va.substr(8, 2);
-							_this.value = va;
-						}else{
-							va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2);
-							_this.value = va;
-						}
-					} else if (va.length > 10) {
-						if (obj.config.expandTime) {
-							va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2) + " " + va.substr(8, 2) + ":" + va.substr(10, 2);
-							_this.value = va;
-						}else{
-							va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2);
-							_this.value = va;
-						}
-					}
-				}
-			}
-		});
-
-		var bindTwinDateInputBlur = this.bindTwinDateInputBlur.bind(this);
-		obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function (event) {
-			bindTwinDateInputBlur(objID, objSeq, event, 2);
-		});
-		axdom("#" + obj.config.startTargetID).unbind("blur.AXInput").bind("blur.AXInput", function (event) {
-			bindTwinDateInputBlur(objID, objSeq, event, 1);
-		});
-
-		var objVal1 = obj.bindTargetStart.val();
-		var objVal2 = obj.bindTarget.val();
-		var myDate1 = objVal1.date(separator);
-		var myDate2 = objVal2.date(separator);
-		obj.nDate1 = myDate1;
-		obj.nDate2 = myDate2;
-	},
-	bindTwinDateExpand: function (objID, objSeq, isToggle, event) {
-		var cfg = this.config;
-		var obj = this.objects[objSeq];
-
-		for (var OO, oidx = 0, __arr = this.objects; (oidx < __arr.length && (OO = __arr[oidx])); oidx++) {
-			if(OO.expandBox_axdom){
-				OO.expandBox_axdom.remove();
-				OO.expandBox_axdom = null;
-			}
-		}
-
-		var obj = this.objects[objSeq];
-
-		if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
-			return false;
-		}
-
-		var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-
-		//Selector Option box Expand
-		if (isToggle) { // 활성화 여부가 토글 이면
-			if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
-				//비활성 처리후 메소드 종료
-				return;
-			}
-		}
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 활성화 전에 개체 삭제 처리
-		//axdom("#"+cfg.targetID + "_AX_" + objID+"_AX_Handle").removeClass("on");
-
-		//Expand Box 생성 구문 작성
-		var objVal1 = axdom("#" + obj.config.startTargetID).val();
-		var objVal2 = axdom("#" + objID).val();
-
-		if (obj.config.expandTime) obj.config.selectType == "d"; //시간 확장 시 selectType : d 로 고정
-
-		var today = new Date();
-		var objVal1Empty = false;
-		if (obj.config.selectType == "y") {
-			if (objVal1 != "") {
-				objVal1 = objVal1.left(4) + separator + "01" + separator + "02";
-			} else {
-				objVal1Empty = true;
-			}
-			if (objVal2 != "") {
-				objVal2 = objVal2.left(4) + separator + "01" + separator + "02";
-			}
-		} else if (obj.config.selectType == "m") {
-			if (objVal1 != "") {
-				objVal1 = objVal1 + separator + "02";
-			} else {
-				objVal1Empty = true;
-			}
-			if (objVal2 != "") {
-				objVal2 = objVal2 + separator + "02";
-			}
-		}
-		if (AXUtil.isEmpty(objVal1)) {
-			objVal1 = "";
-			objVal1Empty = true;
-		}
-
-		/*var myDate1 = (objVal1Empty) ? objVal1.date(separator).add(-1, "m") : objVal1.date(separator);*/
-		var myDate1 = objVal1.date(separator);
-		var myDate2 = objVal2.date(separator);
-		var myYear1 = myDate1.getFullYear();
-		var myYear2 = myDate2.getFullYear();
-		var myMonth1 = (myDate1.getMonth() + 1).setDigit(2);
-		var myMonth2 = (myDate2.getMonth() + 1).setDigit(2);
-		var buttonText = obj.config.buttonText || "OK";
-		var po = [];
-		po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandBox\" class=\"" + cfg.bindTwinDateExpandBoxClassName + "\" style=\"z-index:5100;\">");
-		po.push("	<div>");
-		po.push("		<table cellpadding=\"0\" cellspacing=\"0\">");
-		po.push("			<tbody>");
-		po.push("				<tr>");
-		po.push("					<td style=\"padding-right:3px;\">");
-		po.push("					<div class=\"dateTypeName\">START</div>");
-		po.push("					<div class=\"dateControlBox\">");
-		po.push("						<a " + obj.config.href + " class=\"yearbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlYear1\">" + myYear1 + "년</a>");
-		po.push("						<a " + obj.config.href + " class=\"monthbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth1\">" + myMonth1 + "월</a>");
-		po.push("						<a " + obj.config.href + " class=\"prevbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandPrev1\">P</a>");
-		po.push("						<a " + obj.config.href + " class=\"nextbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandNext1\">N</a>");
-		po.push("					</div>");
-		po.push("					<div class=\"dateDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayBox1\"></div>");
-		if (obj.config.expandTime) { //시간 선택 기능 확장시
-			po.push("					<div class=\"timeDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox1\"></div>");
-		}
-		po.push("					</td>");
-		po.push("					<td style=\"padding-left:3px;\">");
-		po.push("					<div class=\"dateTypeName\">END</div>");
-		po.push("					<div class=\"dateControlBox\">");
-		po.push("						<a " + obj.config.href + " class=\"yearbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlYear2\">" + myYear2 + "년</a>");
-		po.push("						<a " + obj.config.href + " class=\"monthbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth2\">" + myMonth2 + "월</a>");
-		po.push("						<a " + obj.config.href + " class=\"prevbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandPrev2\">P</a>");
-		po.push("						<a " + obj.config.href + " class=\"nextbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandNext2\">N</a>");
-		po.push("					</div>");
-		po.push("					<div class=\"dateDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayBox2\"></div>");
-		if (obj.config.expandTime) { //시간 선택 기능 확장시
-			po.push("					<div class=\"timeDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox2\"></div>");
-		}
-		po.push("					</td>");
-		po.push("				</tr>");
-		po.push("			</tbody>");
-		po.push("		</table>");
-		po.push("	</div>");
-		po.push("	<div style=\"padding-top:5px;\" align=\"center\">");
-		po.push("		<input type=\"button\" value=\"" + buttonText + "\" class=\"AXButton Classic W70\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_closeButton\">");
-		po.push("	</div>");
-		po.push("</div>");
-		axdom(document.body).append(po.join('')); // bindDateExpandBox append
-		//axdom("#"+cfg.targetID + "_AX_" + objID+"_AX_Handle").addClass("on");
-
-		// AXCalendar display
-		obj.nDate1 = myDate1;
-		obj.mycalendar1 = new AXCalendar();
-		obj.mycalendar1.setConfig({
-			targetID: cfg.targetID + "_AX_" + objID + "_AX_displayBox1",
-			basicDate: myDate1,
-			minDate: obj.config.minDate,
-			maxDate: obj.config.maxDate,
-			onBeforeShowDay: obj.config.onBeforeShowDay
-		});
-
-		obj.nDate2 = myDate2;
-		obj.mycalendar2 = new AXCalendar();
-		obj.mycalendar2.setConfig({
-			targetID: cfg.targetID + "_AX_" + objID + "_AX_displayBox2",
-			basicDate: myDate2,
-			minDate: obj.config.minDate,
-			maxDate: obj.config.maxDate,
-			onBeforeShowDay: obj.config.onBeforeShowDay
-		});
-
-		if (obj.config.expandTime) { //시간 선택 기능 확장시
-			obj.nDate1 = myDate1;
-			var mycalendartimeChange1 = this.bindTwinDateTimeChange.bind(this);
-			obj.mycalendartimeChange1 = function (myTime) {
-				mycalendartimeChange1(objID, objSeq, myTime, 1);
-			};
-			obj.mycalendartime1 = new AXCalendar();
-			obj.mycalendartime1.setConfig({
-				targetID: cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox1",
-				onChange: obj.mycalendartimeChange1
-			});
-			var apm = "AM";
-			var myTimes = myDate1.print("hh:mi").split(":");
-			var myHH = myTimes[0].number();
-			var myMI = myTimes[1];
-			if (myHH > 12) {
-				apm = "PM";
-				myHH -= 12;
-			}
-			obj.mycalendartime1.printTimePage(myHH.setDigit(2) + ":" + myMI.setDigit(2) + " " + apm);
-
-			obj.nDate2 = myDate2;
-			var mycalendartimeChange2 = this.bindTwinDateTimeChange.bind(this);
-			obj.mycalendartimeChange2 = function (myTime) {
-				mycalendartimeChange2(objID, objSeq, myTime, 2);
-			};
-			obj.mycalendartime2 = new AXCalendar();
-			obj.mycalendartime2.setConfig({
-				targetID: cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox2",
-				onChange: obj.mycalendartimeChange2
-			});
-			var apm = "AM";
-			var myTimes = myDate2.print("hh:mi").split(":");
-			var myHH = myTimes[0].number();
-			var myMI = myTimes[1];
-			if (myHH > 12) {
-				apm = "PM";
-				myHH -= 12;
-			}
-			obj.mycalendartime2.printTimePage(myHH.setDigit(2) + ":" + myMI.setDigit(2) + " " + apm);
-		}
-
-		var printDate1 = "";
-		var printDate2 = "";
-		if (obj.config.selectType == "y") {
-			obj.mycalendarPageType = "y";
-			obj.mycalendar1.printYearPage(myDate1.print("yyyy"));
-			obj.mycalendar2.printYearPage(myDate2.print("yyyy"));
-			printDate1 = myDate1.print("yyyy");
-			printDate2 = myDate2.print("yyyy");
-			axdom("#" + obj.config.startTargetID).val(printDate1);
-			axdom("#" + objID).val(printDate2);
-		} else if (obj.config.selectType == "m") {
-			obj.mycalendarPageType = "m";
-			obj.mycalendar1.printMonthPage(myDate1);
-			obj.mycalendar2.printMonthPage(myDate2);
-			printDate1 = myDate1.print("yyyy" + separator + "mm");
-			printDate2 = myDate2.print("yyyy" + separator + "mm");
-			axdom("#" + obj.config.startTargetID).val(printDate1);
-			axdom("#" + objID).val(printDate2);
-		} else {
-			obj.mycalendarPageType = "d";
-			obj.mycalendar1.printDayPage(myDate1);
-			obj.mycalendar2.printDayPage(myDate2);
-			printDate1 = myDate1.print("yyyy" + separator + "mm" + separator + "dd");
-			printDate2 = myDate2.print("yyyy" + separator + "mm" + separator + "dd");
-			if (obj.config.expandTime) {
-				printDate1 += " " + myDate1.print("hh:mi");
-				printDate2 += " " + myDate2.print("hh:mi");
-			}
-			axdom("#" + obj.config.startTargetID).val(printDate1);
-			axdom("#" + objID).val(printDate2);
-		}
-		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ AXCalendar display
-
-		// expandBox set Position ~~~~~~~~~~~~~~~~~~~~~~~~~
-		var expandBox = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox");
-		var expBoxWidth = expandBox.outerWidth();
-		var expBoxHeight = expandBox.outerHeight();
-		var offset = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").offset();
-		var handleWidth = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").width();
-		var handleHeight = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").height();
-
-
-
-		var css = {};
-		if (obj.config.align == "left") {
-			css.left = offset.left.number() - expBoxWidth;
-		} else if (obj.config.align == "center") {
-			css.left = offset.left.number() - expBoxWidth / 2 + handleWidth;
-		} else if (obj.config.align == "right") {
-			css.left = offset.left.number() + handleWidth;
-		} else {
-			css.left = offset.left.number() + handleWidth;
-		}
-		if (obj.config.valign == "top") {
-			css.top = offset.top;
-		} else if (obj.config.valign == "middle") {
-			css.top = offset.top.number() - expBoxHeight / 2 + handleWidth / 2;
-		} else if (obj.config.valign == "bottom") {
-			css.top = offset.top.number() - expBoxHeight + handleWidth;
-		} else {
-			css.top = offset.top;
-		}
-
-		if (obj.config.customPos != undefined) {
-			css.top = css.top + obj.config.customPos.top;
-			css.left = css.left + obj.config.customPos.left;
-		}
-
-		var pElement = expandBox.offsetParent();
-		var pBox = { width: pElement.width(), height: pElement.height() };
-
-		var clientHeight = (AXUtil.docTD == "Q") ? document.body.scrollHeight : document.documentElement.scrollHeight;
-		var clienWidth = (AXUtil.docTD == "Q") ? document.body.scrollWidth : document.documentElement.scrollWidth;
-		if (clienWidth > pBox.width) pBox.width = clienWidth;
-		if (clientHeight > pBox.height) pBox.height = clientHeight;
-		var _box = { width: expandBox.outerWidth() + 10, height: expandBox.outerHeight() + 10 };
-
-		if ((_box.height.number() + css.top.number()) > pBox.height) {
-			css.top = css.top - ((_box.height.number() + css.top.number()) - pBox.height);
-		}
-		if (css.top < 0) {
-			css.top = 0;
-		}
-
-		if ((_box.width.number() + css.left.number()) > pBox.width) {
-			css.left = css.left - ((_box.width.number() + css.left.number()) - pBox.width);
-		}
-		if (css.left < 0) {
-			css.left = 0;
-		}
-
-		expandBox.css(css);
-		obj.expandBox_axdom = expandBox;
-
-		// ~~~~~~~~~~~~~~~~~~~~~~~~~ expandBox set Position ~~~~~~~~~~~~~~~~~~~~~~~~~
-
-		var bindTwinDateExpandBoxClick = this.bindTwinDateExpandBoxClick.bind(this);
-		obj.documentclickEvent = function (event) {
-			bindTwinDateExpandBoxClick(objID, objSeq, event);
-		}
-		var bindTwinDateKeyup = this.bindTwinDateKeyup.bind(this);
-		obj.inputKeyup = function (event) {
-			bindTwinDateKeyup(objID, objSeq, event);
-		}
-
-		if (obj.config.selectType == "y") {
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear1").css({ left: "70px" });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth1").hide();
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear2").css({ left: "70px" });
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth2").hide();
-		}
-
-		axdom(document).unbind("click.AXInput").bind("click.AXInput", obj.documentclickEvent);
-		axdom("#" + objID).unbind("keydown.AXInput").bind("keydown.AXInput", obj.inputKeyup);
-		var bindTwinDateExpandClose = this.bindTwinDateExpandClose.bind(this);
-		axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_closeButton").unbind("click.AXInput").bind("click.AXInput", function (event) {
-			bindTwinDateExpandClose(objID, objSeq, event);
-		});
-	},
-	bindTwinDateTimeChange: function (objID, objSeq, myTime, seq) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		if (seq == 1) {
-			var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-			var printDate = obj.nDate1.print("yyyy" + separator + "mm" + separator + "dd");
-			if (obj.config.expandTime) {
-				printDate += " " + obj.mycalendartime1.getTime();
-			}
-			axdom("#" + obj.config.startTargetID).val(printDate);
-		} else {
-			var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-			var printDate = obj.nDate2.print("yyyy" + separator + "mm" + separator + "dd");
-			if (obj.config.expandTime) {
-				printDate += " " + obj.mycalendartime2.getTime();
-			}
-			axdom("#" + objID).val(printDate);
-		}
-	},
-	bindTwinDateExpandClose: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		//trace("bindTwinDateExpandClose");
-		if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
-
-			//axdom("#"+cfg.targetID+"_AX_"+objID+"_AX_Handle").removeClass("on");
-			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-			var objVal1 = axdom("#" + obj.config.startTargetID).val();
-			var objVal2 = axdom("#" + objID).val();
-			var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-
-			if (obj.config.selectType == "y") {
-				if (objVal1.length < 4) axdom("#" + obj.config.startTargetID).val(obj.nDate1.print("yyyy"));
-				else {
-					objVal1 = objVal1.left(4);
-					axdom("#" + obj.config.startTargetID).val(objVal1);
-					axdom("#" + obj.config.startTargetID).trigger("change");
-				}
-				if (objVal2.length < 4) axdom("#" + objID).val(obj.nDate2.print("yyyy"));
-				else {
-					objVal2 = objVal2.left(4);
-					axdom("#" + objID).val(objVal2);
-					axdom("#" + objID).trigger("change");
-				}
-			} else if (obj.config.selectType == "m") {
-				axdom("#" + obj.config.startTargetID).val(obj.nDate1.print("yyyy" + separator + "mm"));
-				axdom("#" + obj.config.startTargetID).trigger("change");
-				axdom("#" + objID).val(obj.nDate2.print("yyyy" + separator + "mm"));
-				axdom("#" + objID).trigger("change");
-			} else {
-				printDate1 = obj.nDate1.print("yyyy" + separator + "mm" + separator + "dd");
-				printDate2 = obj.nDate2.print("yyyy" + separator + "mm" + separator + "dd");
-				if (obj.config.expandTime) {
-					printDate1 += " " + obj.mycalendartime1.getTime();
-					printDate2 += " " + obj.mycalendartime2.getTime();
-				}
-				axdom("#" + obj.config.startTargetID).val(printDate1);
-				axdom("#" + objID).val(printDate2);
-				axdom("#" + obj.config.startTargetID).trigger("change");
-				axdom("#" + objID).trigger("change");
-			}
-
-			axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
-
-			if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
-			if (obj.config.onChange) {
-				obj.config.onChange.call({
-					ST_objID: obj.config.startTargetID,
-					ED_objID: objID,
-					ST_value: axdom("#" + obj.config.startTargetID).val(),
-					ED_value: axdom("#" + objID).val()
-				});
-			}
-			if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-			obj.bindTarget.change();
-
-			obj.expandBox_axdom = null;
-			//비활성 처리후 메소드 종료
-			axdom(document).unbind("click.AXInput");
-			axdom("#" + objID).unbind("keydown.AXInput");
-
-			event.stopPropagation(); // disableevent
-			return;
-		}
-	},
-	bindTwinDateExpandBoxClick: function (objID, objSeq, event) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var isDateClick = false;
-
-		var eventTarget = event.target;
-		var myTarget = this.getEventTarget({
-			evt: eventTarget,
-			until: function (evt, evtIDs) {
-				return (evt.parentNode.tagName == "body") ? true : false;
-			},
-			find: function (evt, evtIDs) {
-				if (evt.id == "" || evt.id == null || evt.id == undefined) return false;
-				if (evt.id == objID || evt.id == obj.config.startTargetID || (evt.id.substr(0, cfg.targetID.length) == cfg.targetID && (evt.id.search(objID) != -1 || evt.id.search(obj.config.startTargetID) != -1))) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
-
-		isDateClick = (myTarget) ? true : false;
-		if (!isDateClick) {
-			this.bindTwinDateExpandClose(objID, objSeq, event);
-		} else {
-			if (axdom(myTarget).hasClass("disabled")) { return; } // disabled 대상은 선택 불가
-
-			var ids = myTarget.id.split(/_AX_/g);
-			var ename = ids.last();
-			var boxType = ids[ids.length - 3];
-			var nDate1 = obj.nDate1;
-			var nDate2 = obj.nDate2;
-			var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-			if (ename == "expandPrev1") {
-				if (obj.mycalendarPageType == "d") {
-					this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(-1, "m"), "d");
-				} else if (obj.mycalendarPageType == "m") {
-					this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(-1, "y"), "m");
-				} else if (obj.mycalendarPageType == "y") {
-					this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(-12, "y"), "y");
-				}
-			} else if (ename == "expandPrev2") {
-				if (obj.mycalendarPageType == "d") {
-					this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(-1, "m"), "d");
-				} else if (obj.mycalendarPageType == "m") {
-					this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(-1, "y"), "m");
-				} else if (obj.mycalendarPageType == "y") {
-					this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(-12, "y"), "y");
-				}
-			} else if (ename == "expandNext1") {
-				if (obj.mycalendarPageType == "d") {
-					this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(1, "m"), "d");
-				} else if (obj.mycalendarPageType == "m") {
-					this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(1, "y"), "m");
-				} else if (obj.mycalendarPageType == "y") {
-					this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(12, "y"), "y");
-				}
-			} else if (ename == "expandNext2") {
-				if (obj.mycalendarPageType == "d") {
-					this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(1, "m"), "d");
-				} else if (obj.mycalendarPageType == "m") {
-					this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(1, "y"), "m");
-				} else if (obj.mycalendarPageType == "y") {
-					this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(12, "y"), "y");
-				}
-			} else if (ename == "controlYear1") {
-				this.bindTwinDateChangePage(objID, objSeq, 1, nDate1, "y");
-			} else if (ename == "controlYear2") {
-				this.bindTwinDateChangePage(objID, objSeq, 2, nDate2, "y");
-			} else if (ename == "controlMonth1") {
-				if (obj.config.selectType != "y") {
-					this.bindTwinDateChangePage(objID, objSeq, 1, nDate1, "m");
-				}
-			} else if (ename == "controlMonth2") {
-				if (obj.config.selectType != "y") {
-					this.bindTwinDateChangePage(objID, objSeq, 2, nDate2, "m");
-				}
-			} else if (ename == "date") {
-				if (boxType == "displayBox1") {
-					obj.nDate1 = ids[ids.length - 2].date();
-					var printDate = obj.nDate1.print("yyyy" + separator + "mm" + separator + "dd");
-					if (obj.config.expandTime) {
-						printDate += " " + obj.mycalendartime1.getTime();
-					}
-					axdom("#" + obj.config.startTargetID).val(printDate);
-					obj.mycalendar1.dayPageSetDay(obj.nDate1);
-				} else {
-					obj.nDate2 = ids[ids.length - 2].date();
-					var printDate = obj.nDate2.print("yyyy" + separator + "mm" + separator + "dd");
-					if (obj.config.expandTime) {
-						printDate += " " + obj.mycalendartime2.getTime();
-					}
-					axdom("#" + objID).val(printDate);
-					obj.mycalendar2.dayPageSetDay(obj.nDate2);
-				}
-
-				if (obj.nDate1.diff(obj.nDate2) < 0) {
-					if (boxType == "displayBox1") {
-						obj.nDate2 = obj.nDate1;
-						var printDate = obj.nDate2.print("yyyy" + separator + "mm" + separator + "dd");
-						if (obj.config.expandTime) {
-							printDate += " " + obj.mycalendartime2.getTime();
-						}
-						axdom("#" + objID).val(printDate);
-						obj.mycalendar2.dayPageSetDay(obj.nDate2);
-					} else {
-						obj.nDate1 = obj.nDate2;
-						var printDate = obj.nDate1.print("yyyy" + separator + "mm" + separator + "dd");
-						if (obj.config.expandTime) {
-							printDate += " " + obj.mycalendartime1.getTime();
-						}
-						axdom("#" + obj.config.startTargetID).val(printDate);
-						obj.mycalendar1.dayPageSetDay(obj.nDate1);
-					}
-				}
-
-			} else if (ename == "month") {
-				var myMonth = ids[ids.length - 2].number() - 1;
-				if (boxType == "displayBox1") {
-					if (obj.config.selectType == "m") {
-						var yy = nDate1.getFullYear();
-						var dd = nDate1.getDate();
-						obj.nDate1 = new Date(Date.UTC(yy, myMonth, dd));
-						var printDate = obj.nDate1.print("yyyy" + separator + "mm");
-						axdom("#" + obj.config.startTargetID).val(printDate);
-						//this.bindTwinDateExpandClose(objID, objSeq, event);
-						obj.mycalendar1.monthPageSetMonth(obj.nDate1);
-					} else {
-						var yy = nDate1.getFullYear();
-						var dd = nDate1.getDate();
-						obj.nDate1 = new Date(Date.UTC(yy, myMonth, dd));
-						//trace("start ----");
-						this.bindTwinDateChangePage(objID, objSeq, 1, obj.nDate1, "d");
-					}
-				} else {
-					if (obj.config.selectType == "m") {
-						var yy = nDate2.getFullYear();
-						var dd = nDate2.getDate();
-						obj.nDate2 = new Date(Date.UTC(yy, myMonth, dd));
-						var printDate = obj.nDate2.print("yyyy" + separator + "mm");
-						axdom("#" + objID).val(printDate);
-						obj.mycalendar2.monthPageSetMonth(obj.nDate2);
-					} else {
-						var yy = nDate2.getFullYear();
-						var dd = nDate2.getDate();
-						obj.nDate2 = new Date(Date.UTC(yy, myMonth, dd));
-						this.bindTwinDateChangePage(objID, objSeq, 2, obj.nDate2, "d");
-					}
-				}
-
-				if (obj.config.selectType == "m") {
-					if (obj.nDate1.diff(obj.nDate2) < 0) {
-						obj.nDate2 = obj.nDate1;
-						var printDate = obj.nDate2.print("yyyy" + separator + "mm");
-						axdom("#" + objID).val(printDate);
-						axdom("#" + obj.config.startTargetID).val(printDate);
-						obj.mycalendar2.monthPageSetMonth(obj.nDate2);
-					}
-				}
-
-
-			} else if (ename == "year") {
-				var myYear = ids[ids.length - 2];
-				if (boxType == "displayBox1") {
-					if (obj.config.selectType == "y") {
-						var mm = nDate1.getMonth();
-						var dd = nDate1.getDate();
-						obj.nDate1 = new Date(Date.UTC(myYear, mm, dd));
-						var printDate = obj.nDate1.print("yyyy");
-						axdom("#" + obj.config.startTargetID).val(printDate);
-						//this.bindTwinDateExpandClose(objID, objSeq, event);
-						obj.mycalendar1.yearPageSetYear(obj.nDate1);
-					} else {
-						var mm = nDate1.getMonth();
-						var dd = nDate1.getDate();
-						obj.nDate1 = new Date(Date.UTC(myYear, mm, dd));
-						this.bindTwinDateChangePage(objID, objSeq, 1, obj.nDate1, "m");
-					}
-				} else {
-					if (obj.config.selectType == "y") {
-						var mm = nDate2.getMonth();
-						var dd = nDate2.getDate();
-						obj.nDate2 = new Date(Date.UTC(myYear, mm, dd));
-						var printDate = obj.nDate2.print("yyyy");
-						axdom("#" + objID).val(printDate);
-						//this.bindTwinDateExpandClose(objID, objSeq, event);
-						obj.mycalendar2.yearPageSetYear(obj.nDate2);
-					} else {
-						var mm = nDate2.getMonth();
-						var dd = nDate2.getDate();
-						obj.nDate2 = new Date(Date.UTC(myYear, mm, dd));
-						this.bindTwinDateChangePage(objID, objSeq, 2, obj.nDate2, "m");
-					}
-				}
-
-				if (obj.config.selectType == "y") {
-					if (obj.nDate1.print("yyyy").number() > obj.nDate2.print("yyyy").number()) {
-						obj.nDate2 = obj.nDate1;
-						var printDate = obj.nDate2.print("yyyy");
-						axdom("#" + obj.config.startTargetID).val(printDate);
-						axdom("#" + objID).val(printDate);
-						obj.mycalendar2.yearPageSetYear(obj.nDate2);
-					}
-				}
-			}
-		}
-	},
-	bindTwinDateKeyup: function (objID, objSeq, event) {
-		//trace(event.keyCode);
-		if (obj.config.selectType == "y") {
-
-		} else if (obj.config.selectType == "m") {
-
-		} else {
-
-		}
-	},
-	bindTwinDateChangePage: function (objID, objSeq, objType, setDate, pageType) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-
-		if (pageType == "m") {
-			if (objType == 1) {
-				//obj.mycalendarPageType = "m";
-				obj.nDate1 = setDate;
-				obj.mycalendar1.printMonthPage(setDate);
-				var myYear = setDate.getFullYear();
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear1").html(myYear + "년");
-			} else {
-				//obj.mycalendarPageType = "m";
-				obj.nDate2 = setDate;
-				obj.mycalendar2.printMonthPage(setDate);
-				var myYear = setDate.getFullYear();
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear2").html(myYear + "년");
-			}
-		} else if (pageType == "y") {
-			if (objType == 1) {
-				//obj.mycalendarPageType = "y";
-				obj.nDate1 = setDate;
-				obj.mycalendar1.printYearPage(setDate.getFullYear());
-				var myYear = setDate.getFullYear();
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear1").html(myYear + "년");
-			} else {
-				//obj.mycalendarPageType = "y";
-				obj.nDate2 = setDate;
-				obj.mycalendar2.printYearPage(setDate.getFullYear());
-				var myYear = setDate.getFullYear();
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear2").html(myYear + "년");
-			}
-		} else {
-			//obj.mycalendarPageType = "d";
-
-			//trace({objID:objID, objSeq:objSeq, objType:objType, setDate:setDate, pageType:pageType});
-
-			if (objType == 1) {
-				obj.nDate1 = setDate;
-				obj.mycalendar1.printDayPage(setDate);
-				var myYear = setDate.getFullYear();
-				var myMonth = (setDate.getMonth() + 1).setDigit(2);
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear1").html(myYear + "년");
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth1").html(myMonth + "월");
-			} else {
-				obj.nDate2 = setDate;
-				obj.mycalendar2.printDayPage(setDate);
-				var myYear = setDate.getFullYear();
-				var myMonth = (setDate.getMonth() + 1).setDigit(2);
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear2").html(myYear + "년");
-				axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth2").html(myMonth + "월");
-			}
-		}
-
-		if (objType == 1) {
-			if (obj.config.selectType == "y") {
-				axdom("#" + obj.config.startTargetID).val(obj.nDate1.print("yyyy"));
-			} else if (obj.config.selectType == "m") {
-				axdom("#" + obj.config.startTargetID).val(obj.nDate1.print("yyyy" + separator + "mm"));
-			} else {
-				var printDate = obj.nDate1.print("yyyy" + separator + "mm" + separator + "dd");
-				if (obj.config.expandTime) {
-					printDate += " " + obj.mycalendartime1.getTime();
-				}
-				axdom("#" + obj.config.startTargetID).val(printDate);
-			}
-		} else {
-			if (obj.config.selectType == "y") {
-				axdom("#" + objID).val(obj.nDate2.print("yyyy"));
-			} else if (obj.config.selectType == "m") {
-				axdom("#" + objID).val(obj.nDate2.print("yyyy" + separator + "mm"));
-			} else {
-				var printDate = obj.nDate2.print("yyyy" + separator + "mm" + separator + "dd");
-				if (obj.config.expandTime) {
-					printDate += " " + obj.mycalendartime2.getTime();
-				}
-				axdom("#" + objID).val(printDate);
-			}
-		}
-	},
-	bindTwinDateInputBlur: function (objID, objSeq, event, seq) {
-		var obj = this.objects[objSeq];
-		var cfg = this.config;
-		var objVal, targetObjID;
-		if (seq == 1) {
-			targetObjID = obj.config.startTargetID;
-			objVal = axdom("#" + obj.config.startTargetID).val();
-		} else {
-			targetObjID = objID;
-			objVal = axdom("#" + objID).val();
-		}
-
-		if (objVal == "") {
-
-		}
-		else
-		{
-			var clearDate = false;
-			var nDate = (obj["nDate" + seq] || new Date());
-			var va = axdom("#" + targetObjID).val().replace(/\D/gi, ""); //숫자 이외의 문자를 제거 합니다.
-			if (va.search(/\d+/g) == -1) {
-				clearDate = true;
-			}
-
-			if (clearDate) {
-				axdom("#" + targetObjID).val("");
-			} else {
-				var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
-				if (obj.config.selectType == "y") {
-
-					var yy = va.left(4).number();
-					if (yy == 0) yy = nDate.getFullYear();
-					if (yy < 1000) yy += 2000;
-					var mm = nDate.getMonth();
-					var dd = nDate.getDate();
-					obj["nDate" + seq] = new Date(Date.UTC(yy, mm, dd, 12));
-
-					axdom("#" + targetObjID).val(obj["nDate" + seq].print("yyyy"));
-
-				}
-				else
-				if (obj.config.selectType == "m")
-				{
-
-					if (va.length > 5) {
-						var yy = va.left(4).number();
-						var mm = va.substr(4, 2).number() - 1;
-						var dd = 1;
-					} else {
-						var yy = va.left(4).number();
-						var mm = 0;
-						var dd = 1;
-					}
-					if (yy == 0) yy = nDate.getFullYear();
-					if (yy < 1000) yy += 2000;
-					obj["nDate" + seq] = new Date(Date.UTC(yy, mm, dd, 12));
-
-					axdom("#" + targetObjID).val(obj["nDate" + seq].print("yyyy" + separator + "mm"));
-
-				}
-				else
-				{
-					var needAlert = false;
-					var yy, mm, dd, hh, mi;
-					if (va.length > 7) {
-						yy = va.left(4).number();
-						mm = va.substr(4, 2).number() - 1;
-						dd = va.substr(6, 2).number();
-					} else if (va.length > 4) {
-						yy = "20" + va.substr(0, 2);
-						mm = va.substr(2, 2).number() - 1;
-						dd = va.substr(4, 2).number();
-					} else if (va.length > 2) {
-						yy = nDate.getFullYear();
-						mm = va.substr(0, 2).number() - 1;
-						dd = va.substr(2, 2).number();
-					} else {
-						yy = nDate.getFullYear(); //va.left(4).number();
-						mm = nDate.getMonth();
-						dd = va.substr(0, 2).number();
-					}
-
-					if (va.length >= 9){
-						hh = va.substr(8, 2).number();
-						mi = va.substr(10, 2).number();
-					}else{
-						hh = "00";
-						mi = "00";
-					}
-
-					if (yy == 0) needAlert = true;
-					if (yy == 0) yy = nDate.getFullYear();
-					if (yy < 1000) yy += 2000;
-					obj["nDate" + seq] = new Date(Date.UTC(yy, mm, dd, 12));
-
-					if (obj["nDate" + seq].getFullYear() != yy.number()
-						|| obj["nDate" + seq].getMonth() != mm.number()
-						|| obj["nDate" + seq].getDate() != dd.number()) {
-						needAlert = true;
-						obj["nDate" + seq] = new Date();
-					}
-
-					printDate = obj["nDate" + seq].print("yyyy" + separator + "mm" + separator + "dd");
-					if (obj.config.expandTime) {
-						printDate += " " + hh.setDigit(2) + ":" + mi.setDigit(2);
-					}
-
-					if (needAlert) {
-						this.msgAlert("날짜 형식이 올바르지 않습니다.");
-					}
-					axdom("#" + targetObjID).val(printDate);
-
-					if (obj.nDate1 == undefined) {
-						var va = axdom("#" + obj.config.startTargetID).val().replace(/\D/gi, ""); //숫자 이외의 문자를 제거 합니다.
-						if (va.search(/\d+/g) != -1) {
-							if (va.length > 7) {
-								var yy = va.left(4).number();
-								var mm = va.substr(4, 2).number() - 1;
-								var dd = va.substr(6, 2).number();
-							} else if (va.length > 5) {
-								var yy = va.left(4).number();
-								var mm = va.substr(4, 2).number() - 1;
-								var dd = 1;
-							} else {
-								var yy = va.left(4).number();
-								var mm = nDate.getMonth();
-								var dd = nDate.getDate();
-							}
-							if (yy == 0) needAlert = true;
-							if (yy == 0) yy = nDate.getFullYear();
-							if (yy < 1000) yy += 2000;
-							obj.nDate1 = new Date(Date.UTC(yy, mm, dd, 12));
-						}
-					}
-					if (obj.nDate2 == undefined) {
-						obj.nDate2 = obj.nDate1;
-						printDate = obj["nDate" + 2].print("yyyy" + separator + "mm" + separator + "dd");
-						if (obj.config.expandTime) {
-							if(obj["mycalendartime" + 2]) printDate += " " + obj["mycalendartime" + 2].getTime();
-						}
-						axdom("#" + objID).val(printDate);
-					}
-
-					if (obj.nDate1.diff(obj.nDate2) < 0) {
-						if (seq == 1) {
-							obj.nDate2 = obj.nDate1;
-							printDate = obj["nDate" + 2].print("yyyy" + separator + "mm" + separator + "dd");
-							if (obj.config.expandTime) {
-								if(obj["mycalendartime" + 2]) printDate += " " + obj["mycalendartime" + 2].getTime();
-							}
-							axdom("#" + objID).val(printDate);
-						} else {
-							obj.nDate1 = obj.nDate2;
-							printDate = obj["nDate" + 1].print("yyyy" + separator + "mm" + separator + "dd");
-							if (obj.config.expandTime) {
-								if(obj["mycalendartime" + 1]) printDate += " " + obj["mycalendartime" + 1].getTime();
-							}
-							axdom("#" + obj.config.startTargetID).val(printDate);
-						}
-					}
-				}
-			}
-		}
-
-		if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
-		if (obj.config.onChange) {
-			obj.config.onChange.call({
-				event: event,
-				ST_objID: obj.config.startTargetID,
-				ED_objID: objID,
-				ST_value: axdom("#" + obj.config.startTargetID).val(),
-				ED_value: axdom("#" + objID).val()
-			});
-		}
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		obj.bindTarget.change();
-		/* ie10 버그 픽스
-		 axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
-
-		 //비활성 처리후 메소드 종료
-		 axdom(document).unbind("click.AXInput");
-		 axdom("#" + objID).unbind("keydown.AXInput");
-		 */
-		event.stopPropagation(); // disableevent
-		return;
-	},
-
-	// checked
-	bindChecked: function (objID, objSeq){
-		var cfg = this.config, _this = this;
-		var obj = this.objects[objSeq];
-
-		if(!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		//var tagName = obj.bindTarget.get(0).tagName.ucase();
-		obj.bindTarget.css({opacity:0});
-		
-		var h = obj.bindAnchorTarget.data("height"),
-		    marginWidth = obj.bindTarget.css("margin-left").number() + obj.bindTarget.css("margin-right").number(),
-		    marginHeight = obj.bindTarget.css("margin-top").number() + obj.bindTarget.css("margin-bottom").number(),
-		    chk_size = Math.max((h+marginWidth), (h + marginHeight)) - 1,
-		    left = (obj.bindTarget.css("margin-left").number() - obj.bindTarget.css("margin-right").number()).abs(),
-		    anchorHandle, linked_items = [];
-		
-		var onchange = function(e){
-			if(obj.bindTarget.get(0).checked){
-				anchorHandle.addClass("checked");
-			}else{
-				anchorHandle.removeClass("checked");
-			}
-			if(linked_items.length > 0){
-				for(var li=0;li<linked_items.length;li++){
-					var aHandle = jQuery(linked_items[li]).next().find("." + cfg.anchorCheckedContainerClassName+"_radio");
-					if(linked_items[li].checked){
-						aHandle.addClass("checked");
-					}else{
-						aHandle.removeClass("checked");
-					}
-				}
-			}
-		};
-		
-		var po = [];
-		po.push('<div id="' + cfg.targetID + '_AX_' + objID + '_AX_HandleContainer"');
-		if(obj.bindTarget.attr("type") == "radio"){
-			po.push(' class="' + cfg.anchorCheckedContainerClassName + '_radio" ');
-		}else{
-			po.push(' class="' + cfg.anchorCheckedContainerClassName + '" ');
-		}
-
-		po.push(' style="left:'+left+'px;top:0px;width:' + chk_size + 'px;height:' + chk_size + 'px;"');
-		po.push(' onselectstart="return false;">');
-		po.push('<a class="checked-icon"></a>')
-		po.push('</div>');
-		obj.bindAnchorTarget.append(po.join(''));
-		obj.bindAnchorTarget.show();
-		if(obj.bindTarget.attr("type") == "radio") {
-			anchorHandle = obj.bindAnchorTarget.find("." + cfg.anchorCheckedContainerClassName+"_radio");
-		}else{
-			anchorHandle = obj.bindAnchorTarget.find("." + cfg.anchorCheckedContainerClassName);
-		}
-		
-		obj.bindTarget.unbind("change.AXInput").bind("change.AXInput", onchange);
-		anchorHandle.bind("click", function(e){
-			obj.bindTarget.get(0).checked = !obj.bindTarget.get(0).checked;
-			obj.bindTarget.trigger("change");
-			_this.stopEvent(e);
-		});
-		if(obj.bindTarget.attr("type") == "radio") {
-			// 이름이 같은 라디오 아이템을 수집하여 링크 합니다.
-			var nm = obj.bindTarget.attr("name");
-			//trace(nm, objID);
-			jQuery("input[name="+nm+"]").each(function(){
-				if(objID != this.id){
-					linked_items.push(this);
-				}
-			});
-		}
-		onchange();
-	}
+    initialize: function (AXJ_super) {
+        AXJ_super();
+        this.objects = [];
+        this.inputTypes = [
+            {type: "search"}, {type: "number"}, {type: "money"}, {type: "slider"}, {type: "twinSlider"},
+            {type: "selector"}, {type: "switch"}, {type: "segment"},
+            {type: "date"}, {type: "dateTime"}, {type: "twinDate"}, {type: "twinDateTime"},
+            {type: "checked"}, {type: "pattern"}
+        ];
+        this.config.anchorClassName = "AXanchor";
+        this.config.anchorPlaceHolderClassName = "AXanchorPlaceHolder";
+        this.config.anchorSearchClassName = "AXanchorSearch";
+        this.config.anchorNumberContainerClassName = "AXanchorNumberContainer";
+        this.config.anchorIncreaseClassName = "AXanchorIncrease";
+        this.config.anchorDecreaseClassName = "AXanchorDecrease";
+        this.config.anchorSelectorHandleContainerClassName = "AXanchorSelectorHandleContainer";
+        this.config.anchorSelectorFinderContainerClassName = "AXanchorSelectorFinderContainer";
+        this.config.anchorSelectorHandleClassName = "AXanchorSelectorHandle";
+        this.config.anchorSelectorFinderClassName = "AXanchorSelectorFinder";
+        this.config.anchorSelectorExpandBoxClassName = "AXanchorSelectorExpandBox";
+        this.config.anchorSelectorExpandScrollClassName = "AXanchorSelectorExpandScroll"
+        this.config.anchorSliderBoxClassName = "AXanchorSliderBox";
+        this.config.anchorSwitchBoxClassName = "AXanchorSwitchBox";
+        this.config.anchorSegmentBoxClassName = "AXanchorSegmentBox";
+        this.config.anchorDateHandleClassName = "AXanchorDateHandle";
+        this.config.bindDateExpandBoxClassName = "AXbindDateExpandBox";
+        this.config.bindTwinDateExpandBoxClassName = "AXbindTwinDateExpandBox";
+        this.config.anchorCheckedContainerClassName = "AXbindCheckedHandle";
+        /* 모바일 반응 너비 */
+        this.config.responsiveMobile = AXConfig.mobile.responsiveWidth;
+        
+        this.config.reserveKeys = {
+            options: (AXConfig.AXSelect && AXConfig.AXSelect.keyOptions) || "options",
+            optionValue: (AXConfig.AXSelect && AXConfig.AXSelect.keyOptionValue) || "optionValue",
+            optionText: (AXConfig.AXSelect && AXConfig.AXSelect.keyOptionText) || "optionText",
+            optionData: (AXConfig.AXSelect && AXConfig.AXSelect.keyOptionData) || "optionData"
+        };
+    },
+    init: function () {
+        axdom(window).resize(this.alignAllAnchor.bind(this));
+        
+        // 예약어 초기화
+        this.config.reserveKeys = {
+            options: (AXConfig.AXInput && AXConfig.AXInput.keyOptions) || "options",
+            optionValue: (AXConfig.AXInput && AXConfig.AXInput.keyOptionValue) || "optionValue",
+            optionText: (AXConfig.AXInput && AXConfig.AXInput.keyOptionText) || "optionText"
+        };
+    },
+    windowResize: function () {
+        // 사용안함
+        var windowResizeApply = this.windowResizeApply.bind(this);
+        if (this.windowResizeObserver) clearTimeout(this.windowResizeObserver);
+        this.windowResizeObserver = setTimeout(function () {
+            windowResizeApply();
+        }, 1);
+    },
+    windowResizeApply: function () {
+        // 사용안함
+        if (this.windowResizeObserver) clearTimeout(this.windowResizeObserver);
+        this.alignAllAnchor();
+    },
+    alignAllAnchor: function () {
+        for (var i = 0; i < this.objects.length; i++) {
+            this.alignAnchor(this.objects[i].id, i);
+        }
+    },
+    msgAlert: function (msg) {
+        var errorPrintType = "toast";
+        if (AXConfig.AXInput) {
+            errorPrintType = (AXConfig.AXInput.errorPrintType || "toast");
+        }
+        if (errorPrintType == "toast") toast.push(msg);
+        else if (errorPrintType == "dialog") dialog.push(msg);
+        else if (errorPrintType == "alert") AXUtil.alert(msg);
+    },
+    bindSetConfig: function (objID, configs) {
+        var findIndex = null;
+        axf.each(this.objects, function (index, O) {
+            if (O.id == objID) {
+                findIndex = index;
+                return false;
+            }
+        });
+        if (findIndex == null) {
+            //trace("바인드 된 오브젝트를 찾을 수 없습니다.");
+            return;
+        }
+        else {
+            var _self = this.objects[findIndex];
+            axf.each(configs, function (k, v) {
+                _self.config[k] = v;
+            });
+        }
+    },
+    bind: function (obj) {
+        var cfg = this.config;
+        if (!AXgetId(obj.id)) {
+            trace("bind 대상이 없어 bind 처리할 수 없습니다.");
+            return;
+        }
+        
+        if (obj.reserveKeys) cfg.reserveKeys = jQuery.extend(cfg.reserveKeys, obj.reserveKeys, true);
+        var objID = obj.id;
+        var objSeq = null;
+        
+        axf.each(this.objects, function (idx, O) {
+            //if (this.id == objID && this.isDel == true) objSeq = idx;
+            if (this.id == objID) {
+                objSeq = idx;
+                return false;
+            }
+        });
+        
+        if (obj.href == undefined) obj.href = cfg.href;
+        
+        if (objSeq == null) {
+            objSeq = this.objects.length;
+            this.objects.push({
+                id: objID,
+                anchorID: cfg.targetID + "_AX_" + objID,
+                config: obj,
+                bindType: obj.bindType
+            });
+        }
+        else {
+            this.objects[objSeq].isDel = undefined;
+            this.objects[objSeq].config = obj;
+        }
+        
+        //if (obj.bindType != "checked") {
+        //	this.appendAnchor(objID, objSeq, obj.bindType);
+        //}
+        // bind checked anchor 연결
+        this.appendAnchor(objID, objSeq, obj.bindType);
+        
+        if (obj.bindType == "placeHolder") {
+            this.bindPlaceHolder(objID, objSeq);
+        }
+        else if (obj.bindType == "search") {
+            this.bindSearch(objID, objSeq);
+        }
+        else if (obj.bindType == "number") {
+            this.bindNumber(objID, objSeq);
+        }
+        else if (obj.bindType == "money") {
+            this.bindMoney(objID, objSeq);
+        }
+        else if (obj.bindType == "selector") {
+            this.bindSelector(objID, objSeq);
+        }
+        else if (obj.bindType == "slider") {
+            this.bindSlider(objID, objSeq);
+        }
+        else if (obj.bindType == "twinSlider") {
+            this.bindTwinSlider(objID, objSeq);
+        }
+        else if (obj.bindType == "switch") {
+            this.bindSwitch(objID, objSeq);
+        }
+        else if (obj.bindType == "segment") {
+            this.bindSegment(objID, objSeq);
+        }
+        else if (obj.bindType == "date") {
+            this.bindDate(objID, objSeq);
+        }
+        else if (obj.bindType == "twinDate") {
+            this.bindTwinDate(objID, objSeq);
+        }
+        else if (obj.bindType == "twinDateTime") {
+            this.bindTwinDate(objID, objSeq, "time");
+        }
+        else if (obj.bindType == "checked") {
+            this.bindChecked(objID, objSeq);
+        }
+        else if (obj.bindType == "pattern") {
+            this.bindPattern(objID, objSeq);
+        }
+    },
+    unbind: function (obj) {
+        var cfg = this.config;
+        var removeAnchorId;
+        var removeIdx;
+        axf.each(this.objects, function (idx, O) {
+            if (O.id != obj.id) {
+                // collect.push(this);
+            }
+            else {
+                if (O.isDel != true) {
+                    removeAnchorId = this.anchorID;
+                    removeIdx = idx;
+                }
+            }
+        });
+        
+        var objID = obj.id;
+        var obj = this.objects[removeIdx];
+        if (obj) {
+            if (obj.documentclickEvent) axdom(document).unbind("click.AXInput", obj.documentclickEvent);
+            var objDom = axdom("#" + objID);
+            objDom.unbind("keydown.AXInput");
+            objDom.unbind("keydown.AXInputCheck");
+            objDom.unbind("change.AXInput");
+            objDom.unbind("focus.AXInput");
+            objDom.unbind("blur.AXInput");
+        }
+        
+        if (removeAnchorId) {
+            this.objects[removeIdx].isDel = true;
+            axdom("#" + obj.id).removeAttr("data-axbind");
+            axdom("#" + removeAnchorId).remove();
+            
+            if (obj.bindSliderMouseMove) axdom(document.body).unbind("mousemove.AXInput", obj.bindSliderMouseMove);
+            if (obj.bindSliderMouseUp) axdom(document.body).unbind("mouseup.AXInput", obj.bindSliderMouseUp);
+            if (obj.bindSliderTouchMove) document.removeEventListener("touchmove.AXInput", obj.bindSliderTouchMove, false);
+            if (obj.bindSliderTouchEnd) document.removeEventListener("touchend.AXInput", obj.bindSliderTouchEnd, false);
+            if (obj.bindTwinSliderMouseMove) axdom(document.body).unbind("mousemove.AXInput", obj.bindTwinSliderMouseMove);
+            if (obj.bindTwinSliderMouseUp) axdom(document.body).unbind("mouseup.AXInput", obj.bindTwinSliderMouseUp);
+            
+            if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
+            }
+        }
+    },
+    bindInputDisabled: function (objID, _disabled) {
+        var findIndex = null;
+        for (var O, index = 0; (index < this.objects.length && (O = this.objects[index])); index++) {
+            if (O.id == objID && O.isDel != true) {
+                findIndex = index;
+                break;
+            }
+        }
+        ;
+        
+        if (findIndex == null) {
+            //trace("바인드 된 오브젝트를 찾을 수 없습니다.");
+            return;
+        }
+        else {
+            var obj = this.objects[findIndex];
+            var cfg = this.config;
+            
+            if (typeof _disabled == "boolean") {
+                axf.getId(objID).disabled = _disabled;
+            }
+            else {
+                axf.getId(objID).disabled = !AXgetId(objID).disabled;
+            }
+            
+            obj.bindAnchorTarget.data("disabled", axf.getId(objID).disabled);
+            if (axf.getId(objID).disabled) {
+                obj.bindAnchorTarget.addClass("disable");
+                obj.bindAnchorTarget.attr("disable", "disable");
+                
+                obj.bindAnchorTarget.find("a").bind("mousedown.AXInputDisabled", function (e) {
+                    //alert("block");
+                    var event = window.event || e;
+                    if (event.preventDefault) event.preventDefault();
+                    if (event.stopPropagation) event.stopPropagation();
+                    event.cancelBubble = true;
+                    return false;
+                });
+            }
+            else {
+                obj.bindAnchorTarget.removeClass("disable");
+                obj.bindAnchorTarget.removeAttr("disable");
+                
+                obj.bindAnchorTarget.find("a").unbind("mousedown.AXInputDisabled");
+            }
+        }
+    },
+    appendAnchor: function (objID, objSeq, bindType) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        //trace("appendAnchor");
+        axdom("#" + cfg.targetID + "_AX_" + objID).remove();
+        var anchorNode = axdom("<div id=\"" + cfg.targetID + "_AX_" + objID + "\" class=\"" + cfg.anchorClassName + "\" style=\"display:none;\"></div>");
+        var iobj = axdom("#" + objID);
+        iobj.attr("data-axbind", bindType);
+        iobj.after(anchorNode);
+        
+        obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+        obj.bindTarget = iobj;
+        
+        //var offSetParent = iobj.offsetParent();
+        var iobjPosition = iobj.position();
+        var l = iobjPosition.left, t = iobjPosition.top, w = 0, h = 0;
+        
+        var borderW = iobj.css("border-left-width").number();
+        var borderH = iobj.css("border-top-width").number();
+        var marginW = iobj.css("margin-left").number();
+        var marginH = iobj.css("margin-top").number();
+        l = l + marginW;
+
+        /*t = t;*/
+        w = iobj.outerWidth();
+        h = (iobj.css("box-sizing") == "content-box") ? iobj.outerHeight() : iobj.height();
+        
+        var css = {left: l, top: t, width: w, height: 0};
+
+        obj.bindAnchorTarget.css(css);
+        obj.bindAnchorTarget.data("height", h);
+        
+        var _this = this;
+        setTimeout(function () {
+            _this.alignAnchor(objID, objSeq);
+        });
+        setTimeout(function () {
+            _this.alignAnchor(objID, objSeq);
+        }, 500);
+    },
+    alignAnchor: function (objID, objSeq) {
+        var cfg = this.config;
+        
+        if (typeof objSeq == "undefined") {
+            for (var i = 0; i < this.objects.length; i++) {
+                if (this.objects[i].id == objID && !this.objects[i].isDel) {
+                    objSeq = i;
+                    break;
+                }
+            }
+        }
+        
+        var obj = this.objects[objSeq];
+        
+        if (!AXgetId(objID)) return;
+        /* 엘리먼트 존재 여부 확인 */
+        
+        if (!obj.bindTarget) {
+            obj.bindTarget = axdom("#" + objID);
+            obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+        }
+        
+        var iobjPosition = obj.bindTarget.position();
+        var l = iobjPosition.left, t = iobjPosition.top;
+        var w = obj.bindTarget.outerWidth();
+        var h = obj.bindTarget.outerHeight();
+        if (obj.bindTarget.css("display") == "none") {
+            h = obj.bindAnchorTarget.data("height");
+            var css = {width: w};
+        }
+        else {
+            var css = {left: l, top: t, width: w, height: 0};
+        }
+        //trace(css);
+        if (!obj.bindAnchorTarget) {
+            obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+            obj.bindTarget = axdom("#" + objID);
+        }
+        if (obj.bindAnchorTarget) {
+            obj.bindAnchorTarget.css(css);
+            obj.bindAnchorTarget.data("height", h);
+        }
+        
+        if (obj.bindType == "placeHolder") {
+            
+        }
+        else if (obj.bindType == "search") {
+            
+        }
+        else if (obj.bindType == "number") {
+            var UPh = parseInt((h - 2) / 2) - 1;
+            var DNh = parseInt((h - 2) / 2) - 2;
+            var handleWidth = h - 2;
+            if (handleWidth > 20) handleWidth = 20;
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_HandleContainer").css({width: handleWidth, height: h - 2});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_increase").css({width: handleWidth, height: UPh});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_decrease").css({
+                top: (UPh + 1),
+                width: handleWidth,
+                height: DNh
+            });
+            //trace({top:(UPh+1), width:h, height:DNh});
+        }
+        else if (obj.bindType == "money") {
+            
+        }
+        else if (obj.bindType == "selector") {
+            h -= 2;
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_HandleContainer").css({width: h, height: h});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").css({width: h, height: h});
+            
+            if (obj.config.finder) {
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_FinderContainer").css({right: h, width: h, height: h});
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Finder").css({width: h, height: h});
+            }
+        }
+        else if (obj.bindType == "slider") {
+            
+        }
+        else if (obj.bindType == "twinSlider") {
+            
+        }
+        else if (obj.bindType == "switch") {
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox").css({width: w, height: h});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay").css({height: h, "line-height": h + "px"});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchHandle").css({height: h});
+            obj.bindAnchorTarget.css({height: h});
+        }
+        else if (obj.bindType == "segment") {
+            obj.bindAnchorTarget.css({
+                height: h + "px",
+                "position": "relative",
+                display: "inline-block",
+                left: "auto",
+                top: "auto"
+            });
+            var borderTop = obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css("border-top-width").number();
+            var borderBot = obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css("border-bottom-width").number();
+            obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css({
+                height: (obj.bindAnchorTarget.innerHeight() - borderTop - borderBot) + "px",
+                "line-height": (obj.bindAnchorTarget.innerHeight() - borderTop - borderBot) + "px"
+            });
+        }
+        else if (obj.bindType == "date") {
+            var handleWidth = h - 2;
+            if (handleWidth > 20) handleWidth = 20;
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").css({width: h, height: h});
+        }
+        else if (obj.bindType == "twinDate") {
+            
+        }
+        else if (obj.bindType == "twinDateTime") {
+            
+        }
+        else if (obj.bindType == "checked") {
+            
+        }
+    },
+    bindSetValue: function (objID, value) {
+        var cfg = this.config;
+        var objSeq = null;
+        axf.each(this.objects, function (index, O) {
+            if (O.id == objID) {
+                objSeq = index;
+                return false;
+            }
+        });
+        if (objSeq == null) {
+            //trace("바인드 된 오브젝트를 찾을 수 없습니다.");
+            return;
+        }
+        else {
+            var obj = this.objects[objSeq];
+            
+            if (obj.bindType == "search") {
+                //	this.bindSearch(objID, objSeq);
+            }
+            else if (obj.bindType == "number") {
+                //	this.bindNumber(objID, objSeq);
+            }
+            else if (obj.bindType == "money") {
+                //	this.bindMoney(objID, objSeq);
+            }
+            else if (obj.bindType == "selector") {
+                this.bindSelectorSetValue(objID, objSeq, value);
+            }
+            else if (obj.bindType == "slider") {
+                this.bindSliderSetValue(objID, objSeq, value);
+            }
+            else if (obj.bindType == "twinSlider") {
+                this.bindTwinSliderSetValue(objID, objSeq, value);
+            }
+            else if (obj.bindType == "switch") {
+                this.bindSwitchSetValue(objID, objSeq, value);
+            }
+            else if (obj.bindType == "segment") {
+                this.bindSegmentSetValue(objID, objSeq, value);
+            }
+            else if (obj.bindType == "date") {
+                //	this.bindDate(objID, objSeq);
+            }
+            else if (obj.bindType == "twinDate") {
+                //	this.bindTwinDate(objID, objSeq);
+            }
+        }
+    },
+    
+    // onlyHolder ~~~~~~~~~~~~~~~
+    bindPlaceHolder: function (objID, objSeq) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        // 브라우저 체크
+        if (AXUtil.browser.name != "ie") return;
+        if (AXUtil.browser.name == "ie" && AXUtil.browser.version > 9) return;
+        
+        var w = axdom("#" + cfg.targetID + "_AX_" + objID).width();
+        var h = axdom("#" + cfg.targetID + "_AX_" + objID).data("height");
+        
+        var placeholder = axdom("#" + objID).attr("placeholder");
+        if (placeholder == "undefined") placeholder = "";
+        
+        var po = ["<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_PlaceHolder\" class=\"" + cfg.anchorPlaceHolderClassName + "\" style=\"left:0px;top:0px;width:" + w + "px;height:" + h + "px;line-height:" + h + "px;\">" + placeholder + "</a>"];
+        //append to anchor
+        axdom("#" + cfg.targetID + "_AX_" + objID).append(po.join(''));
+        //bind handle
+        var bindPlaceHolderKeyup = this.bindPlaceHolderSyncAnchor.bind(this);
+        axdom("#" + objID).unbind("keyup.AXInput").bind("keyup.AXInput", function () {
+            bindPlaceHolderKeyup(objID, objSeq);
+        });
+        bindPlaceHolderKeyup(objID, objSeq);
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_PlaceHolder").unbind("click.AXInput").bind("click.AXInput", function () {
+            //axdom("#"+objID).val("");
+            axdom("#" + objID).focus();
+            bindPlaceHolderKeyup(objID, objSeq);
+        });
+        //------------------------------------
+    },
+    bindPlaceHolderSyncAnchor: function (objID, objSeq) {
+        var cfg = this.config;
+        if (axdom("#" + objID).val().trim() == "") {
+            //if(AXgetId(cfg.targetID+"_AX_"+objID).style.display == "none") 
+            axdom("#" + cfg.targetID + "_AX_" + objID).show();
+        }
+        else {
+            //if(AXgetId(cfg.targetID+"_AX_"+objID).style.display != "none") 
+            axdom("#" + cfg.targetID + "_AX_" + objID).hide();
+        }
+    },
+    // onlyHolder ~~~~~~~~~~~~~~
+    
+    // search
+    bindSearch: function (objID, objSeq) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        var w = axdom("#" + cfg.targetID + "_AX_" + objID).width();
+        var h = axdom("#" + cfg.targetID + "_AX_" + objID).data("height");
+        var placeholder = axdom("#" + objID).attr("placeholder");
+        if (placeholder == undefined) placeholder = "";
+        var po = [];
+        
+        if (AXUtil.browser.name == "ie" && AXUtil.browser.version < 10 && placeholder != "") {
+            po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_PlaceHolder\" class=\"" + cfg.anchorPlaceHolderClassName + "\" ");
+            po.push(" style=\"left:0px;top:0px;width:" + w + "px;height:" + h + "px;line-height:" + h + "px;\">" + placeholder + "</a>");
+        }
+        po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_Search\" class=\"" + cfg.anchorSearchClassName + "\" ");
+        po.push(" style=\"right:0px;top:0px;width:" + h + "px;height:" + h + "px;\">Search</a>");
+        //append to anchor
+        axdom("#" + cfg.targetID + "_AX_" + objID).append(po.join(''));
+        //bind handle
+        var bindSearchKeyup = this.bindSearchSyncAnchor.bind(this);
+        axdom("#" + objID).unbind("keydown.AXInput").bind("keydown.AXInput", function () {
+            bindSearchKeyup(objID, objSeq);
+        });
+        bindSearchKeyup(objID, objSeq);
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Search").unbind("click.AXInput").bind("click.AXInput", function () {
+            axdom("#" + objID).val("");
+            axdom("#" + objID).focus();
+            bindSearchKeyup(objID, objSeq);
+        });
+        //------------------------------------
+    },
+    bindSearchSyncAnchor: function (objID, objSeq) {
+        var cfg = this.config;
+        axdom("#" + cfg.targetID + "_AX_" + objID).show();
+        
+        if (axdom("#" + objID).val() == "") {
+            //if(AXgetId(cfg.targetID+"_AX_"+objID).style.display != "none") axdom("#"+cfg.targetID+"_AX_"+objID).hide();
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Search").hide();
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_PlaceHolder").show();
+        }
+        else {
+            //if(AXgetId(cfg.targetID+"_AX_"+objID).style.display == "none") axdom("#"+cfg.targetID+"_AX_"+objID).fadeIn();
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Search").show();
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_PlaceHolder").hide();
+        }
+    },
+    
+    // number
+    bindNumber: function (objID, objSeq) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        
+        var h = obj.bindAnchorTarget.data("height");
+        //trace(objID+"//"+h);
+        var po = [];
+        var UPh = parseInt((h - 2) / 2) - 1;
+        var DNh = parseInt((h - 2) / 2) - 2;
+        //trace(UPh+"//"+DNh);
+        var handleWidth = h - 2;
+        if (handleWidth > 20) handleWidth = 20;
+        
+        po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_HandleContainer\" class=\"" + cfg.anchorNumberContainerClassName + "\" style=\"right:0px;top:0px;width:" + handleWidth + "px;height:" + (h - 2) + "px;\" onselectstart=\"return false;\">");
+        po.push("	<a id=\"" + cfg.targetID + "_AX_" + objID + "_AX_increase\" class=\"" + cfg.anchorIncreaseClassName + "\" style=\"right:0px;top:0px;width:" + handleWidth + "px;height:" + UPh + "px;\">increase</a>");
+        po.push("	<a id=\"" + cfg.targetID + "_AX_" + objID + "_AX_decrease\" class=\"" + cfg.anchorDecreaseClassName + "\" style=\"right:0px;top:" + (UPh + 1) + "px;width:" + handleWidth + "px;height:" + DNh + "px;\">decrease</a>");
+        po.push("</div>");
+        obj.bindAnchorTarget.append(po.join(''));
+        obj.bindAnchorTarget.show();
+        //alert("show");
+        
+        var bindNumberAdd = this.bindNumberAdd.bind(this);
+        var bindNumberCheck = this.bindNumberCheck.bind(this);
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_increase").unbind("mousedown.AXInput").bind("mousedown.AXInput", function (event) {
+            bindNumberAdd(objID, 1, objSeq);
+            bindNumberCheck(objID, objSeq, event);
+        });
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_decrease").unbind("mousedown.AXInput").bind("mousedown.AXInput", function (event) {
+            bindNumberAdd(objID, -1, objSeq);
+            bindNumberCheck(objID, objSeq, event);
+        });
+        /*
+         obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function (event) {
+         bindNumberCheck(objID, objSeq, event);
+         });
+         */
+        obj.bindTarget.unbind("keydown.AXInput").bind("keydown.AXInput", function (event) {
+            if (event.keyCode == AXUtil.Event.KEY_UP) bindNumberAdd(objID, 1, objSeq);
+            else if (event.keyCode == AXUtil.Event.KEY_DOWN) bindNumberAdd(objID, -1, objSeq);
+            //else bindNumberCheck(objID, objSeq, event);
+        });
+        obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function (event) {
+            bindNumberCheck(objID, objSeq, event);
+        });
+    },
+    bindNumberAdd: function (objID, adder, objSeq) {
+        var obj = this.objects[objSeq];
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        var maxval = obj.config.max;
+        var minval = obj.config.min;
+        var nval = obj.bindTarget.val().number();
+        if (adder > 0) {
+            //max 를 초과 하는지 확인
+            if ((nval + adder) < minval) nval = minval;
+            if (maxval != undefined && maxval != null) {
+                if ((nval + adder) > maxval) return;
+            }
+        }
+        else {
+            //min 를 초과 하는지 확인
+            if (minval != undefined && minval != null) {
+                if ((nval + adder) < minval) return;
+            }
+        }
+        obj.bindTarget.val(nval + adder);
+        obj.bindTarget.change();
+    },
+    bindNumberCheck: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        if (this.numbercheck_obs) clearTimeout(this.numbercheck_obs);
+        this.numbercheck_obs = setTimeout(function () {
+            var maxval = obj.config.max;
+            var minval = obj.config.min;
+            var nval;
+            if (obj.bindTarget.val() == "") {
+                if (minval != undefined && minval != null) {
+                    nval = minval;
+                }
+                else {
+                    nval = obj.bindTarget.val().number();
+                }
+            }
+            else {
+                nval = obj.bindTarget.val().number();
+            }
+            
+            if (maxval != undefined && maxval != null) {
+                if ((nval) > maxval) {
+                    obj.bindTarget.val("");
+                    try {
+                        this.msgAlert("설정된 최대값을 넘어서는 입력입니다.");
+                    } catch (e) {
+                    }
+                }
+                else {
+                    if (minval != undefined && minval != null) {
+                        if ((nval) < minval) {
+                            obj.bindTarget.val("");
+                            try {
+                                this.msgAlert("설정된 최소값보다 작은 입력입니다.");
+                            } catch (e) {
+                            }
+                        }
+                        else {
+                            obj.bindTarget.val(nval);
+                        }
+                    }
+                }
+            }
+            else {
+                if (minval != undefined && minval != null) {
+                    if ((nval) < minval) {
+                        obj.bindTarget.val("");
+                        try {
+                            this.msgAlert("설정된 최소값보다 작은 입력입니다.");
+                        } catch (e) {
+                        }
+                    }
+                }
+                else {
+                    obj.bindTarget.val(nval);
+                }
+            }
+            obj.bindTarget.trigger("change");
+            
+            if (event && event.type == "mousedown") {
+                obj.bindTarget.setCaret();
+            }
+            
+            if (obj.config.onChange) {
+                obj.config.onChange.call({objID: objID, objSeq: objSeq, value: axdom("#" + objID).val()});
+            }
+            if (obj.config.onchange) {
+                obj.config.onchange.call({objID: objID, objSeq: objSeq, value: axdom("#" + objID).val()});
+            }
+        }, 1);
+        
+    },
+    
+    // money
+    bindMoney: function (objID, objSeq) {
+        var obj = this.objects[objSeq];
+        obj.bindTarget.css({"text-align": "right"});
+        var bindMoneyCheck = this.bindMoneyCheck.bind(this);
+        var val = obj.bindTarget.val().trim();
+        if (val != "") val = obj.bindTarget.val().number().money();
+        obj.bindTarget.val(val);
+        
+        obj.bindTarget.unbind("keydown.AXInput").bind("keydown.AXInput", function (event) {
+            if ((event.ctrlKey || event.metaKey)) {
+                obj.bindTarget.data("ctrlKey", "T");
+            }
+            else {
+                obj.bindTarget.data("ctrlKey", "F");
+            }
+        });
+        obj.bindTarget.unbind("keyup.AXInput").bind("keyup.AXInput", function (event) {
+            var elem = obj.bindTarget.get(0);
+            
+            if (elem.type != "number") {
+                event = window.event || event;
+                
+                // ignore tab & shift key 스킵 & ctrl
+                if (
+                    (!event.keyCode || event.keyCode == 9 || event.keyCode == 16 || event.keyCode == 17) ||
+                    ((obj.bindTarget.data("ctrlKey") == "T") && (event.keyCode == 65 || event.keyCode == 91))
+                )
+                {
+                    jQuery.removeData(obj.bindTarget.get(0), "focusPosition");
+                }
+                else {
+                    var elemFocusPosition;
+                    if ('selectionStart' in elem) {
+                        // Standard-compliant browsers
+                        elemFocusPosition = elem.selectionStart;
+                    }
+                    else if (document.selection) {
+                        // IE
+                        //elem.focus();
+                        var sel = document.selection.createRange();
+                        var selLen = document.selection.createRange().text.length;
+                        sel.moveStart('character', -elem.value.length);
+                        elemFocusPosition = sel.text.length - selLen;
+                    }
+                    //trace(elemFocusPosition);
+                    // 계산된 포커스 위치 앞에 쉼표 갯수를 구합니다.
+                    
+                    obj.bindTarget.data("focusPosition", elemFocusPosition);
+                    obj.bindTarget.data("prevLen", elem.value.length);
+                    
+                    if (event.keyCode != AXUtil.Event.KEY_DELETE && event.keyCode != AXUtil.Event.KEY_BACKSPACE && event.keyCode != AXUtil.Event.KEY_LEFT && event.keyCode != AXUtil.Event.KEY_RIGHT) {
+                        bindMoneyCheck(objID, objSeq, "keyup");
+                    }
+                    else if (event.keyCode == AXUtil.Event.KEY_DELETE || event.keyCode == AXUtil.Event.KEY_BACKSPACE) {
+                        bindMoneyCheck(objID, objSeq, "keyup");
+                    }
+                }
+            }
+        });
+        
+        /* blur 이벤트 처리 이상 작동으로 제거 - 15-01-16
+         obj.bindTarget.unbind("change.AXInput").bind("change.AXInput", function (event) {
+         if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable"){
+         return false;
+         }
+         if(event.target.type != "number") {
+         bindMoneyCheck(objID, objSeq, "change");
+         }
+         });
+         */
+    },
+    bindMoneyCheck: function (objID, objSeq, eventType) {
+        var obj = this.objects[objSeq];
+        var maxval = obj.config.max;
+        var minval = obj.config.min;
+        var nval;
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
+        
+        if (obj.bindTarget.val() == "") {
+            if (minval != undefined && minval != null) {
+                nval = minval;
+            }
+            else {
+                nval = "";
+            }
+        }
+        else {
+            if (obj.bindTarget.val() != "-") {
+                nval = obj.bindTarget.val().number();
+            }
+            else {
+                nval = "";
+            }
+        }
+        if (maxval != undefined && maxval != null) {
+            if ((nval) > maxval) {
+                obj.bindTarget.val(maxval.money());
+                try {
+                    if (eventType == "change") this.msgAlert("설정된 최대값{" + maxval.number().money() + "} 을 넘어서는 입력입니다.");
+                } catch (e) {
+                }
+            }
+            else {
+                if (minval != undefined && minval != null) {
+                    if ((nval) < minval) {
+                        obj.bindTarget.val(minval.money());
+                        try {
+                            if (eventType == "change") this.msgAlert("설정된 최소값{" + minval.number().money() + "}보다 작은 입력입니다.");
+                        } catch (e) {
+                        }
+                    }
+                    else {
+                        obj.bindTarget.val(nval.money());
+                    }
+                }
+                else {
+                    obj.bindTarget.val(nval.money());
+                }
+            }
+        }
+        else {
+            if (minval != undefined && minval != null) {
+                if ((nval) < minval) {
+                    obj.bindTarget.val(minval.money());
+                    try {
+                        if (eventType == "change") this.msgAlert("설정된 최소값{" + minval.number().money() + "}보다 작은 입력입니다.");
+                    } catch (e) {
+                    }
+                }
+                else {
+                    if (nval != "" && nval != "-") obj.bindTarget.val(nval.money());
+                }
+            }
+            else {
+                if (nval != "" && nval != "-") obj.bindTarget.val(nval.money());
+            }
+        }
+        obj.bindTarget.trigger("change");
+        
+        if (!axf.isEmpty(obj.bindTarget.data("focusPosition"))) {
+            obj.bindTarget.setCaret(obj.bindTarget.data("focusPosition").number() + ( obj.bindTarget.val().length - obj.bindTarget.data("prevLen") ));
+        }
+        
+        if (obj.config.onChange) {
+            obj.config.onChange.call({objID: objID, objSeq: objSeq, value: obj.bindTarget.val().number()});
+        }
+        
+        if (eventType == "change") {
+            if (obj.bindTarget.val() == "-") obj.bindTarget.val('');
+        }
+    },
+    
+    // selector
+    bindSelector: function (objID, objSeq) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
+        
+        if (!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        
+        obj.bindTarget.data("val", obj.bindTarget.val());
+        
+        var reserveKeys = jQuery.extend({}, cfg.reserveKeys);
+        if (typeof obj.config.reserveKeys == "undefined") obj.config.reserveKeys = {};
+        obj.config.reserveKeys = jQuery.extend(reserveKeys, obj.config.reserveKeys, true);
+        
+        var h = obj.bindAnchorTarget.data("height") - 2;
+        var po = [];
+        po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_HandleContainer\" class=\"bindSelectorNodes " + cfg.anchorSelectorHandleContainerClassName + "\" style=\"right:0px;top:0px;width:" + h + "px;height:" + h + "px;\">");
+        po.push("	<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_Handle\" class=\"bindSelectorNodes " + cfg.anchorSelectorHandleClassName + "\" style=\"right:0px;top:0px;width:" + h + "px;height:" + h + "px;\">expand</a>");
+        po.push("</div>");
+        if (obj.config.finder) {
+            po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_FinderContainer\" class=\"bindSelectorNodes " + cfg.anchorSelectorFinderContainerClassName + "\" style=\"right:" + h + "px;top:0px;width:" + h + "px;height:" + h + "px;\">");
+            po.push("	<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_Finder\" class=\"bindSelectorNodes " + cfg.anchorSelectorFinderClassName + "\" style=\"right:0px;top:0px;width:" + h + "px;height:" + h + "px;\">finder</a>");
+            po.push("</div>");
+        }
+        
+        obj.bindAnchorTarget.append(po.join(''));
+        obj.bindAnchorTarget.show();
+        
+        var bindSelectorExpand = this.bindSelectorExpand.bind(this);
+        var bindSelectorClose = this.bindSelectorClose.bind(this);
+        
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").unbind("click.AXInput").bind("click.AXInput", function (event) {
+            if (!AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+                axdom("#" + objID).focus();
+            }
+            else {
+                //bindSelectorExpand(objID, objSeq, true, event);
+                bindSelectorClose(objID, objSeq, event);
+            }
+        });
+        obj.bindTarget.unbind("focus.AXInput").bind("focus.AXInput", function (event) {
+            if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+                return false;
+            }
+            try {
+                this.select();
+            } catch (e) {
+            }
+            if (!AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+                bindSelectorExpand(objID, objSeq, false, event);
+            }
+        });
+
+        obj.bindTarget.unbind("keydown.AXInputCheck").bind("keydown.AXInputCheck", function (event) {
+            if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+                return false;
+            }
+            if (!AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+                bindSelectorExpand(objID, objSeq, false, event);
+            }
+        });
+
+        
+        if (obj.config.finder) {
+            if (obj.config.finder.onclick) {
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Finder").unbind("click.AXInput").bind("click.AXInput", function (event) {
+                    if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+                        return false;
+                    }
+                    obj.config.finder.onclick.call({
+                        targetID: objID,
+                        value: axdom("#" + objID).val()
+                    }, objID);
+                    bindSelectorClose(objID, objSeq, event);
+                });
+            }
+        }
+        
+        /*
+         var bindSelectorInputChange = this.bindSelectorInputChange.bind(this);
+         obj.inputChange = function(event){
+         bindSelectorInputChange(objID, objSeq, event);
+         }
+         axdom("#"+objID).bind("change.AXInput", obj.inputChange);
+         */
+    },
+    bindSelectorExpand: function (objID, objSeq, isToggle, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        var reserveKeys = obj.config.reserveKeys;
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        obj.bindTarget.data("val", obj.bindTarget.val().enc());
+        
+        //alert(obj.bindTarget.data("val").end());
+        
+        if (this.opendExpandBox) {
+            this.bindSelectorClose(this.opendExpandBox.objID, this.opendExpandBox.objSeq, event); // 셀럭터 외의 영역이 므로 닫기
+        }
+        
+        var jqueryTargetObjID = axdom("#" + cfg.targetID + "_AX_" + objID);
+        //trace({objID:objID, objSeq:objSeq});
+        
+        if (axdom("#" + cfg.targetID + "_AX_" + objID).data("blurEvent")) {
+            //blur event 발생 상태 메소드 작동 중지
+            return;
+        }
+        
+        //Selector Option box Expand
+        if (isToggle) { // 활성화 여부가 토글 이면
+            if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
+                //비활성 처리후 메소드 종료
+                return;
+            }
+        }
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 활성화 전에 개체 삭제 처리
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
+        //Expand Box 생성 구문 작성
+        var anchorWidth = jqueryTargetObjID.width() - 2; // anchor width
+        var anchorHeight = jqueryTargetObjID.data("height") - 1;
+        var styles = [];
+        styles.push("top:" + anchorHeight + "px");
+        styles.push("width:" + (obj.config.anchorWidth || anchorWidth) + "px");
+        styles.push("z-index:5100");
+        
+        var po = [];
+        po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandBox\" class=\"bindSelectorNodes " + cfg.anchorSelectorExpandBoxClassName + "\" style=\"" + styles.join(";") + "\">");
+        po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandScroll\" class=\"bindSelectorNodes " + cfg.anchorSelectorExpandScrollClassName + "\">");
+        po.push("	<div class=\"AXLoadingSmall bindSelectorNodes\"></div>");
+        po.push("</div>");
+        po.push("</div>");
+        axdom(document.body).append(po.join(''));
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").addClass("on");
+        
+        var expandBox = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox");
+        if (obj.config.positionFixed) {
+            expandBox.css({"position": "fixed"});
+        }
+        var expBoxHeight = expandBox.outerHeight();
+        var offset = (obj.config.positionFixed) ? jqueryTargetObjID.position() : jqueryTargetObjID.offset();
+        if (obj.config.position) {
+            offset = jqueryTargetObjID.offset();
+            if (obj.config.position.top != undefined) {
+                offset.top = obj.config.position.top;
+            }
+        }
+        var css = {};
+        css.top = offset.top + anchorHeight;
+        if (obj.config.direction == "bottom") {
+            css.top -= expandBox.outerHeight();
+        }
+        
+        css.left = offset.left;
+        expandBox.css(css);
+        
+        this.opendExpandBox = {objID: objID, objSeq: objSeq};
+        
+        //_AX_expandBox set options
+        //trace(obj.config.ajaxUrl);
+        if (obj.config.onsearch) {
+            this.bindSelectorKeyupChargingUp(objID, objSeq, event);
+        }
+        else if (obj.config.ajaxUrl) {
+            // AJAX호출
+            this.bindSelectorKeyupChargingUp(objID, objSeq, event);
+        }
+        else {
+            if (!obj.config.options) {
+                trace("options 항목이 없어 bind selector 를 완성 할 수 없습니다.");
+                return;
+            }
+            this.bindSelectorSetOptions(objID, objSeq);
+            this.bindSelectorKeyupChargingUp(objID, objSeq, event);
+        }
+        
+        var bindSelectorOptionsClick = this.bindSelectorOptionsClick.bind(this);
+        obj.documentclickEvent = function (event) {
+            bindSelectorOptionsClick(objID, objSeq, event);
+        };
+        axdom(document).unbind("click.AXInput").bind("click.AXInput", obj.documentclickEvent);
+        
+    },
+    bindSelectorBlur: function (objID) {
+        var cfg = this.config;
+        var objSeq = null;
+        axf.each(this.objects, function (idx, O) {
+            //if (this.id == objID && this.isDel == true) objSeq = idx;
+            if (this.id == objID) {
+                objSeq = idx;
+            }
+        });
+        if (objSeq != null) this.bindSelectorClose(objID, objSeq);
+    },
+    bindSelectorClose: function (objID, objSeq, event, originChangeCall) {
+        
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        var reserveKeys = obj.config.reserveKeys;
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        
+        if (obj.inProgress) AXReqAbort(); // AJAX 호출 중지 하기
+        
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        
+        if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+            
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
+            
+            //비활성 처리후 메소드 종료
+            
+            axdom(document).unbind("click.AXInput");
+            obj.bindTarget.unbind("keydown.AXInput");
+            obj.bindTarget.unbind("change.AXInput");
+            
+            if (obj.bindTarget.data("val") == obj.bindTarget.val().enc() && !obj.config.isSelectorClick) {
+                //return obj.bindTarget.val();
+            }
+            
+            if (obj.config.isChangedSelect) {
+                
+                var myVal = "";
+                if (obj.config.selectedObject) {
+                    myVal = obj.config.selectedObject[reserveKeys.optionText];
+                }
+                
+                if (obj.config.appendable) {
+                    //trace(myVal);
+                    if (myVal != "") axdom("#" + objID).val(myVal);
+                }
+                else {
+                    axdom("#" + objID).val(myVal);
+                }
+                
+                if (obj.config.onChange) {
+                    var sendObj = {
+                        targetID: objID,
+                        options: obj.config.options,
+                        selectedIndex: obj.config.selectedIndex,
+                        selectedOption: obj.config.selectedObject
+                    }
+                    if (obj.config.onChange) obj.config.onChange.call(sendObj);
+                    else if (obj.config.onchange) obj.config.onchange.call(sendObj);
+                }
+                obj.config.isChangedSelect = false;
+                if (originChangeCall) obj.bindTarget.change();
+            }
+            //trace(obj.config.selectedObject);
+            if (obj.config.selectedObject) this.bindSelectorInputChange(objID, objSeq);
+            else {
+                if (!obj.config.appendable) {
+                    if (!obj.config.selectedObject && !obj.inProgress) axdom("#" + objID).val("");
+                }
+            }
+            //if(event) event.stopPropagation(); // disableevent
+            //return;
+        }
+    },
+    bindSelectorSetOptions: function (objID, objSeq) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var reserveKeys = obj.config.reserveKeys;
+        var maxHeight = obj.config.maxHeight || 130;
+        var optionPrintLength = obj.config.optionPrintLength || 100;
+        if (!obj.config.options) return;
+        
+        var expandBox = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox");
+        var jqueryTargetObjID = axdom("#" + cfg.targetID + "_AX_" + objID);
+        var po = [];
+        axf.each(obj.config.options, function (index, O) {
+            if (!isNaN(optionPrintLength)) {
+                if (index > optionPrintLength - 1) return false;
+            }
+            
+            // options의 optionText, optionDesc의 참조값을 디코딩해서 디코딩은 한 번만 사용하도록 변경
+            O[reserveKeys.optionText] = (O[reserveKeys.optionText] ? O[reserveKeys.optionText].dec() : "");
+            O.desc = (O.desc ? O.desc.dec() : "");
+            O.optionDesc = (O.optionDesc ? O.optionDesc.dec() : "");
+            
+            var descStr = O.desc || O.optionDesc;
+            if (descStr != "") descStr = "<span>" + descStr + "</span>";
+            po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_" + index + "_AX_option\" class=\"bindSelectorNodes\">" + O[reserveKeys.optionText] + descStr + "</a>");
+        });
+        if (po.length == 0) {
+            var selectorOptionEmpty = "";
+            if (AXConfig.AXInput) selectorOptionEmpty = (AXConfig.AXInput.selectorOptionEmpty || "empty options");
+            po.push("<div class=\"empty\">" + selectorOptionEmpty + "</div>");
+        }
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandScroll").html(po.join(''));
+        obj.config.isSelectorClick = false;
+        
+        var expandScrollHeight = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandScroll").outerHeight();
+        if (expandScrollHeight > maxHeight) expandScrollHeight = maxHeight;
+        expandBox.css({height: expandScrollHeight + "px"});
+        
+        var bindSelectorOptionsClick = this.bindSelectorOptionsClick.bind(this);
+        obj.documentclickEvent = function (event) {
+            bindSelectorOptionsClick(objID, objSeq, event);
+        };
+        var bindSelectorKeyup = this.bindSelectorKeyup.bind(this);
+        obj.inputKeyup = function (event) {
+            bindSelectorKeyup(objID, objSeq, event);
+        };
+        
+        axdom(document).unbind("click.AXInput").bind("click.AXInput", obj.documentclickEvent);
+        axdom("#" + objID).unbind("keydown.AXInput").bind("keydown.AXInput", obj.inputKeyup);
+        
+        if (obj.myUIScroll) obj.myUIScroll.unbind();
+        obj.myUIScroll = new AXScroll();
+        obj.myUIScroll.setConfig({
+            CT_className: "AXScrollSmall",
+            targetID: cfg.targetID + "_AX_" + objID + "_AX_expandBox",
+            scrollID: cfg.targetID + "_AX_" + objID + "_AX_expandScroll",
+            touchDirection: false
+        });
+        obj.myUIScroll.scrollTop(0);
+        
+        if (obj.config.selectedIndex != undefined) {
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + obj.config.selectedIndex + "_AX_option").addClass("on");
+            obj.myUIScroll.focusElement(cfg.targetID + "_AX_" + objID + "_AX_" + obj.config.selectedIndex + "_AX_option"); //focus
+            obj.config.focusedIndex = obj.config.selectedIndex;
+        }
+        
+        if (obj.config.direction == "bottom") {
+            var offset = (obj.config.positionFixed) ? jqueryTargetObjID.position() : jqueryTargetObjID.offset();
+            if (obj.config.position) {
+                offset = jqueryTargetObjID.offset();
+                if (obj.config.position.top != undefined) {
+                    offset.top = obj.config.position.top;
+                }
+            }
+            expandBox.css({top: offset.top - expandBox.outerHeight()});
+        }
+    },
+    bindSelectorOptionsClick: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var reserveKeys = obj.config.reserveKeys;
+        var eid = event.target.id.split(/_AX_/g);
+        var eventTarget = event.target;
+        
+        var myTarget = this.getEventTarget({
+            evt: eventTarget,
+            until: function (evt, evtIDs) {
+                return (evt.parentNode.tagName == "body") ? true : false;
+            },
+            find: function (evt, evtIDs) {
+                if (evt.id == "") return false;
+                if (evt.id == objID || axdom(evt).hasClass("bindSelectorNodes")) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
+        var isSelectorClick = (myTarget) ? true : false;
+        if (!isSelectorClick) {
+            this.bindSelectorClose(objID, objSeq, event); // 셀럭터 외의 영역이 므로 닫기
+        }
+        else {
+            eid = myTarget.id.split(/_AX_/g);
+            
+            if (eid.last() == "option") {
+                var selectedIndex = eid[eid.length - 2];
+                obj.config.selectedIndex = selectedIndex;
+                obj.config.focusedIndex = selectedIndex;
+                obj.config.selectedObject = obj.config.options[selectedIndex];
+                obj.config.isChangedSelect = true;
+                obj.config.isSelectorClick = true;
+                this.bindSelectorClose(objID, objSeq, event, "bindTarget_onchange"); // 값 전달 후 닫기
+            }
+        }
+    },
+    bindSelectorKeyup: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq], _this = this;
+        var cfg = this.config;
+        var reserveKeys = obj.config.reserveKeys;
+        if (obj.inProgress) {
+            obj.inProgressReACT = true;
+            return;
+        }
+        
+        if (event.keyCode == AXUtil.Event.KEY_TAB) {
+            this.bindSelectorClose(objID, objSeq, event); // 닫기
+            this.stopEvent(event);
+            return;
+        }
+        
+        if (event.keyCode == AXUtil.Event.KEY_UP) {
+            if (!obj.config.options) return;
+            if (obj.config.options.length == 0) return;
+            var focusIndex = obj.config.options.length - 1;
+            if (obj.config.focusedIndex == undefined || obj.config.focusedIndex == 0) {
+                //trace(obj.config.selectedIndex+"//"+focusIndex);
+            }
+            else {
+                focusIndex = (obj.config.focusedIndex) - 1;
+                //trace(obj.config.selectedIndex+"//"+focusIndex);
+            }
+            this.bindSelectorSelect(objID, objSeq, focusIndex);
+            this.stopEvent(event);
+        }
+        else if (event.keyCode == AXUtil.Event.KEY_DOWN) {
+            if (!obj.config.options) return;
+            if (obj.config.options.length == 0) return;
+            var focusIndex = 0;
+            if (obj.config.focusedIndex == undefined || obj.config.focusedIndex == obj.config.options.length - 1) {
+                //trace(obj.config.selectedIndex+"//"+focusIndex);
+            }
+            else {
+                focusIndex = (obj.config.focusedIndex).number() + 1;
+                //trace(obj.config.selectedIndex+"//"+focusIndex);
+            }
+            this.bindSelectorSelect(objID, objSeq, focusIndex);
+            this.stopEvent(event);
+        }
+        else if (event.keyCode == AXUtil.Event.KEY_RETURN) {
+            
+            if (obj.config.focusedIndex == null) {
+                /*axdom("#" + objID).blur();*/
+                _this.bindSelectorClose(objID, objSeq, event); // 닫기
+            }
+            else {
+                //trace(obj.config.focusedIndex);
+                obj.config.selectedObject = obj.config.options[obj.config.focusedIndex];
+                obj.config.selectedIndex = obj.config.focusedIndex;
+                obj.config.isChangedSelect = true;
+                axdom("#" + objID).val(obj.config.selectedObject[reserveKeys.optionText]);
+                /*axdom("#" + objID).blur();*/
+                _this.bindSelectorClose(objID, objSeq, event, "bindTarget_onchange"); // 닫기
+            }
+            this.stopEvent(event);
+        }
+        else {
+            //1. 반복입력 제어 하기
+            var bindSelectorKeyupChargingUp = this.bindSelectorKeyupChargingUp.bind(this);
+            if (obj.Observer) clearTimeout(obj.Observer); //명령 제거
+            obj.Observer = setTimeout(function () {
+                bindSelectorKeyupChargingUp(objID, objSeq, event);
+            }, 500);
+        }
+    },
+    bindSelectorKeyupChargingUp: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var reserveKeys = obj.config.reserveKeys;
+        var objVal = axdom("#" + objID).val();
+        var bindSelectorSearch = this.bindSelectorSearch.bind(this);
+        https://github.com/axisj/axisj/issues/781
+        if (obj.config.onsearch) {
+            
+            var res = obj.config.onsearch.call(
+                {
+                    id: objID,
+                    value: objVal
+                },
+                objID,
+                objVal,
+                (function (res) {
+                    obj.config.options = res.options;
+                    obj.config.focusedIndex = null;
+                    this.bindSelectorSetOptions(objID, objSeq);
+                    this.bindSelectorSearch(objID, objSeq, objVal);
+                }).bind(this)
+            );
+            
+            /*
+             callBack 함수를 이용하는 경우와 return 하는 두 가지 경우가 존재 하겠다. 아래는 obj.config.onsearch 에서 return 한 경우이고 위의 함수는 callBack 함수인 경우이다.
+             */
+            if (res) {
+                res.options = res.options || [];
+                obj.config.options = res.options;
+                obj.config.focusedIndex = null;
+                this.bindSelectorSetOptions(objID, objSeq);
+                this.bindSelectorSearch(objID, objSeq, objVal);
+            }
+            
+        }
+        else if (obj.config.ajaxUrl) {
+            // AJAX호출
+            // 2. AJAX request
+            // 3. AJAX 결과로 bindSelectorSetOptions 처리하기
+            //this.bindSelectorSetOptions(objID, objSeq);
+            // 4. 입력어로 bindSelectorSearch 실행하기
+            obj.inProgress = true; //진행중 상태 변경
+            var bindSelectorSetOptions = this.bindSelectorSetOptions.bind(this);
+            var bindSelectorKeyupChargingUp = this.bindSelectorKeyupChargingUp.bind(this);
+            
+            var url = obj.config.ajaxUrl;
+            var pars = obj.config.ajaxPars || {};
+            var _method = "post";
+            var _headers = {};
+            var _contentType = AXConfig.AXReq.contentType;
+            var _responseType = AXConfig.AXReq.responseType;
+            var _dataType = AXConfig.AXReq.dataType;
+            var _async = AXConfig.AXReq.async;
+            
+            // ajax 옵션 확장
+            if (obj.config.method) _method = obj.config.method;
+            if (obj.config.headers) _headers = obj.config.headers;
+            if (obj.config.contentType) _contentType = obj.config.contentType;
+            if (obj.config.responseType) _responseType = obj.config.responseType;
+            if (obj.config.dataType) _dataType = obj.config.dataType;
+            if (obj.config.ajaxAsync) _async = obj.config.ajaxAsync;
+            
+            var selectorName = obj.config.selectorName || axdom("#" + objID).attr("name");
+            if (pars == "") {
+                pars = selectorName + "=" + (objVal || "").enc();
+            }
+            else if ((typeof pars).toLowerCase() == "string") {
+                pars += "&" + selectorName + "=" + objVal.enc();
+            }
+            else if ((typeof pars).toLowerCase() == "object") {
+                pars[selectorName] = objVal.enc();
+            }
+            
+            var msgAlert = this.msgAlert.bind(this);
+            new AXReq(url, {
+                type: _method,
+                headers: _headers,
+                contentType: _contentType,
+                responseType: _responseType,
+                dataType: _dataType,
+                async: _async,
+                debug: ((typeof obj.config.debug !== "undefined") ? obj.config.debug : false),
+                pars: pars,
+                onsucc: function (res) {
+                    if ((res.result && res.result == AXConfig.AXReq.okCode) || (res.result == undefined && !res.error)) {
+                        
+                        //obj.config.options = (res.options || []);
+                        obj.config.options = (res[reserveKeys.options] || []);
+                        obj.config.focusedIndex = null;
+                        
+                        bindSelectorSetOptions(objID, objSeq);
+                        bindSelectorSearch(objID, objSeq, objVal);
+                        
+                        if (obj.inProgressReACT) {
+                            bindSelectorKeyupChargingUp(objID, objSeq, event);
+                        }
+                    }
+                    else {
+                        msgAlert(res);
+                    }
+                    obj.inProgress = false;
+                    obj.inProgressReACT = false;
+                }
+            });
+        }
+        else {
+            // 입력어로 bindSelectorSearch 실행하기
+
+            bindSelectorSearch(objID, objSeq, objVal);
+        }
+    },
+    bindSelectorInputChange: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var reserveKeys = obj.config.reserveKeys;
+        if (axdom("#" + objID).val() != obj.config.selectedObject[reserveKeys.optionText]) {
+            if (!obj.config.appendable) axdom("#" + objID).val("");
+            obj.config.selectedObject = null;
+            obj.config.selectedIndex = null;
+            obj.config.focusedIndex = null;
+            if (obj.config.onChange) {
+                obj.config.onChange(null);
+            }
+        }
+    },
+    bindSelectorSetValue: function (objID, objSeq, value) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var reserveKeys = obj.config.reserveKeys;
+        
+        if (!obj.config.options) return;
+        
+        var selectedIndex = null;
+        axf.each(obj.config.options, function (oidx, opt) {
+            if (opt[reserveKeys.optionValue] == value) selectedIndex = oidx;
+        });
+        
+        if (selectedIndex != null) {
+            obj.config.focusedIndex = selectedIndex;
+            obj.config.selectedObject = obj.config.options[selectedIndex];
+            obj.config.isChangedSelect = true;
+            axdom("#" + objID).val(obj.config.selectedObject[reserveKeys.optionText]);
+            
+            if (obj.config.onChange || obj.config.onchange) {
+                var sendObj = {
+                    targetID: objID,
+                    options: obj.config.options,
+                    selectedIndex: obj.config.selectedIndex,
+                    selectedOption: obj.config.selectedObject
+                };
+                if (obj.config.onChange) obj.config.onChange.call(sendObj);
+                else if (obj.config.onchange) obj.config.onchange.call(sendObj);
+            }
+        }
+    },
+    bindSelectorSearch: function (objID, objSeq, kword) { // 입력된 값으로 검색 하기
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var reserveKeys = obj.config.reserveKeys;
+        if (kword == "") {
+            this.bindSelectorSelectClear(objID, objSeq);
+            return;
+        }
+        kword = kword.replace(/\//g, "\\\/");
+        var sw = AXUtil.consonantKR((kword || "").dec());
+        var reAt = new RegExp("^" + sw + ".*", "i");
+        
+        var ix = null;
+        for (var a = 0; a < obj.config.options.length; a++) {
+            if (reAt.test((obj.config.options[a][reserveKeys.optionText] || ""))) {
+                ix = a;
+                break;
+            }
+        }
+        if (ix != null) {
+            this.bindSelectorSelect(objID, objSeq, ix, "dont change value");
+        }
+        else {
+            this.bindSelectorSelectClear(objID, objSeq);
+        }
+    },
+    bindSelectorSelect: function (objID, objSeq, index, changeValue) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var reserveKeys = obj.config.reserveKeys;
+        if (obj.config.focusedIndex != undefined) {
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + obj.config.focusedIndex + "_AX_option").removeClass("on");
+        }
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + index + "_AX_option").addClass("on");
+        obj.config.focusedIndex = index;
+        //obj.config.selectedObject = obj.config.options[index];
+        //obj.config.isChangedSelect = true;
+        //if(!changeValue) axdom("#"+objID).val(obj.config.selectedObject.optionText.dec());
+        obj.myUIScroll.focusElement(cfg.targetID + "_AX_" + objID + "_AX_" + index + "_AX_option"); //focus
+    },
+    bindSelectorSelectClear: function (objID, objSeq) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var reserveKeys = obj.config.reserveKeys;
+        if (obj.config.selectedIndex != undefined) {
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + obj.config.selectedIndex + "_AX_option").removeClass("on");
+        }
+        obj.config.selectedIndex = null;
+        obj.config.focusedIndex = null;
+        obj.config.selectedObject = null;
+        obj.config.isChangedSelect = true;
+    },
+    
+    // slider
+    bindSlider: function (objID, objSeq) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderBox").remove();
+        
+        var w = obj.bindAnchorTarget.width();
+        var h = obj.bindAnchorTarget.data("height");
+        //trace(h);
+        var objVal = obj.bindTarget.val().number().money();
+        if (objVal.number() < obj.config.min.number()) objVal = obj.config.min;
+        else if (objVal.number() > obj.config.max.number()) objVal = obj.config.max;
+        
+        if (!obj.config.unit) obj.config.unit = "";
+        
+        var po = [];
+        po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderBox\" class=\"" + cfg.anchorSliderBoxClassName + "\" style=\"left:0px;width:" + w + "px;height:" + h + "px;\">");
+        po.push("	<div class=\"AXanchorSliderMinTitle\">" + obj.config.min.number().money() + obj.config.unit + "</div>");
+        po.push("	<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar\" class=\"AXanchorSliderBar\">");
+        po.push("		<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside\" class=\"AXanchorSliderBarInside\"><div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle\" class=\"AXanchorSliderHandleTitle\">" + objVal.number().money() + obj.config.unit + "</div></div>");
+        po.push("		<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle\" class=\"AXanchorSliderHandle\">&nbsp;</a>");
+        po.push("	</div>");
+        po.push("	<div class=\"AXanchorSliderMaxTitle\">" + obj.config.max.number().money() + obj.config.unit + "</div>");
+        po.push("</div>");
+        
+        //append to anchor
+        obj.bindAnchorTarget.append(po.join(''));
+        //obj.bindAnchorTarget.css({ height: h + "px", "position": "relative", display: "inline-block", left: "auto", top: "auto" });
+        obj.bindAnchorTarget.css({
+            height: h + "px",
+            "position": "relative",
+            display: "inline-block",
+            left: "auto",
+            top: "auto"
+        });
+        //, background:"#eee"
+        
+        var maxTitleWidth = axdom("#" + cfg.targetID + "_AX_" + objID).find(".AXanchorSliderMaxTitle").outerWidth().number() + 10;
+        var minTitleWidth = axdom("#" + cfg.targetID + "_AX_" + objID).find(".AXanchorSliderMinTitle").outerWidth().number() + 10;
+        if (maxTitleWidth < 30) maxTitleWidth = 30;
+        if (minTitleWidth < 30) minTitleWidth = 30;
+        axdom("#" + cfg.targetID + "_AX_" + objID).find(".AXanchorSliderMinTitle").css({width: minTitleWidth + "px"});
+        axdom("#" + cfg.targetID + "_AX_" + objID).find(".AXanchorSliderMaxTitle").css({width: maxTitleWidth + "px"});
+        var sliderBarWidth = w - minTitleWidth - maxTitleWidth;
+        obj.bindAnchorTarget.find(".AXanchorSliderBar").css({
+            width: sliderBarWidth + "px",
+            left: minTitleWidth + "px",
+            top: h / 2 + 2
+        });
+        //------------------------------------
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").css({width: maxTitleWidth});
+        obj.config._maxTitleWidth = maxTitleWidth;
+        obj.config._handleWidth = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").width();
+        obj.config._trackWidth = sliderBarWidth;
+        this.bindSliderSetValue(objID, objSeq);
+        
+        var onmousedown = this.bindSliderMouseDown.bind(this);
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").unbind("mousedown.AXInput").bind("mousedown.AXInput", function () {
+            onmousedown(objID, objSeq);
+        });
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").unbind("dragstart.AXInput").bind("dragstart.AXInput", function (event) {
+            event.stopPropagation(); // disable  event
+            return false;
+        });
+        
+        //add touch event
+        if (document.addEventListener) {
+            var ontouchstart = this.sliderTouchStart.bind(this);
+            obj.bindSliderTouchStart = function (event) { ontouchstart(objID, objSeq); }
+            
+            AXgetId(cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").addEventListener("touchstart", obj.bindSliderTouchStart, false);
+        }
+        
+        obj.bindAnchorTarget.show();
+        obj.bindTarget.hide();
+        
+    },
+    bindSliderMouseDown: function (objID, objSeq) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        if (!obj.config.isMoving) {
+            var bindSliderMouseMove = this.bindSliderMouseMove.bind(this);
+            obj.bindSliderMouseMove = function (event) {
+                bindSliderMouseMove(objID, objSeq, event);
+            };
+            var bindSliderMouseUp = this.bindSliderMouseUp.bind(this);
+            obj.bindSliderMouseUp = function (event) {
+                bindSliderMouseUp(objID, objSeq, event);
+            };
+            axdom(document.body).unbind("mousemove.AXInput").bind("mousemove.AXInput", obj.bindSliderMouseMove);
+            axdom(document.body).unbind("mouseup.AXInput").bind("mouseup.AXInput", obj.bindSliderMouseUp);
+            obj.config.isMoving = true;
+        }
+        
+    },
+    bindSliderMouseMove: function (objID, objSeq, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        var eX = event.pageX;
+        var cX = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar").offset().left;
+        
+        var rX = eX - cX;
+        
+        var valueWidth = obj.config.max.number() - obj.config.min.number();
+        var pixelWidth = obj.config._trackWidth;
+        var objVal = (rX * valueWidth) / pixelWidth;
+        var snap = obj.config.snap;
+        if (typeof snap == "undefined") snap = 1;
+        
+        if (snap >= 1) {
+            objVal = (objVal.number() + obj.config.min.number()).round();
+            objVal = (parseInt(objVal / (snap), 10) * (snap));
+        }
+        else {
+            objVal = (objVal.number() + obj.config.min.number()).round((snap.toString().length - 2));
+            objVal = (parseFloat(objVal / (snap)) * (snap)).round((snap.toString().length - 2));
+        }
+        
+        var rX = ((objVal - obj.config.min) * pixelWidth) / valueWidth;
+        
+        if (objVal < obj.config.min) {
+            objVal = obj.config.min;
+            rX = 0;
+        }
+        else if (objVal > obj.config.max) {
+            objVal = obj.config.max;
+            rX = pixelWidth;
+        }
+        if (rX > pixelWidth) rX = pixelWidth;
+        
+        var sX = rX - (obj.config._handleWidth / 2);
+        var stX = rX - (obj.config._maxTitleWidth / 2);
+        
+        //trace({rX:rX, pixelWidth:pixelWidth, objVal:objVal, valueWidth:valueWidth});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").css({left: sX});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({width: rX});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").css({left: stX});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").text(objVal.number().money() + obj.config.unit);
+        axdom("#" + objID).val(objVal);
+    },
+    bindSliderMouseUp: function (objID, objSeq, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        var objVal = axdom("#" + objID).val();
+        if (obj.config.onChange || obj.config.onchange) {
+            var onchange = obj.config.onChange || obj.config.onchange;
+            onchange.call({id: objID, value: objVal}, objID, objVal);
+        }
+        
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTarget.change();
+        
+        axdom(document.body).unbind("mousemove.AXInput");
+        axdom(document.body).unbind("mouseup.AXInput");
+        obj.config.isMoving = false;
+    },
+    bindSliderSetValue: function (objID, objSeq, value) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (value != undefined) {
+            var objVal = value;
+        }
+        else {
+            var objVal = axdom("#" + objID).val();
+        }
+        
+        if (objVal.number() < obj.config.min.number()) objVal = obj.config.min;
+        else if (objVal.number() > obj.config.max.number()) objVal = obj.config.max;
+        var valueWidth = obj.config.max.number() - obj.config.min.number();
+        var pixelWidth = obj.config._trackWidth;
+        var pixelLeft = ((objVal - obj.config.min) * pixelWidth) / valueWidth;
+        
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").css({left: pixelLeft - (obj.config._handleWidth / 2)});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({width: pixelLeft});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").css({left: pixelLeft - (obj.config._maxTitleWidth / 2)});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").text(objVal.number().money() + obj.config.unit);
+        
+        axdom("#" + objID).val(objVal);
+    },
+    sliderTouchStart: function (objID, objSeq) {
+        //alert(objID+"_"+ objSeq);
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        if (!obj.config.isMoving) {
+            var bindSliderTouchMove = this.sliderTouchMove.bind(this);
+            obj.bindSliderTouchMove = function (event) {
+                bindSliderTouchMove(objID, objSeq, event);
+            };
+            var bindSliderTouchEnd = this.sliderTouchEnd.bind(this);
+            obj.bindSliderTouchEnd = function (event) {
+                bindSliderTouchEnd(objID, objSeq, event);
+            };
+            
+            if (document.addEventListener) {
+                document.addEventListener("touchmove", obj.bindSliderTouchMove, false);
+                document.addEventListener("touchend", obj.bindSliderTouchEnd, false);
+                
+            }
+            obj.config.isMoving = true;
+            
+        }
+        
+    },
+    sliderTouchMove: function (objID, objSeq, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        event.preventDefault();
+        var touch = event.touches[0];
+        
+        var eX = touch.pageX;
+        var cX = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar").offset().left;
+        var rX = eX - cX;
+        
+        var valueWidth = obj.config.max.number() - obj.config.min.number();
+        var pixelWidth = obj.config._trackWidth;
+        var objVal = (rX * valueWidth) / pixelWidth;
+        var snap = obj.config.snap;
+        if (!snap) snap = 1;
+        objVal = (objVal.number() + obj.config.min.number()).round();
+        objVal = parseInt(objVal / (snap)) * (snap);
+        var rX = ((objVal - obj.config.min) * pixelWidth) / valueWidth;
+        
+        if (objVal < obj.config.min) {
+            objVal = obj.config.min;
+            rX = 0;
+        }
+        else if (objVal > obj.config.max) {
+            objVal = obj.config.max;
+            rX = pixelWidth;
+        }
+        if (rX > pixelWidth) rX = pixelWidth;
+        
+        var sX = rX - (obj.config._handleWidth / 2);
+        var stX = rX - (obj.config._maxTitleWidth / 2);
+        
+        //trace({rX:rX, pixelWidth:pixelWidth, objVal:objVal, valueWidth:valueWidth});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandle").css({left: sX});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({width: rX});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").css({left: stX});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleTitle").text(objVal.number().money() + obj.config.unit);
+        axdom("#" + objID).val(objVal);
+        if (obj.config.onChange) obj.config.onChange(objID, objVal);
+        else if (obj.config.onchange) obj.config.onchange(objID, objVal);
+        
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTarget.change();
+    },
+    sliderTouchEnd: function (objID, objSeq, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        var objVal = axdom("#" + objID).val();
+        
+        if (obj.config.onChange || obj.config.onchange) {
+            var onchange = obj.config.onChange || obj.config.onchange;
+            onchange.call({id: objID, value: objVal}, objID, objVal);
+        }
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTarget.change();
+        
+        if (document.addEventListener) {
+            document.removeEventListener("touchmove", obj.bindSliderTouchMove, false);
+            document.removeEventListener("touchend", obj.bindSliderTouchEnd, false);
+        }
+        obj.config.isMoving = false;
+    },
+    
+    // twinSlider
+    bindTwinSliderGetVals: function (objValString, separator) {
+        var objVals = objValString.split(separator);
+        var objVal = {min: 0, max: 0};
+        if (objVals.length < 2) {
+            objVal = {min: objVals[0], max: objVals[0]};
+        }
+        else {
+            objVal = {min: objVals[0], max: objVals[1]};
+        }
+        return objVal;
+    },
+    bindTwinSlider: function (objID, objSeq) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        
+        var w = obj.bindAnchorTarget.width();
+        var h = obj.bindAnchorTarget.data("height");
+        var objValString = obj.bindTarget.val();
+        var separator = obj.config.separator || "~";
+        var objVal = this.bindTwinSliderGetVals(objValString, separator);
+        obj.vals = objVal;
+        
+        if (objVal.min.number() < obj.config.min.number()) objVal.min = obj.config.min;
+        else if (objVal.min.number() > obj.config.max.number()) objVal.min = obj.config.max;
+        if (objVal.max.number() < obj.config.min.number()) objVal.max = obj.config.min;
+        else if (objVal.max.number() > obj.config.max.number()) objVal.max = obj.config.max;
+        
+        if (!obj.config.unit) obj.config.unit = "";
+        
+        var po = [];
+        po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderBox\" class=\"" + cfg.anchorSliderBoxClassName + "\" style=\"left:0px;width:" + w + "px;height:" + h + "px;\">");
+        po.push("	<a " + obj.config.href + " class=\"AXanchorSliderMinTitle\">" + obj.config.min.number().money() + obj.config.unit + "</a>");
+        po.push("	<a " + obj.config.href + " class=\"AXanchorSliderMaxTitle\">" + obj.config.max.number().money() + obj.config.unit + "</a>");
+        po.push("	<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar\" class=\"AXanchorSliderBar\">");
+        po.push("		<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside\" class=\"AXanchorSliderBarInside\"></div>");
+        po.push("		<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle\" class=\"AXanchorSliderHandleMinTitle\">" + objVal.min.number().money() + obj.config.unit + "</div>");
+        po.push("		<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle\" class=\"AXanchorSliderHandleMaxTitle\">" + objVal.max.number().money() + obj.config.unit + "</div>");
+        po.push("		<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin\" class=\"AXanchorSliderHandleMin\">&nbsp;</a>");
+        po.push("		<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax\" class=\"AXanchorSliderHandleMax\">&nbsp;</a>");
+        po.push("	</div>");
+        po.push("</div>");
+        
+        //append to anchor
+        obj.bindAnchorTarget.append(po.join(''));
+        obj.bindAnchorTarget.css({
+            height: h + "px",
+            "position": "relative",
+            display: "inline-block",
+            left: "auto",
+            top: "auto"
+        });
+        //, background:"#eee"
+        obj.bindAnchorTarget.show();
+        obj.bindTarget.hide();
+        
+        var maxTitleWidth = obj.bindAnchorTarget.find(".AXanchorSliderMaxTitle").outerWidth().number() + 10;
+        var minTitleWidth = obj.bindAnchorTarget.find(".AXanchorSliderMinTitle").outerWidth().number() + 10;
+        obj.bindAnchorTarget.find(".AXanchorSliderMinTitle").css({width: minTitleWidth + "px"});
+        obj.bindAnchorTarget.find(".AXanchorSliderMaxTitle").css({width: maxTitleWidth + "px"});
+        var sliderBarWidth = w - minTitleWidth - maxTitleWidth;
+        obj.bindAnchorTarget.find(".AXanchorSliderBar").css({
+            width: sliderBarWidth + "px",
+            left: minTitleWidth + "px",
+            top: h / 2 + 2
+        });
+        //------------------------------------
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").css({width: maxTitleWidth});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").css({width: maxTitleWidth});
+        obj.config._maxTitleWidth = maxTitleWidth;
+        obj.config._handleWidth = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").width();
+        obj.config._trackWidth = sliderBarWidth;
+        this.bindTwinSliderSetValue(objID, objSeq);
+        
+        var onmousedown = this.bindTwinSliderMouseDown.bind(this);
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").unbind("mousedown.AXInput").bind("mousedown.AXInput", function () {
+            onmousedown(objID, objSeq, "min");
+        });
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").unbind("mousedown.AXInput").bind("mousedown.AXInput", function () {
+            onmousedown(objID, objSeq, "max");
+        });
+        
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").unbind("dragstart.AXInput").bind("dragstart.AXInput", function (event) {
+            event.stopPropagation(); // disable  event
+            return false;
+        });
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").unbind("dragstart.AXInput").bind("dragstart.AXInput", function (event) {
+            event.stopPropagation(); // disable  event
+            return false;
+        });
+        
+        //add touch event
+        if (document.addEventListener) {
+            var ontouchstart = this.twinSliderTouchStart.bind(this);
+            obj.bindTwinSliderTouchStartMin = function (event) { ontouchstart(objID, objSeq, "min"); }
+            obj.bindTwinSliderTouchStartMax = function (event) { ontouchstart(objID, objSeq, "max"); }
+            
+            AXgetId(cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").addEventListener("touchstart", obj.bindTwinSliderTouchStartMin, false);
+            AXgetId(cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").addEventListener("touchstart", obj.bindTwinSliderTouchStartMax, false);
+        }
+        
+    },
+    bindTwinSliderMouseDown: function (objID, objSeq, handleName) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        if (!obj.config.isMoving) {
+            var bindTwinSliderMouseMove = this.bindTwinSliderMouseMove.bind(this);
+            obj.bindTwinSliderMouseMove = function (event) {
+                bindTwinSliderMouseMove(objID, objSeq, event, handleName);
+            };
+            var bindTwinSliderMouseUp = this.bindTwinSliderMouseUp.bind(this);
+            obj.bindTwinSliderMouseUp = function (event) {
+                bindTwinSliderMouseUp(objID, objSeq, event, handleName);
+            };
+            axdom(document.body).unbind("mousemove.AXInput").bind("mousemove.AXInput", obj.bindTwinSliderMouseMove);
+            axdom(document.body).unbind("mouseup.AXInput").bind("mouseup.AXInput", obj.bindTwinSliderMouseUp);
+            obj.config.isMoving = true;
+        }
+        
+    },
+    bindTwinSliderMouseMove: function (objID, objSeq, event, handleName) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        var eX = event.pageX;
+        var cX = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar").offset().left;
+        
+        var rX = eX - cX;
+        
+        var valueWidth = obj.config.max.number() - obj.config.min.number();
+        var pixelWidth = obj.config._trackWidth;
+        var objVal = (rX * valueWidth) / pixelWidth;
+        var snap = obj.config.snap;
+        if (!snap) snap = 1;
+        objVal = (objVal.number() + obj.config.min.number()).round();
+        objVal = parseInt(objVal / (snap)) * (snap);
+        var rX = ((objVal - obj.config.min) * pixelWidth) / valueWidth;
+        
+        if (objVal < obj.config.min) {
+            objVal = obj.config.min;
+            rX = 0;
+        }
+        else if (objVal > obj.config.max) {
+            objVal = obj.config.max;
+            rX = pixelWidth;
+        }
+        if (rX > pixelWidth) rX = pixelWidth;
+        
+        //trace({rX:rX, pixelWidth:pixelWidth, objVal:objVal, valueWidth:valueWidth});
+        if (handleName == "min") {
+            if (objVal > obj.vals.max) {
+                objVal = obj.vals.max;
+                rX = obj.handleMaxLeft;
+            }
+            var sX = rX - (obj.config._handleWidth);
+            var stX = rX - (obj.config._maxTitleWidth);
+            obj.handleMinLeft = rX;
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").css({left: sX});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").css({left: stX});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").text(objVal.number().money() + obj.config.unit);
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({width: rX});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({
+                left: obj.handleMinLeft,
+                width: obj.handleMaxLeft - obj.handleMinLeft
+            });
+            //axdom("#"+objID).val(objVal);
+            obj.vals.min = objVal;
+        }
+        else {
+            if (objVal < obj.vals.min) {
+                objVal = obj.vals.min;
+                rX = obj.handleMinLeft;
+            }
+            var sX = rX;
+            var stX = rX;
+            obj.handleMaxLeft = rX;
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").css({left: sX});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").css({left: stX});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").text(objVal.number().money() + obj.config.unit);
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({
+                left: obj.handleMinLeft,
+                width: obj.handleMaxLeft - obj.handleMinLeft
+            });
+            //axdom("#"+objID).val(objVal);
+            obj.vals.max = objVal;
+        }
+        var separator = obj.config.separator || "~";
+        axdom("#" + objID).val(obj.vals.min + separator + obj.vals.max);
+        
+    },
+    bindTwinSliderMouseUp: function (objID, objSeq, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        var objVal = axdom("#" + objID).val();
+        if (obj.config.onChange || obj.config.onchange) {
+            var onchange = obj.config.onChange || obj.config.onchange;
+            onchange.call({id: objID, value: objVal}, objID, objVal);
+        }
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTarget.change();
+        
+        axdom(document.body).unbind("mousemove.AXInput");
+        axdom(document.body).unbind("mouseup.AXInput");
+        obj.config.isMoving = false;
+    },
+    bindTwinSliderSetValue: function (objID, objSeq, value) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        if (value != undefined) {
+            var objValString = value;
+        }
+        else {
+            var objValString = axdom("#" + objID).val();
+        }
+        
+        var separator = obj.config.separator || "~";
+        var objVal = this.bindTwinSliderGetVals(objValString, separator);
+        obj.vals = objVal;
+        
+        if (objVal.min.number() < obj.config.min.number()) objVal.min = obj.config.min;
+        else if (objVal.min.number() > obj.config.max.number()) objVal.min = obj.config.max;
+        if (objVal.max.number() < obj.config.min.number()) objVal.max = obj.config.min;
+        else if (objVal.max.number() > obj.config.max.number()) objVal.max = obj.config.max;
+        
+        var valueWidth = obj.config.max.number() - obj.config.min.number();
+        var pixelWidth = obj.config._trackWidth;
+        var pixelMinLeft = ((objVal.min - obj.config.min) * pixelWidth) / valueWidth;
+        var pixelMaxLeft = ((objVal.max - obj.config.min) * pixelWidth) / valueWidth;
+        
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").css({left: pixelMinLeft - (obj.config._handleWidth)});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").css({left: pixelMinLeft - (obj.config._maxTitleWidth)});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").text(objVal.min.number().money() + obj.config.unit);
+        
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").css({left: pixelMaxLeft});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").css({left: pixelMaxLeft});
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").text(objVal.max.number().money() + obj.config.unit);
+        
+        obj.handleMinLeft = pixelMinLeft;
+        obj.handleMaxLeft = pixelMaxLeft;
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({
+            left: pixelMinLeft,
+            width: pixelMaxLeft - pixelMinLeft
+        });
+        
+        axdom("#" + objID).val(obj.vals.min + separator + obj.vals.max);
+    },
+    // -- add touch event
+    twinSliderTouchStart: function (objID, objSeq, handleName) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        
+        if (!obj.config.isMoving) {
+            var bindTwinSliderTouchMove = this.twinSliderTouchMove.bind(this);
+            obj.bindTwinSliderTouchMove = function (event) {
+                bindTwinSliderTouchMove(objID, objSeq, event, handleName);
+            };
+            var bindTwinSliderTouchEnd = this.twinSliderTouchEnd.bind(this);
+            obj.bindTwinSliderTouchEnd = function (event) {
+                bindTwinSliderTouchEnd(objID, objSeq, event, handleName);
+            };
+            
+            if (document.addEventListener) {
+                document.addEventListener("touchmove", obj.bindTwinSliderTouchMove, false);
+                document.addEventListener("touchend", obj.bindTwinSliderTouchEnd, false);
+                
+            }
+            obj.config.isMoving = true;
+            
+        }
+        
+    },
+    twinSliderTouchMove: function (objID, objSeq, event, handleName) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        event.preventDefault();
+        var touch = event.touches[0];
+        
+        //var eX = event.pageX;
+        var eX = touch.pageX;
+        var cX = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderBar").offset().left;
+        var rX = eX - cX;
+        
+        var valueWidth = obj.config.max.number() - obj.config.min.number();
+        var pixelWidth = obj.config._trackWidth;
+        var objVal = (rX * valueWidth) / pixelWidth;
+        var snap = obj.config.snap;
+        if (!snap) snap = 1;
+        objVal = (objVal.number() + obj.config.min.number()).round();
+        objVal = parseInt(objVal / (snap)) * (snap);
+        var rX = ((objVal - obj.config.min) * pixelWidth) / valueWidth;
+        
+        if (objVal < obj.config.min) {
+            objVal = obj.config.min;
+            rX = 0;
+        }
+        else if (objVal > obj.config.max) {
+            objVal = obj.config.max;
+            rX = pixelWidth;
+        }
+        if (rX > pixelWidth) rX = pixelWidth;
+        
+        //trace({rX:rX, pixelWidth:pixelWidth, objVal:objVal, valueWidth:valueWidth});
+        
+        if (handleName == "min") {
+            if (objVal > obj.vals.max) {
+                objVal = obj.vals.max;
+                rX = obj.handleMaxLeft;
+            }
+            var sX = rX - (obj.config._handleWidth);
+            var stX = rX - (obj.config._maxTitleWidth);
+            obj.handleMinLeft = rX;
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMin").css({left: sX});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").css({left: stX});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMinTitle").text(objVal.number().money() + obj.config.unit);
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({width: rX});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({
+                left: obj.handleMinLeft,
+                width: obj.handleMaxLeft - obj.handleMinLeft
+            });
+            //axdom("#"+objID).val(objVal);
+            obj.vals.min = objVal;
+        }
+        else {
+            if (objVal < obj.vals.min) {
+                objVal = obj.vals.min;
+                rX = obj.handleMinLeft;
+            }
+            var sX = rX;
+            var stX = rX;
+            obj.handleMaxLeft = rX;
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMax").css({left: sX});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").css({left: stX});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderHandleMaxTitle").text(objVal.number().money() + obj.config.unit);
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SliderInside").css({
+                left: obj.handleMinLeft,
+                width: obj.handleMaxLeft - obj.handleMinLeft
+            });
+            //axdom("#"+objID).val(objVal);
+            obj.vals.max = objVal;
+        }
+        var separator = obj.config.separator || "~";
+        axdom("#" + objID).val(obj.vals.min + separator + obj.vals.max);
+        if (obj.config.onChange) obj.config.onChange(objID, obj.vals.min + separator + obj.vals.max);
+        else if (obj.config.onchange) obj.config.onchange(objID, obj.vals.min + separator + obj.vals.max);
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTarget.change();
+    },
+    twinSliderTouchEnd: function (objID, objSeq, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        var objVal = axdom("#" + objID).val();
+        if (obj.config.onChange || obj.config.onchange) {
+            var onchange = obj.config.onChange || obj.config.onchange;
+            onchange.call({id: objID, value: objVal}, objID, objVal);
+        }
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTarget.change();
+        document.removeEventListener("touchmove", obj.bindTwinSliderTouchMove, false);
+        document.removeEventListener("touchend", obj.bindTwinSliderTouchEnd, false);
+        
+        obj.config.isMoving = false;
+    },
+    
+    // switch
+    bindSwitch: function (objID, objSeq) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        
+        var w = obj.bindAnchorTarget.width();
+        var h = obj.bindAnchorTarget.data("height");
+        var objVal = obj.bindTarget.val();
+        var switchValue = obj.config.on;
+        if (objVal == switchValue) {
+            obj.switchValue = "on";
+        }
+        else {
+            switchValue = obj.config.off;
+            obj.switchValue = "off";
+        }
+        obj.bindTarget.val(switchValue);
+        
+        var po = [];
+        po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox\" class=\"" + cfg.anchorSwitchBoxClassName + "\" style=\"left:0px;top:0px;width:" + w + "px;height:" + h + "px;\">");
+        po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay\" class=\"AXanchorSwitchDisplay\" style=\"height:" + h + "px;line-height:" + h + "px;\">" + switchValue + "</div>");
+        po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SwitchHandle\" class=\"AXanchorSwitchHandle\" style=\"height:" + h + "px;\">&nbsp;</a>");
+        po.push("</div>");
+        
+        //append to anchor
+        obj.bindAnchorTarget.append(po.join(''));
+        obj.bindAnchorTarget.css({
+            height: h + "px",
+            "position": "relative",
+            display: "inline-block",
+            left: "auto",
+            top: "auto"
+        });
+        
+        obj.bindTarget_switchBox = obj.bindAnchorTarget.find("." + cfg.anchorSwitchBoxClassName);
+        obj.bindTarget_switchDisplay = obj.bindAnchorTarget.find(".AXanchorSwitchDisplay");
+        obj.bindTarget_switchHandle = obj.bindAnchorTarget.find(".AXanchorSwitchHandle");
+        
+        if (obj.switchValue == "on") {
+            obj.bindAnchorTarget.find("." + cfg.anchorSwitchBoxClassName).addClass("on");
+        }
+        
+        //, background:"#eee"
+        obj.bindAnchorTarget.show();
+        obj.bindTarget.hide();
+        
+        var bindSwitchClick = this.bindSwitchClick.bind(this);
+        obj.bindSwitchClick = function (event) {
+            bindSwitchClick(objID, objSeq, event);
+        };
+        obj.bindAnchorTarget.find("." + cfg.anchorSwitchBoxClassName).unbind("click.AXInput").bind("click.AXInput", obj.bindSwitchClick);
+        
+    },
+    bindSwitchClick: function (objID, objSeq, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        
+        if (obj.switchValue == "on") {
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox").removeClass("on");
+            obj.switchValue = "off";
+            axdom("#" + objID).val(obj.config.off);
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay").html(obj.config.off);
+        }
+        else {
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox").addClass("on");
+            obj.switchValue = "on";
+            axdom("#" + objID).val(obj.config.on);
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay").html(obj.config.on);
+        }
+        if (obj.config.onChange || obj.config.onchange) {
+            var sendObj = {
+                targetID: objID,
+                on: obj.config.on,
+                off: obj.config.off,
+                value: axdom("#" + objID).val()
+            }
+            if (obj.config.onChange) obj.config.onChange.call(sendObj);
+            if (obj.config.onchange) obj.config.onchange.call(sendObj);
+        }
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTarget.change();
+    },
+    bindSwitchSetValue: function (objID, objSeq, value) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        var objVal = value;
+        var switchValue = obj.config.on;
+        if (objVal == switchValue) {
+            obj.switchValue = "on";
+        }
+        else {
+            switchValue = obj.config.off;
+            obj.switchValue = "off";
+        }
+        axdom("#" + objID).val(switchValue);
+        
+        if (obj.switchValue == "off") {
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox").removeClass("on");
+            obj.switchValue = "off";
+            axdom("#" + objID).val(obj.config.off);
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay").html(obj.config.off);
+        }
+        else {
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchBox").addClass("on");
+            obj.switchValue = "on";
+            axdom("#" + objID).val(obj.config.on);
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SwitchDisplay").html(obj.config.on);
+        }
+        if (obj.config.onChange || obj.config.onchange) {
+            var sendObj = {
+                targetID: objID,
+                on: obj.config.on,
+                off: obj.config.off,
+                value: axdom("#" + objID).val()
+            }
+            if (obj.config.onChange) obj.config.onChange.call(sendObj);
+            else if (obj.config.onchange) obj.config.onchange.call(sendObj);
+        }
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTarget.change();
+    },
+    bindSwitch_touchstart: function () {
+        
+    },
+    bindSwitch_touchMove: function () {
+        
+    },
+    bindSwitch_touchEnd: function () {
+        
+    },
+    
+    // segment
+    bindSegment: function (objID, objSeq) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        
+        var w = obj.bindAnchorTarget.width();
+        var h = obj.bindAnchorTarget.data("height");
+        var objVal = obj.bindTarget.val();
+        var segmentOptions = obj.config.options;
+        obj.selectedSegmentIndex = null;
+        axf.each(segmentOptions, function (idx, seg) {
+            //trace({optionValue:this.optionValue, objVal:objVal});
+            if (this.optionValue == objVal) {
+                obj.selectedSegmentIndex = idx;
+                obj.selectedSegment = seg;
+            }
+        });
+        if (obj.selectedSegmentIndex == null) {
+            obj.selectedSegmentIndex = 0;
+            obj.selectedSegment = segmentOptions[0];
+        }
+        obj.bindTarget.val(obj.selectedSegment.optionValue);
+        
+        var handleWidth = (w / segmentOptions.length).round() - 2;
+        var po = [];
+        var theme = obj.config.theme || cfg.anchorSegmentBoxClassName;
+        po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SegmentBox\" class=\"" + theme + "\" style=\"left:0px;top:0px;width:" + w + "px;\">");
+        axf.each(segmentOptions, function (idx, seg) {
+            var addClass = "";
+            if (idx == 0) addClass = " segmentLeft";
+            else if (idx == segmentOptions.length - 1) addClass = " segmentRight";
+            if (obj.selectedSegmentIndex == idx) addClass += " on";
+            if (seg.addClass) addClass += " " + seg.addClass;
+            po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_SegmentHandle_AX_" + idx + "\" class=\"AXanchorSegmentHandle" + addClass + "\" style=\"width:" + handleWidth + "px;\">" + seg.optionText + "</a>");
+        });
+        po.push("</div>");
+        
+        //append to anchor
+        obj.bindAnchorTarget.append(po.join(''));
+        obj.bindAnchorTarget.css({
+            height: h + "px",
+            "position": "relative",
+            display: "inline-block",
+            left: "auto",
+            top: "auto"
+        });
+        var borderTop = obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css("border-top-width").number();
+        var borderBot = obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css("border-bottom-width").number();
+        obj.bindAnchorTarget.find(".AXanchorSegmentHandle").css({
+            height: (obj.bindAnchorTarget.innerHeight() - borderTop - borderBot) + "px",
+            "line-height": (obj.bindAnchorTarget.innerHeight() - borderTop - borderBot) + "px"
+        });
+        
+        //, background:"#eee"
+        obj.bindAnchorTarget.show();
+        obj.bindTarget.hide();
+        
+        var bindSegmentClick = this.bindSegmentClick.bind(this);
+        obj.bindSegmentClick = function (event) {
+            bindSegmentClick(objID, objSeq, event);
+        };
+        
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SegmentBox").find(".AXanchorSegmentHandle").unbind("click.AXInput").bind("click.AXInput", obj.bindSegmentClick);
+    },
+    bindSegmentClick: function (objID, objSeq, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        
+        var segmentOptions = obj.config.options;
+        
+        var myTarget = axf.get_event_target(event.target, {tagname: "a", clazz: "AXanchorSegmentHandle"});
+        if (myTarget) {
+            
+            var seq = myTarget.id.split(/_AX_/g).last();
+            if (obj.selectedSegmentIndex != seq) {
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SegmentHandle_AX_" + obj.selectedSegmentIndex).removeClass("on");
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SegmentHandle_AX_" + seq).addClass("on");
+                obj.selectedSegmentIndex = seq;
+                obj.selectedSegment = segmentOptions[seq];
+            }
+            //strace(obj.selectedSegment.optionValue);
+            axdom("#" + objID).val(obj.selectedSegment.optionValue);
+            //trace(axdom("#"+objID).val());
+            if (obj.config.onChange || obj.config.onchange) {
+                var sendObj = {
+                    targetID: objID,
+                    options: segmentOptions,
+                    selectedIndex: obj.selectedSegmentIndex,
+                    selectedOption: obj.selectedSegment
+                };
+                if (obj.config.onChange) obj.config.onChange.call(sendObj);
+                else if (obj.config.onchange) obj.config.onchange.call(sendObj);
+            }
+            if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+            obj.bindTarget.change();
+        }
+    },
+    bindSegmentSetValue: function (objID, objSeq, value) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        var selectedSegmentIndex = obj.selectedSegmentIndex;
+        
+        var objVal = value;
+        var segmentOptions = obj.config.options;
+        obj.selectedSegmentIndex = null;
+        axf.each(segmentOptions, function (idx, seg) {
+            if (this.optionValue == objVal) {
+                obj.selectedSegmentIndex = idx;
+                obj.selectedSegment = seg;
+            }
+        });
+        if (obj.selectedSegmentIndex == null) {
+            obj.selectedSegmentIndex = 0;
+            obj.selectedSegment = segmentOptions[0];
+        }
+        axdom("#" + objID).val(obj.selectedSegment.optionValue);
+        
+        if (selectedSegmentIndex != obj.selectedSegmentIndex) {
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SegmentHandle_AX_" + selectedSegmentIndex).removeClass("on");
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_SegmentHandle_AX_" + obj.selectedSegmentIndex).addClass("on");
+        }
+        
+        if (obj.config.onChange || obj.config.onchange) {
+            var sendObj = {
+                targetID: objID,
+                options: segmentOptions,
+                selectedIndex: obj.selectedSegmentIndex,
+                selectedOption: obj.selectedSegment
+            };
+            if (obj.config.onChange) obj.config.onChange.call(sendObj);
+            else if (obj.config.onchange) obj.config.onchange.call(sendObj);
+        }
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTarget.change();
+    },
+    
+    // date
+    bindDate: function (objID, objSeq) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        
+        var h = obj.bindAnchorTarget.data("height");
+        var po = [];
+        po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle\" class=\"" + cfg.anchorDateHandleClassName + "\" style=\"right:0px;top:0px;width:" + h + "px;height:" + h + "px;\">&nbsp;</a>");
+        obj.bindAnchorTarget.append(po.join(''));
+        obj.bindAnchorTarget.show();
+        
+        var bindDateExpand = this.bindDateExpand.bind(this);
+        var bindDateExpandClose = this.bindDateExpandClose.bind(this);
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").unbind("click.AXInput").bind("click.AXInput", function (event) {
+            if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+                bindDateExpandClose(objID, objSeq, event);
+            }
+            else {
+                bindDateExpand(objID, objSeq, true, event);
+            }
+        });
+        obj.bindTarget.unbind("focus.AXInput").bind("focus.AXInput", function (event) {
+            setTimeout(function () {
+                obj.bindTarget.select();
+            }, 1);
+        });
+        
+        var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+        
+        //trace(obj.config);
+        
+        obj.bindTarget.unbind("keydown.AXInput").bind("keydown.AXInput", function (event) {
+            var _this = this;
+            setTimeout(function () {
+                if (event.keyCode == axf.Event.KEY_RETURN) {
+                    //bindDateInputBlur(objID, objSeq, event);
+                    _this.blur();
+                }
+                else if (event.keyCode != AXUtil.Event.KEY_BACKSPACE && event.keyCode != AXUtil.Event.KEY_DELETE && event.keyCode != AXUtil.Event.KEY_LEFT && event.keyCode != AXUtil.Event.KEY_RIGHT) {
+                    var va = _this.value.replace(/\D/gi, ""); //숫자 이외의 문자를 제거 합니다.
+                    if (obj.config.selectType == "y") {
+                        if (va.length > 4) _this.value = va.left(4);
+                    }
+                    else if (obj.config.selectType == "m") {
+                        if (va.length == 4) {
+                            va = va + separator;
+                            _this.value = va;
+                        }
+                        else if (va.length > 4) {
+                            va = va.substr(0, 4) + separator + va.substr(4, 2);
+                            _this.value = va;
+                        }
+                    }
+                    else {
+                        if (va.length < 4) {
+                            _this.value = va;
+                        }
+                        else if (va.length == 4) {
+                            va = va + separator;
+                            _this.value = va;
+                        }
+                        else if (va.length <= 6) {
+                            va = va.substr(0, 4) + separator + va.substr(4, 2) + separator;
+                            _this.value = va;
+                        }
+                        else if (va.length <= 8) {
+                            va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2);
+                            if (obj.config.expandTime) va += " ";
+                            _this.value = va;
+                        }
+                        else {
+                            if (obj.config.expandTime) {
+                                if (va.length <= 10) {
+                                    va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2) + " " + va.substr(8, 2) + ":";
+                                    _this.value = va;
+                                }
+                                else if (va.length > 12) {
+                                    va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2) + " " + va.substr(8, 2) + ":" + va.substr(10, 2);
+                                    _this.value = va;
+                                }
+                            }
+                            else {
+                                va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2);
+                                _this.value = va;
+                            }
+                        }
+                    }
+                }
+            });
+        });
+        
+        var bindDateInputBlur = this.bindDateInputBlur.bind(this);
+        obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function (event) {
+            bindDateInputBlur(objID, objSeq, event);
+        });
+        
+        // config.expand : true, 속성 bindDateExpand
+        if (obj.config.expand === true) {
+            bindDateExpand(objID, objSeq, true, event);
+            setTimeout(function () {
+                obj.bindTarget.focus();
+            }, 100);
+        }
+    },
+    bindDateExpand: function (objID, objSeq, isToggle, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        
+        for (var OO, oidx = 0, __arr = this.objects; (oidx < __arr.length && (OO = __arr[oidx])); oidx++) {
+            if (OO.expandBox_axdom) {
+                OO.expandBox_axdom.remove();
+                OO.expandBox_axdom = null;
+            }
+        }
+        
+        if (AXUtil.clientWidth() < cfg.responsiveMobile) {
+            this.bindDateExpandMobile(objID, objSeq, isToggle, event);
+            return;
+            /* 클라이언트 너비가 모바일 너비이면 프로세스 중지 */
+        }
+        var obj = this.objects[objSeq];
+        var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+        
+        //Selector Option box Expand
+        if (isToggle) { // 활성화 여부가 토글 이면
+            if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
+                //비활성 처리후 메소드 종료
+                return;
+            }
+        }
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 활성화 전에 개체 삭제 처리
+        
+        //Expand Box 생성 구문 작성
+        var objVal = axdom("#" + objID).val(), objHours = "";
+        if (obj.config.expandTime) obj.config.selectType == "d"; //시간 확장 시 selectType : d 로 고정
+        
+        var today = new Date();
+        if (obj.config.selectType == "y") {
+            if (objVal != "") {
+                objVal = objVal.left(4) + separator + "01" + separator + "01";
+            }
+        }
+        else if (obj.config.selectType == "m") {
+            if (objVal != "") {
+                objVal = objVal + separator + "02";
+            }
+        }
+        
+        var dfDate = (obj.config.defaultDate || "").date();
+        var myDate = objVal.date(separator, dfDate);
+        
+        var myYear = myDate.getUTCFullYear();
+        var myMonth = (myDate.getUTCMonth() + 1).setDigit(2);
+        
+        var po = [];
+        po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandBox\" class=\"" + cfg.bindDateExpandBoxClassName + "\" style=\"z-index:5100;\">");
+        po.push("	<div>");
+        po.push("		<div class=\"dateControlBox\">");
+        po.push("			<a " + obj.config.href + " class=\"yearbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlYear\">" + myYear + "년</a>");
+        po.push("			<a " + obj.config.href + " class=\"monthbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth\">" + myMonth + "월</a>");
+        po.push("			<a " + obj.config.href + " class=\"prevbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandPrev\">P</a>");
+        po.push("			<a " + obj.config.href + " class=\"nextbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandNext\">N</a>");
+        po.push("		</div>");
+        po.push("		<div class=\"dateDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayBox\"></div>");
+        if (obj.config.expandTime) { //시간 선택 기능 확장시
+            po.push("		<div class=\"timeDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox\"></div>");
+        }
+        po.push("	</div>");
+        po.push("</div>");
+        
+        axdom(document.body).append(po.join('')); // bindDateExpandBox append
+        //axdom("#"+cfg.targetID + "_AX_" + objID+"_AX_Handle").addClass("on");
+        
+        // AXCalendar display
+        obj.nDate = myDate;
+        obj.mycalendar = new AXCalendar();
+        obj.mycalendar.setConfig({
+            targetID: cfg.targetID + "_AX_" + objID + "_AX_displayBox",
+            basicDate: myDate,
+            href: obj.config.href,
+            minDate: obj.config.minDate,
+            maxDate: obj.config.maxDate,
+            onBeforeShowDay: obj.config.onBeforeShowDay
+        });
+        if (obj.config.expandTime) { //시간 선택 기능 확장시
+            obj.nDate = myDate;
+            var mycalendartimeChange = this.bindDateTimeChange.bind(this);
+            obj.mycalendartimeChange = function (myTime) {
+                mycalendartimeChange(objID, objSeq, myTime);
+            };
+            obj.mycalendartime = new AXCalendar();
+            obj.mycalendartime.setConfig({
+                targetID: cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox",
+                onChange: obj.mycalendartimeChange
+            });
+            var apm = "AM";
+            var myTimes = myDate.print("hh:mi").split(":");
+            var myHH = myTimes[0].number();
+            var myMI = myTimes[1];
+            
+            if (myHH == 12 && myMI > 0) {
+                apm = "PM";
+            }
+            else if (myHH > 12) {
+                apm = "PM";
+                myHH -= 12;
+            }
+            obj.mycalendartime.printTimePage(myHH.setDigit(2) + ":" + myMI.setDigit(2) + " " + apm);
+        }
+        
+        var printDate = "";
+        if (obj.config.selectType == "y") {
+            obj.mycalendarPageType = "y";
+            obj.mycalendar.printYearPage(myDate.print("yyyy"));
+            printDate = myDate.print("yyyy");
+            axdom("#" + objID).val(printDate);
+        }
+        else if (obj.config.selectType == "m") {
+            obj.mycalendarPageType = "m";
+            obj.mycalendar.printMonthPage(myDate);
+            printDate = myDate.print("yyyy" + separator + "mm");
+            axdom("#" + objID).val(printDate);
+        }
+        else {
+            if (obj.config.defaultSelectType) {
+                if (obj.config.defaultSelectType == "y") {
+                    obj.mycalendarPageType = "y";
+                    obj.mycalendar.printYearPage(myDate.print("yyyy"));
+                }
+                else if (obj.config.defaultSelectType == "m") {
+                    obj.mycalendarPageType = "m";
+                    obj.mycalendar.printMonthPage(myDate);
+                }
+                else {
+                    obj.mycalendarPageType = "d";
+                    obj.mycalendar.printDayPage(myDate);
+                }
+                printDate = myDate.print("yyyy" + separator + "mm" + separator + "dd");
+                if (obj.config.expandTime) {
+                    printDate += " " + myDate.print("hh:mi");
+                }
+                axdom("#" + objID).val(printDate);
+                
+            }
+            else {
+                obj.mycalendarPageType = "d";
+                obj.mycalendar.printDayPage(myDate);
+                printDate = myDate.print("yyyy" + separator + "mm" + separator + "dd");
+                if (obj.config.expandTime) {
+                    printDate += " " + myDate.print("hh:mi");
+                }
+                axdom("#" + objID).val(printDate);
+            }
+        }
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ AXCalendar display
+        
+        // expandBox set Position ~~~~~~~~~~~~~~~~~~~~~~~~~
+        var expandBox = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox");
+        var expBoxWidth = expandBox.outerWidth();
+        var expBoxHeight = expandBox.outerHeight();
+        var offset = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").offset();
+        var handleWidth = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").width();
+        var handleHeight = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").height();
+        
+        var css = {};
+        if (obj.config.align == "left") {
+            css.left = offset.left.number() - expBoxWidth;
+        }
+        else if (obj.config.align == "center") {
+            css.left = offset.left.number() - expBoxWidth / 2 + handleWidth;
+        }
+        else if (obj.config.align == "right") {
+            css.left = offset.left.number() + handleWidth;
+        }
+        else {
+            css.left = offset.left.number() + handleWidth;
+        }
+        if (obj.config.valign == "top") {
+            css.top = offset.top;
+        }
+        else if (obj.config.valign == "middle") {
+            css.top = offset.top.number() - expBoxHeight / 2 + handleWidth / 2;
+        }
+        else if (obj.config.valign == "bottom") {
+            css.top = offset.top.number() - expBoxHeight + handleWidth;
+        }
+        else {
+            css.top = offset.top;
+        }
+        
+        if (obj.config.customPos != undefined) {
+            css.top = css.top + obj.config.customPos.top;
+            css.left = css.left + obj.config.customPos.left;
+        }
+        
+        var pElement = expandBox.offsetParent();
+        var pBox = {width: pElement.width(), height: pElement.height()};
+        
+        var clientHeight = (AXUtil.docTD == "Q") ? document.body.scrollHeight : document.documentElement.scrollHeight;
+        var clienWidth = (AXUtil.docTD == "Q") ? document.body.scrollWidth : document.documentElement.scrollWidth;
+        if (clienWidth > pBox.width) pBox.width = clienWidth;
+        if (clientHeight > pBox.height) pBox.height = clientHeight;
+        var _box = {width: expandBox.outerWidth() + 10, height: expandBox.outerHeight() + 10};
+        
+        if ((_box.height.number() + css.top.number()) > pBox.height) {
+            css.top = css.top - ((_box.height.number() + css.top.number()) - pBox.height);
+        }
+        if (css.top < 0) {
+            css.top = 0;
+        }
+        
+        if ((_box.width.number() + css.left.number()) > pBox.width) {
+            css.left = css.left - ((_box.width.number() + css.left.number()) - pBox.width);
+        }
+        if (css.left < 0) {
+            css.left = 0;
+        }
+        
+        expandBox.css(css);
+        obj.expandBox_axdom = expandBox;
+        
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~ expandBox set Position ~~~~~~~~~~~~~~~~~~~~~~~~~
+        
+        var bindDateExpandBoxClick = this.bindDateExpandBoxClick.bind(this);
+        obj.documentclickEvent = function (event) {
+            //trace(objID);
+            bindDateExpandBoxClick(objID, objSeq, event);
+        }
+        var bindDateKeyup = this.bindDateKeyup.bind(this);
+        obj.inputKeyup = function (event) {
+            bindDateKeyup(objID, objSeq, event);
+        }
+        if (obj.config.selectType == "y") {
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear").css({left: "70px"});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth").hide();
+        }
+        
+        //trace("event bind");
+        axdom(document).unbind("click.AXInput").bind("click.AXInput", obj.documentclickEvent);
+        axdom("#" + objID).bind("keydown.AXInput", obj.inputKeyup);
+    },
+    // -- bindDate for mobile
+    bindDateExpandMobile: function (objID, objSeq, isToggle, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        
+        axdom("#" + objID).unbind("keydown.AXInput").bind("keydown.AXInput", obj.inputKeyup);
+        
+        //Selector Option box Expand
+        if (isToggle) { // 활성화 여부가 토글 이면
+            if (obj.modal && obj.modal.opened) {
+                obj.modal.close();
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
+                //비활성 처리후 메소드 종료
+                return;
+            }
+        }
+        
+        /* mobile modal ready */
+        obj.modal = new AXMobileModal();
+        obj.modal.setConfig({
+            addClass: "",
+            height: (obj.config.expandTime) ? 532 : 388,
+            width: 300,
+            head: {},
+            onclose: function () { }
+        });
+        
+        var initBindDateMobileModal = this.initBindDateMobileModal.bind(this);
+        var onLoad = function (modalObj) {
+            initBindDateMobileModal(objID, objSeq, modalObj);
+        };
+        obj.modal.open(null, onLoad);
+    },
+    initBindDateMobileModal: function (objID, objSeq, modalObj) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+        
+        //Expand Box 생성 구문 작성
+        var objVal = axdom("#" + objID).val();
+        if (obj.config.expandTime) obj.config.selectType == "d"; //시간 확장 시 selectType : d 로 고정			
+        
+        var today = new Date();
+        if (obj.config.selectType == "y") {
+            if (objVal != "") {
+                objVal = objVal.left(4) + separator + "01" + separator + "01";
+            }
+        }
+        else if (obj.config.selectType == "m") {
+            if (objVal != "") {
+                objVal = objVal + separator + "01";
+            }
+        }
+        
+        var dfDate = (obj.config.defaultDate || "").date();
+        var myDate = objVal.date(separator, dfDate);
+        
+        var myYear = myDate.getFullYear();
+        var myMonth = (myDate.getMonth() + 1).setDigit(2);
+        
+        /* head 만들기 */
+        var headPo = [];
+        /* 현재 선택된 메뉴 선택 하는 기능구현 필요 */
+        headPo.push("<div class=\"AXDateControlBox\">");
+        headPo.push("	<a " + obj.config.href + " class=\"AXDateControl yearbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlYear\">" + (AXConfig.AXInput.yearText || "{year}년").replace("{year}", myYear) + "</a>");
+        headPo.push("	<a " + obj.config.href + " class=\"AXDateControl monthbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth\">" + (AXConfig.AXInput.monthText || "{month}월").replace("{month}", myMonth) + "</a>");
+        headPo.push("	<a " + obj.config.href + " class=\"AXDateControl prevbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandPrev\">P</a>");
+        headPo.push("	<a " + obj.config.href + " class=\"AXDateControl nextbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandNext\">N</a>");
+        headPo.push("</div>");
+        
+        var bodyPo = [];
+        bodyPo.push('<div class="AXDateContainer">');
+        bodyPo.push('<div class="AXDateDisplayBox" id="' + cfg.targetID + '_AX_' + objID + '_AX_displayBox"></div>');
+        if (obj.config.expandTime) { //시간 선택 기능 확장시
+            bodyPo.push('		<div class="AXTimeDisplayBox" id="' + cfg.targetID + '_AX_' + objID + '_AX_displayTimeBox"></div>');
+        }
+        bodyPo.push('</div>');
+        
+        var footPo = [];
+        footPo.push('<div class="AXDateButtonBox" id="' + cfg.targetID + '_AX_' + objID + '_AX_buttonBox">');
+        footPo.push('	<button class="AXButtonSmall W80 AXBindDateConfirm" type="button" id="' + cfg.targetID + '_AX_' + objID + '_AX_button_AX_confirm">' + (AXConfig.AXInput.confirmText || "확인") + '</button>');
+        footPo.push('</div>');
+        
+        /* modal에 캘린더 장착 */
+        modalObj.modalHead.empty();
+        modalObj.modalHead.append(headPo.join(''));
+        modalObj.modalBody.empty();
+        modalObj.modalBody.append(bodyPo.join(''));
+        modalObj.modalFoot.empty();
+        modalObj.modalFoot.append(footPo.join(''));
+        
+        /* 캘린더 클래스 로드 */
+        // AXCalendar display
+        obj.nDate = myDate;
+        obj.mycalendar = new AXCalendar();
+        obj.mycalendar.setConfig({
+            targetID: cfg.targetID + "_AX_" + objID + "_AX_displayBox",
+            basicDate: myDate,
+            href: obj.config.href
+        });
+        if (obj.config.expandTime) { //시간 선택 기능 확장시
+            obj.nDate = myDate;
+            var mycalendartimeChange = this.bindDateTimeChange.bind(this);
+            obj.mycalendartimeChange = function (myTime) {
+                mycalendartimeChange(objID, objSeq, myTime);
+            };
+            obj.mycalendartime = new AXCalendar();
+            obj.mycalendartime.setConfig({
+                targetID: cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox",
+                onChange: obj.mycalendartimeChange
+            });
+            var apm = "AM";
+            var myTimes = myDate.print("hh:mi").split(":");
+            var myHH = myTimes[0].number();
+            var myMI = myTimes[1];
+            
+            if (myHH == 12 && myMI > 0) {
+                apm = "PM";
+            }
+            else if (myHH > 12) {
+                apm = "PM";
+                myHH -= 12;
+            }
+            obj.mycalendartime.printTimePage(myHH.setDigit(2) + ":" + myMI.setDigit(2) + " " + apm);
+        }
+        
+        var printDate = "";
+        if (obj.config.selectType == "y") {
+            obj.mycalendarPageType = "y";
+            obj.mycalendar.printYearPage(myDate.print("yyyy"));
+            printDate = myDate.print("yyyy");
+            axdom("#" + objID).val(printDate);
+        }
+        else if (obj.config.selectType == "m") {
+            obj.mycalendarPageType = "m";
+            obj.mycalendar.printMonthPage(myDate);
+            printDate = myDate.print("yyyy" + separator + "mm");
+            axdom("#" + objID).val(printDate);
+        }
+        else {
+            if (obj.config.defaultSelectType) {
+                if (obj.config.defaultSelectType == "y") {
+                    obj.mycalendarPageType = "y";
+                    obj.mycalendar.printYearPage(myDate.print("yyyy"));
+                }
+                else if (obj.config.defaultSelectType == "m") {
+                    obj.mycalendarPageType = "m";
+                    obj.mycalendar.printMonthPage(myDate);
+                }
+                else {
+                    obj.mycalendarPageType = "d";
+                    obj.mycalendar.printDayPage(myDate);
+                }
+                printDate = myDate.print("yyyy" + separator + "mm" + separator + "dd");
+                if (obj.config.expandTime) {
+                    printDate += " " + myDate.print("hh:mi");
+                }
+                axdom("#" + objID).val(printDate);
+                
+            }
+            else {
+                obj.mycalendarPageType = "d";
+                obj.mycalendar.printDayPage(myDate);
+                printDate = myDate.print("yyyy" + separator + "mm" + separator + "dd");
+                if (obj.config.expandTime) {
+                    printDate += " " + myDate.print("hh:mi");
+                }
+                axdom("#" + objID).val(printDate);
+            }
+        }
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ AXCalendar display
+        
+        // control event bind
+        var _this = this;
+        /*var bindDateMobileModalHeadClick = this.bindDateMobileModalHeadClick.bind(this);*/
+        modalObj.modalHead.unbind("click.AXInput").bind("click.AXInput", function (event) {
+            _this.bindDateMobileModalHeadClick(objID, objSeq, event);
+        });
+        /*var bindDateMobileModalBodyClick = this.bindDateMobileModalBodyClick.bind(this);*/
+        modalObj.modalBody.unbind("click.AXInput").bind("click.AXInput", function (event) {
+            _this.bindDateMobileModalBodyClick(objID, objSeq, event);
+        });
+        /*var bindDateMobileModalFootClick = this.bindDateMobileModalFootClick.bind(this);*/
+        modalObj.modalFoot.unbind("click.AXInput").bind("click.AXInput", function (event) {
+            _this.bindDateMobileModalFootClick(objID, objSeq, event);
+        });
+        // control event bind
+    },
+    bindDateMobileModalHeadClick: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var eid = event.target.id.split(/_AX_/g);
+        var eventTarget = event.target;
+        var myTarget = this.getEventTarget({
+            evt: eventTarget, evtIDs: eid,
+            until: function (evt, evtIDs) { return (axdom(evt.parentNode).hasClass("AXDateControlBox")) ? true : false; },
+            find: function (evt, evtIDs) { return (axdom(evt).hasClass("AXDateControl")) ? true : false; }
+        });
+        if (myTarget) {
+            var act = myTarget.id.split(/_AX_/g).last();
+            var nDate = obj.nDate;
+            
+            if (act == "controlYear") {
+                this.bindDateChangePage(objID, objSeq, nDate, "y");
+            }
+            else if (act == "controlMonth") {
+                if (obj.config.selectType != "y") {
+                    this.bindDateChangePage(objID, objSeq, nDate, "m");
+                }
+            }
+            else if (act == "expandPrev") {
+                if (obj.mycalendarPageType == "d") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(-1, "m"), "d");
+                }
+                else if (obj.mycalendarPageType == "m") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(-1, "y"), "m");
+                }
+                else if (obj.mycalendarPageType == "y") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(-12, "y"), "y");
+                }
+            }
+            else if (act == "expandNext") {
+                if (obj.mycalendarPageType == "d") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(1, "m"), "d");
+                }
+                else if (obj.mycalendarPageType == "m") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(1, "y"), "m");
+                }
+                else if (obj.mycalendarPageType == "y") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(12, "y"), "y");
+                }
+            }
+        }
+    },
+    bindDateMobileModalBodyClick: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var eid = event.target.id.split(/_AX_/g);
+        var eventTarget = event.target;
+        var myTarget = this.getEventTarget({
+            evt: eventTarget, evtIDs: eid,
+            until: function (evt, evtIDs) { return (axdom(evt.parentNode).hasClass("AXDateContainer")) ? true : false; },
+            find: function (evt, evtIDs) { return (axdom(evt).hasClass("calendarDate") || axdom(evt).hasClass("calendarMonth")) ? true : false; }
+        });
+        if (myTarget) {
+            var ids = myTarget.id.split(/_AX_/g);
+            var act = ids.last();
+            var nDate = obj.nDate;
+            var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+            if (act == "date") {
+                //trace(ids[ids.length-2]);
+                obj.nDate = ids[ids.length - 2].date();
+                var printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
+                if (obj.config.expandTime) {
+                    printDate += " " + obj.mycalendartime.getTime();
+                }
+                axdom("#" + objID).val(printDate);
+                //obj.modal.close();
+                this.bindDateExpandClose(objID, objSeq, event);
+            }
+            else if (act == "month") {
+                var myMonth = ids[ids.length - 2].number() - 1;
+                if (obj.config.selectType == "m") {
+                    var yy = nDate.getFullYear();
+                    var dd = 1;
+                    obj.nDate = new Date(Date.UTC(yy, myMonth, dd));
+                    //obj.modal.close();
+                    this.bindDateExpandClose(objID, objSeq, event);
+                }
+                else {
+                    var yy = nDate.getFullYear();
+                    var dd = 1;
+                    obj.nDate = new Date(Date.UTC(yy, myMonth, dd));
+                    this.bindDateChangePage(objID, objSeq, obj.nDate, "d");
+                }
+            }
+            else if (act == "year") {
+                var myYear = ids[ids.length - 2];
+                if (obj.config.selectType == "y") {
+                    var mm = 0;
+                    var dd = 1;
+                    obj.nDate = new Date(Date.UTC(myYear, mm, dd));
+                    //obj.modal.close();
+                    this.bindDateExpandClose(objID, objSeq, event);
+                }
+                else {
+                    var mm = 0;
+                    var dd = 1;
+                    obj.nDate = new Date(Date.UTC(myYear, mm, dd));
+                    this.bindDateChangePage(objID, objSeq, obj.nDate, "m");
+                }
+            }
+            
+        }
+    },
+    bindDateMobileModalFootClick: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var eid = event.target.id.split(/_AX_/g);
+        var eventTarget = event.target;
+        var myTarget = this.getEventTarget({
+            evt: eventTarget, evtIDs: eid,
+            until: function (evt, evtIDs) { return (axdom(evt.parentNode).hasClass("AXDateButtonBox")) ? true : false; },
+            find: function (evt, evtIDs) { return (axdom(evt).hasClass("AXBindDateConfirm")) ? true : false; }
+        });
+        if (myTarget) {
+            var act = myTarget.id.split(/_AX_/g).last();
+            if (act == "confirm") {
+                obj.modal.close();
+            }
+        }
+    },
+    // -- bindDate for mobile
+    bindDateExpandClose: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        
+        if (!obj) {
+            //비활성 처리후 메소드 종료
+            axdom(document).unbind("click.AXInput");
+            //axdom("#" + objID).unbind("keydown.AXInput");
+            return;
+        }
+        
+        if (obj.modal && obj.modal.opened) { /* mobile modal close */
+            var objVal = axdom("#" + objID).val();
+            if (objVal == "") {
+                
+            }
+            else {
+                var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+                if (obj.config.selectType == "y") {
+                    axdom("#" + objID).val(obj.nDate.print("yyyy"));
+                }
+                else if (obj.config.selectType == "m") {
+                    axdom("#" + objID).val(obj.nDate.print("yyyy" + separator + "mm"));
+                }
+                else {
+                    //axdom("#"+objID).val(obj.nDate.print("yyyy"+separator+"mm"+separator+"dd"));
+                    printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
+                    if (obj.config.expandTime) {
+                        printDate += " " + obj.mycalendartime.getTime();
+                    }
+                    axdom("#" + objID).val(printDate);
+                }
+            }
+            
+            if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
+            
+            if (obj.config.onChange) {
+                if (axdom.isFunction(obj.config.onChange)) {
+                    obj.config.onChange.call({
+                        objID: objID,
+                        value: axdom("#" + objID).val()
+                    });
+                }
+                else {
+                    var st_date, ed_date;
+                    if (obj.config.onChange.earlierThan) {
+                        st_date = axdom("#" + objID).val();
+                        ed_date = axdom("#" + obj.config.onChange.earlierThan).val();
+                    }
+                    else if (obj.config.onChange.laterThan) {
+                        ed_date = axdom("#" + objID).val();
+                        st_date = axdom("#" + obj.config.onChange.laterThan).val();
+                    }
+                    if (st_date != "" && ed_date != "") {
+                        if (st_date.date().diff(ed_date) < 0) {
+                            this.msgAlert(obj.config.onChange.err);
+                            axdom("#" + objID).val("");
+                            return;
+                        }
+                    }
+                    
+                    obj.config.onChange.onChange.call({
+                        objID: objID,
+                        value: axdom("#" + objID).val(),
+                        eventType: "expandClose"
+                    });
+                }
+            }
+            
+            if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+            obj.bindTarget.trigger("change");
+            
+            obj.modal.close();
+            //axdom("#" + objID).unbind("keydown.AXInput");
+            
+            //비활성 처리후 메소드 종료
+            axdom(document).unbind("click.AXInput");
+            //axdom("#" + objID).unbind("keydown.AXInput");
+            return;
+        }
+        if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+            var objVal = axdom("#" + objID).val();
+            
+            if (objVal == "") {
+                
+            }
+            else {
+                var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+                if (obj.config.selectType == "y") {
+                    axdom("#" + objID).val(obj.nDate.print("yyyy"));
+                }
+                else if (obj.config.selectType == "m") {
+                    axdom("#" + objID).val(obj.nDate.print("yyyy" + separator + "mm"));
+                }
+                else {
+                    //axdom("#"+objID).val(obj.nDate.print("yyyy"+separator+"mm"+separator+"dd"));
+                    printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
+                    if (obj.config.expandTime) {
+                        printDate += " " + obj.mycalendartime.getTime();
+                    }
+                    axdom("#" + objID).val(printDate);
+                }
+            }
+            
+            if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
+            
+            if (obj.config.onChange) {
+                if (axdom.isFunction(obj.config.onChange)) {
+                    obj.config.onChange.call({
+                        objID: objID,
+                        value: axdom("#" + objID).val()
+                    });
+                }
+                else {
+                    var st_date, ed_date;
+                    if (obj.config.onChange.earlierThan) {
+                        st_date = axdom("#" + objID).val();
+                        ed_date = axdom("#" + obj.config.onChange.earlierThan).val();
+                    }
+                    else if (obj.config.onChange.laterThan) {
+                        ed_date = axdom("#" + objID).val();
+                        st_date = axdom("#" + obj.config.onChange.laterThan).val();
+                    }
+                    if (st_date != "" && ed_date != "") {
+                        if (st_date.date().diff(ed_date) < 0) {
+                            this.msgAlert(obj.config.onChange.err);
+                            axdom("#" + objID).val("");
+                            return;
+                        }
+                    }
+                    if (obj.config.onChange.onChange) {
+                        obj.config.onChange.onChange.call({
+                            objID: objID,
+                            value: axdom("#" + objID).val()
+                        });
+                    }
+                    else if (obj.config.onChange.onchange) {
+                        obj.config.onChange.onchange.call({
+                            objID: objID,
+                            value: axdom("#" + objID).val()
+                        });
+                    }
+                }
+            }
+            if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+            obj.bindTarget.trigger("change");
+            
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
+            obj.expandBox_axdom = null;
+            obj.mycalendartime = null;
+            
+            //비활성 처리후 메소드 종료
+            axdom(document).unbind("click.AXInput");
+            //axdom("#" + objID).unbind("keydown.AXInput");
+            
+            event.stopPropagation(); // disableevent
+            return;
+        }
+    },
+    bindDateInputBlur: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var objVal = axdom("#" + objID).val();
+        /*
+         if(obj.config.expand === true) {
+         //return false;
+         }
+         */
+        
+        if (objVal == "") {
+            
+        }
+        else {
+            var clearDate = false;
+            var nDate = (obj.nDate || new Date());
+            var va = axdom("#" + objID).val().replace(/\D/gi, ""); //숫자 이외의 문자를 제거 합니다.
+            if (va.search(/\d+/g) == -1) {
+                clearDate = true;
+            }
+            
+            if (clearDate) {
+                axdom("#" + objID).val("");
+            }
+            else {
+                var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+                if (obj.config.selectType == "y") {
+                    
+                    var yy = va.left(4).number();
+                    if (yy == 0) yy = nDate.getFullYear();
+                    if (yy < 1000) yy += 2000;
+                    var mm = nDate.getMonth();
+                    var dd = nDate.getDate();
+                    obj.nDate = new Date(Date.UTC(yy, mm, dd, 12));
+                    
+                    axdom("#" + objID).val(obj.nDate.print("yyyy"));
+                    
+                }
+                else if (obj.config.selectType == "m") {
+                    
+                    if (va.length > 4) {
+                        var yy = va.left(4).number();
+                        var mm = va.substr(4, 2).number() - 1;
+                        var dd = 1;
+                    }
+                    else {
+                        var yy = va.left(4).number();
+                        var mm = 0;
+                        var dd = 1;
+                    }
+                    if (yy == 0) yy = nDate.getFullYear();
+                    if (yy < 1000) yy += 2000;
+                    obj.nDate = new Date(Date.UTC(yy, mm, dd, 12));
+                    
+                    axdom("#" + objID).val(obj.nDate.print("yyyy" + separator + "mm"));
+                    
+                }
+                else {
+                    var needAlert = false;
+                    if (va.length > 5) {
+                        var yy = va.left(4).number();
+                        var mm = va.substr(4, 2).number() - 1;
+                        var dd = va.substr(6, 2).number();
+                    }
+                    else if (va.length > 3) {
+                        var yy = "20" + va.substr(0, 2);
+                        var mm = va.substr(2, 2).number() - 1;
+                        var dd = va.substr(4, 2).number();
+                    }
+                    else if (va.length > 2) {
+                        var yy = nDate.getFullYear();
+                        var mm = va.substr(0, 2).number() - 1;
+                        var dd = va.substr(2, 2).number();
+                    }
+                    else {
+                        var yy = nDate.getFullYear(); //va.left(4).number();
+                        var mm = nDate.getMonth();
+                        var dd = va.substr(0, 2).number();
+                    }
+                    if (yy == 0) needAlert = true;
+                    if (yy == 0) yy = nDate.getFullYear();
+                    if (yy < 1000) yy += 2000;
+                    
+                    obj.nDate = new Date(Date.UTC(yy, mm, dd, 12));
+                    
+                    //trace(obj.nDate.getFullYear() != yy.number());
+                    //trace(obj.nDate.getMonth() != mm.number());
+                    //trace(obj.nDate.getDate(), dd.number());
+                    
+                    if (obj.nDate.getFullYear() != yy.number()
+                        || obj.nDate.getMonth() != mm.number()
+                        || obj.nDate.getDate() != dd.number())
+                    {
+                        needAlert = true;
+                        obj.nDate = new Date();
+                    }
+                    
+                    printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
+                    
+                    if (obj.config.expandTime) {
+                        var hh, mi;
+                        try {
+                            printDate += " " + obj.mycalendartime.getTime();
+                            trace(printDate);
+                            
+                        } catch (e) {
+                            if (va.length > 11) { // hh,mm
+                                hh = va.substr(8, 2).number();
+                                mi = va.substr(10, 2).number();
+                            }
+                            else if (va.length > 9) {
+                                hh = va.substr(8, 2).number();
+                                mi = "00";
+                            }
+                            else {
+                                hh = "12";
+                                mi = "00";
+                            }
+                            printDate += " " + hh.setDigit(2) + ":" + mi.setDigit(2);
+                        }
+                    }
+                    
+                    if (needAlert) {
+                        this.msgAlert("날짜 형식이 올바르지 않습니다.");
+                    }
+                    axdom("#" + objID).val(printDate);
+                }
+            }
+        }
+        
+        if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
+        if (obj.config.onChange) {
+            
+            if (axdom("#" + objID).data("val") && axdom("#" + objID).data("val") != axdom("#" + objID).val()) {
+                
+                if (axdom.isFunction(obj.config.onChange)) {
+                    obj.config.onChange.call({
+                        objID: objID,
+                        value: axdom("#" + objID).val()
+                    });
+                }
+                else {
+                    var st_date, ed_date;
+                    if (obj.config.onChange.earlierThan) {
+                        st_date = axdom("#" + objID).val();
+                        ed_date = axdom("#" + obj.config.onChange.earlierThan).val();
+                    }
+                    else if (obj.config.onChange.laterThan) {
+                        ed_date = axdom("#" + objID).val();
+                        st_date = axdom("#" + obj.config.onChange.laterThan).val();
+                    }
+                    if (st_date != "" && ed_date != "") {
+                        if (st_date.date().diff(ed_date) < 0) {
+                            this.msgAlert(obj.config.onChange.err);
+                            axdom("#" + objID).val("");
+                        }
+                    }
+                    
+                    obj.config.onChange.onChange.call({
+                        objID: objID,
+                        value: axdom("#" + objID).val(),
+                        eventType: "blur"
+                    });
+                }
+                axdom("#" + objID).data("val", axdom("#" + objID).val());
+                
+            }
+        }
+
+        /*
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTarget.trigger("change");
+        */
+
+        /* ie10 버그
+         axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
+         
+         //비활성 처리후 메소드 종료
+         axdom(document).unbind("click.AXInput");
+         axdom("#" + objID).unbind("keydown.AXInput");
+         */
+        
+        event.stopPropagation(); // disableevent
+        return;
+    },
+    unbindDate: function (obj) {
+        var cfg = this.config;
+        var objID = obj.id;
+        var objSeq = null;
+        
+        axf.each(this.objects, function (oidx, O) {
+            if (this.id == objID) {
+                objSeq = oidx;
+                return false;
+            }
+        });
+        
+        if (objSeq != null) {
+            var obj = this.objects[objSeq];
+            
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
+            
+            //비활성 처리후 메소드 종료
+            axdom(document).unbind("click.AXInput");
+            axdom("#" + objID).unbind("keydown.AXInput");
+        }
+        
+        var collect = [];
+        var removeAnchorId;
+        axf.each(this.objects, function () {
+            if (this.id != obj.id) collect.push(this);
+            else {
+                removeAnchorId = this.anchorID;
+            }
+        });
+        this.objects = collect;
+        
+        axdom("#" + removeAnchorId).remove();
+        
+    },
+    bindDateTimeChange: function (objID, objSeq, myTime) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+        var printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
+        if (obj.config.expandTime) {
+            printDate += " " + obj.mycalendartime.getTime();
+        }
+        axdom("#" + objID).val(printDate);
+    },
+    bindDateExpandBoxClick: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var isDateClick = false;
+        
+        var eventTarget = event.target;
+        var myTarget = this.getEventTarget({
+            evt: eventTarget,
+            until: function (evt, evtIDs) {
+                return (evt.parentNode.tagName == "BODY") ? true : false;
+            },
+            find: function (evt, evtIDs) {
+                if (!evt.id) return false;
+                var checkID = cfg.targetID + "_AX_" + objID;
+                if (evt.id == objID || evt.id.substr(0, checkID.length) == checkID) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
+        
+        isDateClick = (myTarget) ? true : false;
+        if (!isDateClick) {
+            this.bindDateExpandClose(objID, objSeq, event);
+        }
+        else {
+            if (axdom(myTarget).hasClass("disabled")) {
+                return;
+            } // disabled 대상은 선택 불가
+            
+            var ids = myTarget.id.split(/_AX_/g);
+            var ename = ids.last();
+            
+            var nDate = obj.nDate;
+            var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+            if (ename == "expandPrev") {
+                if (obj.mycalendarPageType == "d") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(-1, "m"), "d");
+                }
+                else if (obj.mycalendarPageType == "m") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(-1, "y"), "m");
+                }
+                else if (obj.mycalendarPageType == "y") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(-12, "y"), "y");
+                }
+            }
+            else if (ename == "expandNext") {
+                if (obj.mycalendarPageType == "d") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(1, "m"), "d");
+                }
+                else if (obj.mycalendarPageType == "m") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(1, "y"), "m");
+                }
+                else if (obj.mycalendarPageType == "y") {
+                    this.bindDateChangePage(objID, objSeq, nDate.add(12, "y"), "y");
+                }
+            }
+            else if (ename == "controlYear") {
+                this.bindDateChangePage(objID, objSeq, nDate, "y");
+            }
+            else if (ename == "controlMonth") {
+                if (obj.config.selectType != "y") {
+                    this.bindDateChangePage(objID, objSeq, nDate, "m");
+                }
+            }
+            else if (ename == "date") {
+                //trace(ids[ids.length-2]);
+                obj.nDate = ids[ids.length - 2].date();
+                var printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
+                if (obj.config.expandTime) {
+                    printDate += " " + obj.mycalendartime.getTime();
+                }
+                axdom("#" + objID).val(printDate);
+                this.bindDateExpandClose(objID, objSeq, event);
+            }
+            else if (ename == "month") {
+                var myMonth = ids[ids.length - 2].number() - 1;
+                if (obj.config.selectType == "m") {
+                    var yy = nDate.getFullYear();
+                    var dd = 1;
+                    obj.nDate = new Date(Date.UTC(yy, myMonth, dd, 12));
+                    this.bindDateExpandClose(objID, objSeq, event);
+                }
+                else {
+                    var yy = nDate.getFullYear();
+                    var dd = 1;
+                    obj.nDate = new Date(Date.UTC(yy, myMonth, dd, 12));
+                    this.bindDateChangePage(objID, objSeq, obj.nDate, "d");
+                }
+            }
+            else if (ename == "year") {
+                var myYear = ids[ids.length - 2];
+                if (obj.config.selectType == "y") {
+                    var mm = 0;
+                    var dd = 1;
+                    obj.nDate = new Date(Date.UTC(myYear, mm, dd, 12));
+                    this.bindDateExpandClose(objID, objSeq, event);
+                }
+                else {
+                    var mm = 0;
+                    var dd = 1;
+                    obj.nDate = new Date(Date.UTC(myYear, mm, dd, 12));
+                    this.bindDateChangePage(objID, objSeq, obj.nDate, "m");
+                }
+            }
+        }
+    },
+    bindDateKeyup: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        if (obj.config.selectType == "y") {
+            
+        }
+        else if (obj.config.selectType == "m") {
+            
+        }
+        else {
+            
+        }
+    },
+    bindDateChangePage: function (objID, objSeq, setDate, pageType) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+        
+        if (pageType == "m") {
+            //alert(setDate);
+            obj.mycalendarPageType = "m";
+            obj.nDate = setDate;
+            obj.mycalendar.printMonthPage(setDate);
+            var myYear = setDate.getFullYear();
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear").html(myYear + "년");
+        }
+        else if (pageType == "y") {
+            obj.mycalendarPageType = "y";
+            obj.nDate = setDate;
+            obj.mycalendar.printYearPage(setDate.getFullYear());
+            var myYear = setDate.getFullYear();
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear").html(myYear + "년");
+        }
+        else {
+            obj.mycalendarPageType = "d";
+            obj.nDate = setDate;
+            obj.mycalendar.printDayPage(setDate);
+            var myYear = setDate.getFullYear();
+            var myMonth = (setDate.getMonth() + 1).setDigit(2);
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear").html(myYear + "년");
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth").html(myMonth + "월");
+        }
+        
+        if (obj.config.selectType == "y") {
+            axdom("#" + objID).val(obj.nDate.print("yyyy"));
+        }
+        else if (obj.config.selectType == "m") {
+            axdom("#" + objID).val(obj.nDate.print("yyyy" + separator + "mm"));
+        }
+        else {
+            //axdom("#"+objID).val(obj.nDate.print("yyyy"+separator+"mm"+separator+"dd"));
+            var printDate = obj.nDate.print("yyyy" + separator + "mm" + separator + "dd");
+            if (obj.config.expandTime) {
+                printDate += " " + obj.mycalendartime.getTime();
+            }
+            axdom("#" + objID).val(printDate);
+        }
+    },
+    
+    // twinDate
+    bindTwinDate: function (objID, objSeq, option) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        if (!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTargetStart = axdom("#" + obj.config.startTargetID);
+        
+        var h = obj.bindAnchorTarget.data("height");
+        var po = [];
+        var handleLeft = 0;
+        if (obj.config) handleLeft = (obj.config.handleLeft || 0).number();
+        
+        po.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle\" class=\"" + cfg.anchorDateHandleClassName + "\" style=\"right:" + (0 - handleLeft) + "px;top:0px;width:" + h + "px;height:" + h + "px;\">&nbsp;</a>");
+        obj.bindAnchorTarget.append(po.join(''));
+        obj.bindAnchorTarget.show();
+        
+        var bindDateExpand = this.bindTwinDateExpand.bind(this);
+        var bindTwinDateExpandClose = this.bindTwinDateExpandClose.bind(this);
+        
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").unbind("click.AXInput").bind("click.AXInput", function (event) {
+            if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+                bindTwinDateExpandClose(objID, objSeq, event);
+            }
+            else {
+                bindDateExpand(objID, objSeq, true, event);
+            }
+        });
+        obj.bindTarget.unbind("focus.AXInput").bind("focus.AXInput", function (event) {
+            setTimeout(function () {
+                obj.bindTarget.select();
+            }, 1);
+            /*
+             if(!AXgetId(cfg.targetID + "_AX_"+objID+"_AX_expandBox")){
+             bindDateExpand(objID, objSeq, false, event);
+             }
+             */
+        });
+        obj.bindTargetStart.unbind("focus.AXInput").bind("focus.AXInput", function (event) {
+            setTimeout(function () {
+                obj.bindTargetStart.select();
+            }, 1);
+            /*
+             if(!AXgetId(cfg.targetID + "_AX_"+objID+"_AX_expandBox")){
+             bindDateExpand(objID, objSeq, false, event);
+             }
+             */
+        });
+        
+        var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+        axdom("#" + objID + ", #" + obj.config.startTargetID).unbind("keyup.AXInput").bind("keyup.AXInput", function (event) {
+            //alert(this.value);
+            if (event.keyCode == axf.Event.KEY_RETURN) {
+                //bindDateInputBlur(objID, objSeq, event);
+                this.blur();
+            }
+            else if (event.keyCode != AXUtil.Event.KEY_BACKSPACE && event.keyCode != AXUtil.Event.KEY_DELETE && event.keyCode != AXUtil.Event.KEY_LEFT && event.keyCode != AXUtil.Event.KEY_RIGHT) {
+                
+                var va = this.value.replace(/\D/gi, ""); //숫자 이외의 문자를 제거 합니다.
+                var _this = this;
+                
+                if (obj.config.selectType == "y") {
+                    if (va.length > 4) _this.value = va.left(4);
+                }
+                else if (obj.config.selectType == "m") {
+                    if (va.length == 4) {
+                        va = va + separator;
+                        _this.value = va;
+                    }
+                    else if (va.length > 4) {
+                        va = va.substr(0, 4) + separator + va.substr(4, 2);
+                        _this.value = va;
+                    }
+                }
+                else {
+                    if (va.length < 4) {
+                        _this.value = va;
+                    }
+                    else if (va.length <= 6) {
+                        va = va.substr(0, 4) + separator + va.substr(4, 2);
+                        _this.value = va;
+                    }
+                    else if (va.length <= 8) {
+                        va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2);
+                        _this.value = va;
+                    }
+                    else if (va.length <= 10) {
+                        if (obj.config.expandTime) {
+                            va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2) + " " + va.substr(8, 2);
+                            _this.value = va;
+                        }
+                        else {
+                            va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2);
+                            _this.value = va;
+                        }
+                    }
+                    else if (va.length > 10) {
+                        if (obj.config.expandTime) {
+                            va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2) + " " + va.substr(8, 2) + ":" + va.substr(10, 2);
+                            _this.value = va;
+                        }
+                        else {
+                            va = va.substr(0, 4) + separator + va.substr(4, 2) + separator + va.substr(6, 2);
+                            _this.value = va;
+                        }
+                    }
+                }
+            }
+        });
+        
+        var bindTwinDateInputBlur = this.bindTwinDateInputBlur.bind(this);
+        obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function (event) {
+            bindTwinDateInputBlur(objID, objSeq, event, 2);
+        });
+        axdom("#" + obj.config.startTargetID).unbind("blur.AXInput").bind("blur.AXInput", function (event) {
+            bindTwinDateInputBlur(objID, objSeq, event, 1);
+        });
+        
+        var objVal1 = obj.bindTargetStart.val();
+        var objVal2 = obj.bindTarget.val();
+        var myDate1 = objVal1.date(separator);
+        var myDate2 = objVal2.date(separator);
+        obj.nDate1 = myDate1;
+        obj.nDate2 = myDate2;
+    },
+    bindTwinDateExpand: function (objID, objSeq, isToggle, event) {
+        var cfg = this.config;
+        var obj = this.objects[objSeq];
+        
+        for (var OO, oidx = 0, __arr = this.objects; (oidx < __arr.length && (OO = __arr[oidx])); oidx++) {
+            if (OO.expandBox_axdom) {
+                OO.expandBox_axdom.remove();
+                OO.expandBox_axdom = null;
+            }
+        }
+        
+        var obj = this.objects[objSeq];
+        
+        if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") {
+            return false;
+        }
+        
+        var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+        
+        //Selector Option box Expand
+        if (isToggle) { // 활성화 여부가 토글 이면
+            if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_Handle").removeClass("on");
+                //비활성 처리후 메소드 종료
+                return;
+            }
+        }
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 활성화 전에 개체 삭제 처리
+        //axdom("#"+cfg.targetID + "_AX_" + objID+"_AX_Handle").removeClass("on");
+        
+        //Expand Box 생성 구문 작성
+        var objVal1 = axdom("#" + obj.config.startTargetID).val();
+        var objVal2 = axdom("#" + objID).val();
+        
+        if (obj.config.expandTime) obj.config.selectType == "d"; //시간 확장 시 selectType : d 로 고정
+        
+        var today = new Date();
+        var objVal1Empty = false;
+        if (obj.config.selectType == "y") {
+            if (objVal1 != "") {
+                objVal1 = objVal1.left(4) + separator + "01" + separator + "02";
+            }
+            else {
+                objVal1Empty = true;
+            }
+            if (objVal2 != "") {
+                objVal2 = objVal2.left(4) + separator + "01" + separator + "02";
+            }
+        }
+        else if (obj.config.selectType == "m") {
+            if (objVal1 != "") {
+                objVal1 = objVal1 + separator + "02";
+            }
+            else {
+                objVal1Empty = true;
+            }
+            if (objVal2 != "") {
+                objVal2 = objVal2 + separator + "02";
+            }
+        }
+        if (AXUtil.isEmpty(objVal1)) {
+            objVal1 = "";
+            objVal1Empty = true;
+        }
+        
+        /*var myDate1 = (objVal1Empty) ? objVal1.date(separator).add(-1, "m") : objVal1.date(separator);*/
+        var myDate1 = objVal1.date(separator);
+        var myDate2 = objVal2.date(separator);
+        var myYear1 = myDate1.getFullYear();
+        var myYear2 = myDate2.getFullYear();
+        var myMonth1 = (myDate1.getMonth() + 1).setDigit(2);
+        var myMonth2 = (myDate2.getMonth() + 1).setDigit(2);
+        var buttonText = obj.config.buttonText || "OK";
+        var po = [];
+        po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandBox\" class=\"" + cfg.bindTwinDateExpandBoxClassName + "\" style=\"z-index:5100;\">");
+        po.push("	<div>");
+        po.push("		<table cellpadding=\"0\" cellspacing=\"0\">");
+        po.push("			<tbody>");
+        po.push("				<tr>");
+        po.push("					<td style=\"padding-right:3px;\">");
+        po.push("					<div class=\"dateTypeName\">START</div>");
+        po.push("					<div class=\"dateControlBox\">");
+        po.push("						<a " + obj.config.href + " class=\"yearbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlYear1\">" + myYear1 + "년</a>");
+        po.push("						<a " + obj.config.href + " class=\"monthbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth1\">" + myMonth1 + "월</a>");
+        po.push("						<a " + obj.config.href + " class=\"prevbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandPrev1\">P</a>");
+        po.push("						<a " + obj.config.href + " class=\"nextbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandNext1\">N</a>");
+        po.push("					</div>");
+        po.push("					<div class=\"dateDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayBox1\"></div>");
+        if (obj.config.expandTime) { //시간 선택 기능 확장시
+            po.push("					<div class=\"timeDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox1\"></div>");
+        }
+        po.push("					</td>");
+        po.push("					<td style=\"padding-left:3px;\">");
+        po.push("					<div class=\"dateTypeName\">END</div>");
+        po.push("					<div class=\"dateControlBox\">");
+        po.push("						<a " + obj.config.href + " class=\"yearbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlYear2\">" + myYear2 + "년</a>");
+        po.push("						<a " + obj.config.href + " class=\"monthbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth2\">" + myMonth2 + "월</a>");
+        po.push("						<a " + obj.config.href + " class=\"prevbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandPrev2\">P</a>");
+        po.push("						<a " + obj.config.href + " class=\"nextbutton\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_expandNext2\">N</a>");
+        po.push("					</div>");
+        po.push("					<div class=\"dateDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayBox2\"></div>");
+        if (obj.config.expandTime) { //시간 선택 기능 확장시
+            po.push("					<div class=\"timeDisplayBox\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox2\"></div>");
+        }
+        po.push("					</td>");
+        po.push("				</tr>");
+        po.push("			</tbody>");
+        po.push("		</table>");
+        po.push("	</div>");
+        po.push("	<div style=\"padding-top:5px;\" align=\"center\">");
+        po.push("		<input type=\"button\" value=\"" + buttonText + "\" class=\"AXButton Classic W70\" id=\"" + cfg.targetID + "_AX_" + objID + "_AX_closeButton\">");
+        po.push("	</div>");
+        po.push("</div>");
+        axdom(document.body).append(po.join('')); // bindDateExpandBox append
+        //axdom("#"+cfg.targetID + "_AX_" + objID+"_AX_Handle").addClass("on");
+        
+        // AXCalendar display
+        obj.nDate1 = myDate1;
+        obj.mycalendar1 = new AXCalendar();
+        obj.mycalendar1.setConfig({
+            targetID: cfg.targetID + "_AX_" + objID + "_AX_displayBox1",
+            basicDate: myDate1,
+            minDate: obj.config.minDate,
+            maxDate: obj.config.maxDate,
+            onBeforeShowDay: obj.config.onBeforeShowDay
+        });
+        
+        obj.nDate2 = myDate2;
+        obj.mycalendar2 = new AXCalendar();
+        obj.mycalendar2.setConfig({
+            targetID: cfg.targetID + "_AX_" + objID + "_AX_displayBox2",
+            basicDate: myDate2,
+            minDate: obj.config.minDate,
+            maxDate: obj.config.maxDate,
+            onBeforeShowDay: obj.config.onBeforeShowDay
+        });
+        
+        if (obj.config.expandTime) { //시간 선택 기능 확장시
+            obj.nDate1 = myDate1;
+            var mycalendartimeChange1 = this.bindTwinDateTimeChange.bind(this);
+            obj.mycalendartimeChange1 = function (myTime) {
+                mycalendartimeChange1(objID, objSeq, myTime, 1);
+            };
+            obj.mycalendartime1 = new AXCalendar();
+            obj.mycalendartime1.setConfig({
+                targetID: cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox1",
+                onChange: obj.mycalendartimeChange1
+            });
+            var apm = "AM";
+            var myTimes = myDate1.print("hh:mi").split(":");
+            var myHH = myTimes[0].number();
+            var myMI = myTimes[1];
+            if (myHH > 12) {
+                apm = "PM";
+                myHH -= 12;
+            }
+            obj.mycalendartime1.printTimePage(myHH.setDigit(2) + ":" + myMI.setDigit(2) + " " + apm);
+            
+            obj.nDate2 = myDate2;
+            var mycalendartimeChange2 = this.bindTwinDateTimeChange.bind(this);
+            obj.mycalendartimeChange2 = function (myTime) {
+                mycalendartimeChange2(objID, objSeq, myTime, 2);
+            };
+            obj.mycalendartime2 = new AXCalendar();
+            obj.mycalendartime2.setConfig({
+                targetID: cfg.targetID + "_AX_" + objID + "_AX_displayTimeBox2",
+                onChange: obj.mycalendartimeChange2
+            });
+            var apm = "AM";
+            var myTimes = myDate2.print("hh:mi").split(":");
+            var myHH = myTimes[0].number();
+            var myMI = myTimes[1];
+            if (myHH > 12) {
+                apm = "PM";
+                myHH -= 12;
+            }
+            obj.mycalendartime2.printTimePage(myHH.setDigit(2) + ":" + myMI.setDigit(2) + " " + apm);
+        }
+        
+        var printDate1 = "";
+        var printDate2 = "";
+        if (obj.config.selectType == "y") {
+            obj.mycalendarPageType = "y";
+            obj.mycalendar1.printYearPage(myDate1.print("yyyy"));
+            obj.mycalendar2.printYearPage(myDate2.print("yyyy"));
+            printDate1 = myDate1.print("yyyy");
+            printDate2 = myDate2.print("yyyy");
+            axdom("#" + obj.config.startTargetID).val(printDate1);
+            axdom("#" + objID).val(printDate2);
+        }
+        else if (obj.config.selectType == "m") {
+            obj.mycalendarPageType = "m";
+            obj.mycalendar1.printMonthPage(myDate1);
+            obj.mycalendar2.printMonthPage(myDate2);
+            printDate1 = myDate1.print("yyyy" + separator + "mm");
+            printDate2 = myDate2.print("yyyy" + separator + "mm");
+            axdom("#" + obj.config.startTargetID).val(printDate1);
+            axdom("#" + objID).val(printDate2);
+        }
+        else {
+            obj.mycalendarPageType = "d";
+            obj.mycalendar1.printDayPage(myDate1);
+            obj.mycalendar2.printDayPage(myDate2);
+            printDate1 = myDate1.print("yyyy" + separator + "mm" + separator + "dd");
+            printDate2 = myDate2.print("yyyy" + separator + "mm" + separator + "dd");
+            if (obj.config.expandTime) {
+                printDate1 += " " + myDate1.print("hh:mi");
+                printDate2 += " " + myDate2.print("hh:mi");
+            }
+            axdom("#" + obj.config.startTargetID).val(printDate1);
+            axdom("#" + objID).val(printDate2);
+        }
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ AXCalendar display
+        
+        // expandBox set Position ~~~~~~~~~~~~~~~~~~~~~~~~~
+        var expandBox = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox");
+        var expBoxWidth = expandBox.outerWidth();
+        var expBoxHeight = expandBox.outerHeight();
+        var offset = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").offset();
+        var handleWidth = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").width();
+        var handleHeight = axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_dateHandle").height();
+        
+        var css = {};
+        if (obj.config.align == "left") {
+            css.left = offset.left.number() - expBoxWidth;
+        }
+        else if (obj.config.align == "center") {
+            css.left = offset.left.number() - expBoxWidth / 2 + handleWidth;
+        }
+        else if (obj.config.align == "right") {
+            css.left = offset.left.number() + handleWidth;
+        }
+        else {
+            css.left = offset.left.number() + handleWidth;
+        }
+        if (obj.config.valign == "top") {
+            css.top = offset.top;
+        }
+        else if (obj.config.valign == "middle") {
+            css.top = offset.top.number() - expBoxHeight / 2 + handleWidth / 2;
+        }
+        else if (obj.config.valign == "bottom") {
+            css.top = offset.top.number() - expBoxHeight + handleWidth;
+        }
+        else {
+            css.top = offset.top;
+        }
+        
+        if (obj.config.customPos != undefined) {
+            css.top = css.top + obj.config.customPos.top;
+            css.left = css.left + obj.config.customPos.left;
+        }
+        
+        var pElement = expandBox.offsetParent();
+        var pBox = {width: pElement.width(), height: pElement.height()};
+        
+        var clientHeight = (AXUtil.docTD == "Q") ? document.body.scrollHeight : document.documentElement.scrollHeight;
+        var clienWidth = (AXUtil.docTD == "Q") ? document.body.scrollWidth : document.documentElement.scrollWidth;
+        if (clienWidth > pBox.width) pBox.width = clienWidth;
+        if (clientHeight > pBox.height) pBox.height = clientHeight;
+        var _box = {width: expandBox.outerWidth() + 10, height: expandBox.outerHeight() + 10};
+        
+        if ((_box.height.number() + css.top.number()) > pBox.height) {
+            css.top = css.top - ((_box.height.number() + css.top.number()) - pBox.height);
+        }
+        if (css.top < 0) {
+            css.top = 0;
+        }
+        
+        if ((_box.width.number() + css.left.number()) > pBox.width) {
+            css.left = css.left - ((_box.width.number() + css.left.number()) - pBox.width);
+        }
+        if (css.left < 0) {
+            css.left = 0;
+        }
+        
+        expandBox.css(css);
+        obj.expandBox_axdom = expandBox;
+        
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~ expandBox set Position ~~~~~~~~~~~~~~~~~~~~~~~~~
+        
+        var bindTwinDateExpandBoxClick = this.bindTwinDateExpandBoxClick.bind(this);
+        obj.documentclickEvent = function (event) {
+            bindTwinDateExpandBoxClick(objID, objSeq, event);
+        }
+        var bindTwinDateKeyup = this.bindTwinDateKeyup.bind(this);
+        obj.inputKeyup = function (event) {
+            bindTwinDateKeyup(objID, objSeq, event);
+        }
+        
+        if (obj.config.selectType == "y") {
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear1").css({left: "70px"});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth1").hide();
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear2").css({left: "70px"});
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth2").hide();
+        }
+        
+        axdom(document).unbind("click.AXInput").bind("click.AXInput", obj.documentclickEvent);
+        axdom("#" + objID).unbind("keydown.AXInput").bind("keydown.AXInput", obj.inputKeyup);
+        var bindTwinDateExpandClose = this.bindTwinDateExpandClose.bind(this);
+        axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_closeButton").unbind("click.AXInput").bind("click.AXInput", function (event) {
+            bindTwinDateExpandClose(objID, objSeq, event);
+        });
+    },
+    bindTwinDateTimeChange: function (objID, objSeq, myTime, seq) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        if (seq == 1) {
+            var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+            var printDate = obj.nDate1.print("yyyy" + separator + "mm" + separator + "dd");
+            if (obj.config.expandTime) {
+                printDate += " " + obj.mycalendartime1.getTime();
+            }
+            axdom("#" + obj.config.startTargetID).val(printDate);
+        }
+        else {
+            var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+            var printDate = obj.nDate2.print("yyyy" + separator + "mm" + separator + "dd");
+            if (obj.config.expandTime) {
+                printDate += " " + obj.mycalendartime2.getTime();
+            }
+            axdom("#" + objID).val(printDate);
+        }
+    },
+    bindTwinDateExpandClose: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        //trace("bindTwinDateExpandClose");
+        if (AXgetId(cfg.targetID + "_AX_" + objID + "_AX_expandBox")) {
+            
+            //axdom("#"+cfg.targetID+"_AX_"+objID+"_AX_Handle").removeClass("on");
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+            var objVal1 = axdom("#" + obj.config.startTargetID).val();
+            var objVal2 = axdom("#" + objID).val();
+            var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+            
+            if (obj.config.selectType == "y") {
+                if (objVal1.length < 4) axdom("#" + obj.config.startTargetID).val(obj.nDate1.print("yyyy"));
+                else {
+                    objVal1 = objVal1.left(4);
+                    axdom("#" + obj.config.startTargetID).val(objVal1);
+                    axdom("#" + obj.config.startTargetID).trigger("change");
+                }
+                if (objVal2.length < 4) axdom("#" + objID).val(obj.nDate2.print("yyyy"));
+                else {
+                    objVal2 = objVal2.left(4);
+                    axdom("#" + objID).val(objVal2);
+                    axdom("#" + objID).trigger("change");
+                }
+            }
+            else if (obj.config.selectType == "m") {
+                axdom("#" + obj.config.startTargetID).val(obj.nDate1.print("yyyy" + separator + "mm"));
+                axdom("#" + obj.config.startTargetID).trigger("change");
+                axdom("#" + objID).val(obj.nDate2.print("yyyy" + separator + "mm"));
+                axdom("#" + objID).trigger("change");
+            }
+            else {
+                printDate1 = obj.nDate1.print("yyyy" + separator + "mm" + separator + "dd");
+                printDate2 = obj.nDate2.print("yyyy" + separator + "mm" + separator + "dd");
+                if (obj.config.expandTime) {
+                    printDate1 += " " + obj.mycalendartime1.getTime();
+                    printDate2 += " " + obj.mycalendartime2.getTime();
+                }
+                axdom("#" + obj.config.startTargetID).val(printDate1);
+                axdom("#" + objID).val(printDate2);
+                axdom("#" + obj.config.startTargetID).trigger("change");
+                axdom("#" + objID).trigger("change");
+            }
+            
+            axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
+            
+            if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
+            if (obj.config.onChange) {
+                obj.config.onChange.call({
+                    ST_objID: obj.config.startTargetID,
+                    ED_objID: objID,
+                    ST_value: axdom("#" + obj.config.startTargetID).val(),
+                    ED_value: axdom("#" + objID).val()
+                });
+            }
+            if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+            obj.bindTarget.trigger("change");
+            
+            obj.expandBox_axdom = null;
+            //비활성 처리후 메소드 종료
+            axdom(document).unbind("click.AXInput");
+            axdom("#" + objID).unbind("keydown.AXInput");
+            
+            event.stopPropagation(); // disableevent
+            return;
+        }
+    },
+    bindTwinDateExpandBoxClick: function (objID, objSeq, event) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var isDateClick = false;
+        
+        var eventTarget = event.target;
+        var myTarget = this.getEventTarget({
+            evt: eventTarget,
+            until: function (evt, evtIDs) {
+                return (evt.parentNode.tagName == "body") ? true : false;
+            },
+            find: function (evt, evtIDs) {
+                if (evt.id == "" || evt.id == null || evt.id == undefined) return false;
+                if (evt.id == objID || evt.id == obj.config.startTargetID || (evt.id.substr(0, cfg.targetID.length) == cfg.targetID && (evt.id.search(objID) != -1 || evt.id.search(obj.config.startTargetID) != -1))) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
+        
+        isDateClick = (myTarget) ? true : false;
+        if (!isDateClick) {
+            this.bindTwinDateExpandClose(objID, objSeq, event);
+        }
+        else {
+            if (axdom(myTarget).hasClass("disabled")) {
+                return;
+            } // disabled 대상은 선택 불가
+            
+            var ids = myTarget.id.split(/_AX_/g);
+            var ename = ids.last();
+            var boxType = ids[ids.length - 3];
+            var nDate1 = obj.nDate1;
+            var nDate2 = obj.nDate2;
+            var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+            if (ename == "expandPrev1") {
+                if (obj.mycalendarPageType == "d") {
+                    this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(-1, "m"), "d");
+                }
+                else if (obj.mycalendarPageType == "m") {
+                    this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(-1, "y"), "m");
+                }
+                else if (obj.mycalendarPageType == "y") {
+                    this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(-12, "y"), "y");
+                }
+            }
+            else if (ename == "expandPrev2") {
+                if (obj.mycalendarPageType == "d") {
+                    this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(-1, "m"), "d");
+                }
+                else if (obj.mycalendarPageType == "m") {
+                    this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(-1, "y"), "m");
+                }
+                else if (obj.mycalendarPageType == "y") {
+                    this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(-12, "y"), "y");
+                }
+            }
+            else if (ename == "expandNext1") {
+                if (obj.mycalendarPageType == "d") {
+                    this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(1, "m"), "d");
+                }
+                else if (obj.mycalendarPageType == "m") {
+                    this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(1, "y"), "m");
+                }
+                else if (obj.mycalendarPageType == "y") {
+                    this.bindTwinDateChangePage(objID, objSeq, 1, nDate1.add(12, "y"), "y");
+                }
+            }
+            else if (ename == "expandNext2") {
+                if (obj.mycalendarPageType == "d") {
+                    this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(1, "m"), "d");
+                }
+                else if (obj.mycalendarPageType == "m") {
+                    this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(1, "y"), "m");
+                }
+                else if (obj.mycalendarPageType == "y") {
+                    this.bindTwinDateChangePage(objID, objSeq, 2, nDate2.add(12, "y"), "y");
+                }
+            }
+            else if (ename == "controlYear1") {
+                this.bindTwinDateChangePage(objID, objSeq, 1, nDate1, "y");
+            }
+            else if (ename == "controlYear2") {
+                this.bindTwinDateChangePage(objID, objSeq, 2, nDate2, "y");
+            }
+            else if (ename == "controlMonth1") {
+                if (obj.config.selectType != "y") {
+                    this.bindTwinDateChangePage(objID, objSeq, 1, nDate1, "m");
+                }
+            }
+            else if (ename == "controlMonth2") {
+                if (obj.config.selectType != "y") {
+                    this.bindTwinDateChangePage(objID, objSeq, 2, nDate2, "m");
+                }
+            }
+            else if (ename == "date") {
+                if (boxType == "displayBox1") {
+                    obj.nDate1 = ids[ids.length - 2].date();
+                    var printDate = obj.nDate1.print("yyyy" + separator + "mm" + separator + "dd");
+                    if (obj.config.expandTime) {
+                        printDate += " " + obj.mycalendartime1.getTime();
+                    }
+                    axdom("#" + obj.config.startTargetID).val(printDate);
+                    obj.mycalendar1.dayPageSetDay(obj.nDate1);
+                }
+                else {
+                    obj.nDate2 = ids[ids.length - 2].date();
+                    var printDate = obj.nDate2.print("yyyy" + separator + "mm" + separator + "dd");
+                    if (obj.config.expandTime) {
+                        printDate += " " + obj.mycalendartime2.getTime();
+                    }
+                    axdom("#" + objID).val(printDate);
+                    obj.mycalendar2.dayPageSetDay(obj.nDate2);
+                }
+                
+                if (obj.nDate1.diff(obj.nDate2) < 0) {
+                    if (boxType == "displayBox1") {
+                        obj.nDate2 = obj.nDate1;
+                        var printDate = obj.nDate2.print("yyyy" + separator + "mm" + separator + "dd");
+                        if (obj.config.expandTime) {
+                            printDate += " " + obj.mycalendartime2.getTime();
+                        }
+                        axdom("#" + objID).val(printDate);
+                        obj.mycalendar2.dayPageSetDay(obj.nDate2);
+                    }
+                    else {
+                        obj.nDate1 = obj.nDate2;
+                        var printDate = obj.nDate1.print("yyyy" + separator + "mm" + separator + "dd");
+                        if (obj.config.expandTime) {
+                            printDate += " " + obj.mycalendartime1.getTime();
+                        }
+                        axdom("#" + obj.config.startTargetID).val(printDate);
+                        obj.mycalendar1.dayPageSetDay(obj.nDate1);
+                    }
+                }
+                
+            }
+            else if (ename == "month") {
+                var myMonth = ids[ids.length - 2].number() - 1;
+                if (boxType == "displayBox1") {
+                    if (obj.config.selectType == "m") {
+                        var yy = nDate1.getFullYear();
+                        var dd = nDate1.getDate();
+                        obj.nDate1 = new Date(Date.UTC(yy, myMonth, dd));
+                        var printDate = obj.nDate1.print("yyyy" + separator + "mm");
+                        axdom("#" + obj.config.startTargetID).val(printDate);
+                        //this.bindTwinDateExpandClose(objID, objSeq, event);
+                        obj.mycalendar1.monthPageSetMonth(obj.nDate1);
+                    }
+                    else {
+                        var yy = nDate1.getFullYear();
+                        var dd = nDate1.getDate();
+                        obj.nDate1 = new Date(Date.UTC(yy, myMonth, dd));
+                        //trace("start ----");
+                        this.bindTwinDateChangePage(objID, objSeq, 1, obj.nDate1, "d");
+                    }
+                }
+                else {
+                    if (obj.config.selectType == "m") {
+                        var yy = nDate2.getFullYear();
+                        var dd = nDate2.getDate();
+                        obj.nDate2 = new Date(Date.UTC(yy, myMonth, dd));
+                        var printDate = obj.nDate2.print("yyyy" + separator + "mm");
+                        axdom("#" + objID).val(printDate);
+                        obj.mycalendar2.monthPageSetMonth(obj.nDate2);
+                    }
+                    else {
+                        var yy = nDate2.getFullYear();
+                        var dd = nDate2.getDate();
+                        obj.nDate2 = new Date(Date.UTC(yy, myMonth, dd));
+                        this.bindTwinDateChangePage(objID, objSeq, 2, obj.nDate2, "d");
+                    }
+                }
+                
+                if (obj.config.selectType == "m") {
+                    if (obj.nDate1.diff(obj.nDate2) < 0) {
+                        obj.nDate2 = obj.nDate1;
+                        var printDate = obj.nDate2.print("yyyy" + separator + "mm");
+                        axdom("#" + objID).val(printDate);
+                        axdom("#" + obj.config.startTargetID).val(printDate);
+                        obj.mycalendar2.monthPageSetMonth(obj.nDate2);
+                    }
+                }
+                
+            }
+            else if (ename == "year") {
+                var myYear = ids[ids.length - 2];
+                if (boxType == "displayBox1") {
+                    if (obj.config.selectType == "y") {
+                        var mm = nDate1.getMonth();
+                        var dd = nDate1.getDate();
+                        obj.nDate1 = new Date(Date.UTC(myYear, mm, dd));
+                        var printDate = obj.nDate1.print("yyyy");
+                        axdom("#" + obj.config.startTargetID).val(printDate);
+                        //this.bindTwinDateExpandClose(objID, objSeq, event);
+                        obj.mycalendar1.yearPageSetYear(obj.nDate1);
+                    }
+                    else {
+                        var mm = nDate1.getMonth();
+                        var dd = nDate1.getDate();
+                        obj.nDate1 = new Date(Date.UTC(myYear, mm, dd));
+                        this.bindTwinDateChangePage(objID, objSeq, 1, obj.nDate1, "m");
+                    }
+                }
+                else {
+                    if (obj.config.selectType == "y") {
+                        var mm = nDate2.getMonth();
+                        var dd = nDate2.getDate();
+                        obj.nDate2 = new Date(Date.UTC(myYear, mm, dd));
+                        var printDate = obj.nDate2.print("yyyy");
+                        axdom("#" + objID).val(printDate);
+                        //this.bindTwinDateExpandClose(objID, objSeq, event);
+                        obj.mycalendar2.yearPageSetYear(obj.nDate2);
+                    }
+                    else {
+                        var mm = nDate2.getMonth();
+                        var dd = nDate2.getDate();
+                        obj.nDate2 = new Date(Date.UTC(myYear, mm, dd));
+                        this.bindTwinDateChangePage(objID, objSeq, 2, obj.nDate2, "m");
+                    }
+                }
+                
+                if (obj.config.selectType == "y") {
+                    if (obj.nDate1.print("yyyy").number() > obj.nDate2.print("yyyy").number()) {
+                        obj.nDate2 = obj.nDate1;
+                        var printDate = obj.nDate2.print("yyyy");
+                        axdom("#" + obj.config.startTargetID).val(printDate);
+                        axdom("#" + objID).val(printDate);
+                        obj.mycalendar2.yearPageSetYear(obj.nDate2);
+                    }
+                }
+            }
+        }
+    },
+    bindTwinDateKeyup: function (objID, objSeq, event) {
+        //trace(event.keyCode);
+        if (obj.config.selectType == "y") {
+            
+        }
+        else if (obj.config.selectType == "m") {
+            
+        }
+        else {
+            
+        }
+    },
+    bindTwinDateChangePage: function (objID, objSeq, objType, setDate, pageType) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+        
+        if (pageType == "m") {
+            if (objType == 1) {
+                //obj.mycalendarPageType = "m";
+                obj.nDate1 = setDate;
+                obj.mycalendar1.printMonthPage(setDate);
+                var myYear = setDate.getFullYear();
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear1").html(myYear + "년");
+            }
+            else {
+                //obj.mycalendarPageType = "m";
+                obj.nDate2 = setDate;
+                obj.mycalendar2.printMonthPage(setDate);
+                var myYear = setDate.getFullYear();
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear2").html(myYear + "년");
+            }
+        }
+        else if (pageType == "y") {
+            if (objType == 1) {
+                //obj.mycalendarPageType = "y";
+                obj.nDate1 = setDate;
+                obj.mycalendar1.printYearPage(setDate.getFullYear());
+                var myYear = setDate.getFullYear();
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear1").html(myYear + "년");
+            }
+            else {
+                //obj.mycalendarPageType = "y";
+                obj.nDate2 = setDate;
+                obj.mycalendar2.printYearPage(setDate.getFullYear());
+                var myYear = setDate.getFullYear();
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear2").html(myYear + "년");
+            }
+        }
+        else {
+            //obj.mycalendarPageType = "d";
+            
+            //trace({objID:objID, objSeq:objSeq, objType:objType, setDate:setDate, pageType:pageType});
+            
+            if (objType == 1) {
+                obj.nDate1 = setDate;
+                obj.mycalendar1.printDayPage(setDate);
+                var myYear = setDate.getFullYear();
+                var myMonth = (setDate.getMonth() + 1).setDigit(2);
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear1").html(myYear + "년");
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth1").html(myMonth + "월");
+            }
+            else {
+                obj.nDate2 = setDate;
+                obj.mycalendar2.printDayPage(setDate);
+                var myYear = setDate.getFullYear();
+                var myMonth = (setDate.getMonth() + 1).setDigit(2);
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlYear2").html(myYear + "년");
+                axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_controlMonth2").html(myMonth + "월");
+            }
+        }
+        
+        if (objType == 1) {
+            if (obj.config.selectType == "y") {
+                axdom("#" + obj.config.startTargetID).val(obj.nDate1.print("yyyy"));
+            }
+            else if (obj.config.selectType == "m") {
+                axdom("#" + obj.config.startTargetID).val(obj.nDate1.print("yyyy" + separator + "mm"));
+            }
+            else {
+                var printDate = obj.nDate1.print("yyyy" + separator + "mm" + separator + "dd");
+                if (obj.config.expandTime) {
+                    printDate += " " + obj.mycalendartime1.getTime();
+                }
+                axdom("#" + obj.config.startTargetID).val(printDate);
+            }
+        }
+        else {
+            if (obj.config.selectType == "y") {
+                axdom("#" + objID).val(obj.nDate2.print("yyyy"));
+            }
+            else if (obj.config.selectType == "m") {
+                axdom("#" + objID).val(obj.nDate2.print("yyyy" + separator + "mm"));
+            }
+            else {
+                var printDate = obj.nDate2.print("yyyy" + separator + "mm" + separator + "dd");
+                if (obj.config.expandTime) {
+                    printDate += " " + obj.mycalendartime2.getTime();
+                }
+                axdom("#" + objID).val(printDate);
+            }
+        }
+    },
+    bindTwinDateInputBlur: function (objID, objSeq, event, seq) {
+        var obj = this.objects[objSeq];
+        var cfg = this.config;
+        var objVal, targetObjID;
+        if (seq == 1) {
+            targetObjID = obj.config.startTargetID;
+            objVal = axdom("#" + obj.config.startTargetID).val();
+        }
+        else {
+            targetObjID = objID;
+            objVal = axdom("#" + objID).val();
+        }
+        
+        if (objVal == "") {
+            
+        }
+        else {
+            var clearDate = false;
+            var nDate = (obj["nDate" + seq] || new Date());
+            var va = axdom("#" + targetObjID).val().replace(/\D/gi, ""); //숫자 이외의 문자를 제거 합니다.
+            if (va.search(/\d+/g) == -1) {
+                clearDate = true;
+            }
+            
+            if (clearDate) {
+                axdom("#" + targetObjID).val("");
+            }
+            else {
+                var separator = obj.config.separator || AXConfig.AXInput.dateSeparator || "-";
+                if (obj.config.selectType == "y") {
+                    
+                    var yy = va.left(4).number();
+                    if (yy == 0) yy = nDate.getFullYear();
+                    if (yy < 1000) yy += 2000;
+                    var mm = nDate.getMonth();
+                    var dd = nDate.getDate();
+                    obj["nDate" + seq] = new Date(Date.UTC(yy, mm, dd, 12));
+                    
+                    axdom("#" + targetObjID).val(obj["nDate" + seq].print("yyyy"));
+                    
+                }
+                else if (obj.config.selectType == "m")
+                {
+                    
+                    if (va.length > 5) {
+                        var yy = va.left(4).number();
+                        var mm = va.substr(4, 2).number() - 1;
+                        var dd = 1;
+                    }
+                    else {
+                        var yy = va.left(4).number();
+                        var mm = 0;
+                        var dd = 1;
+                    }
+                    if (yy == 0) yy = nDate.getFullYear();
+                    if (yy < 1000) yy += 2000;
+                    obj["nDate" + seq] = new Date(Date.UTC(yy, mm, dd, 12));
+                    
+                    axdom("#" + targetObjID).val(obj["nDate" + seq].print("yyyy" + separator + "mm"));
+                    
+                }
+                else {
+                    var needAlert = false;
+                    var yy, mm, dd, hh, mi;
+                    if (va.length > 7) {
+                        yy = va.left(4).number();
+                        mm = va.substr(4, 2).number() - 1;
+                        dd = va.substr(6, 2).number();
+                    }
+                    else if (va.length > 4) {
+                        yy = "20" + va.substr(0, 2);
+                        mm = va.substr(2, 2).number() - 1;
+                        dd = va.substr(4, 2).number();
+                    }
+                    else if (va.length > 2) {
+                        yy = nDate.getFullYear();
+                        mm = va.substr(0, 2).number() - 1;
+                        dd = va.substr(2, 2).number();
+                    }
+                    else {
+                        yy = nDate.getFullYear(); //va.left(4).number();
+                        mm = nDate.getMonth();
+                        dd = va.substr(0, 2).number();
+                    }
+                    
+                    if (va.length >= 9) {
+                        hh = va.substr(8, 2).number();
+                        mi = va.substr(10, 2).number();
+                    }
+                    else {
+                        hh = "00";
+                        mi = "00";
+                    }
+                    
+                    if (yy == 0) needAlert = true;
+                    if (yy == 0) yy = nDate.getFullYear();
+                    if (yy < 1000) yy += 2000;
+                    obj["nDate" + seq] = new Date(Date.UTC(yy, mm, dd, 12));
+                    
+                    if (obj["nDate" + seq].getFullYear() != yy.number()
+                        || obj["nDate" + seq].getMonth() != mm.number()
+                        || obj["nDate" + seq].getDate() != dd.number())
+                    {
+                        needAlert = true;
+                        obj["nDate" + seq] = new Date();
+                    }
+                    
+                    printDate = obj["nDate" + seq].print("yyyy" + separator + "mm" + separator + "dd");
+                    if (obj.config.expandTime) {
+                        printDate += " " + hh.setDigit(2) + ":" + mi.setDigit(2);
+                    }
+                    
+                    if (needAlert) {
+                        this.msgAlert("날짜 형식이 올바르지 않습니다.");
+                    }
+                    axdom("#" + targetObjID).val(printDate);
+                    
+                    if (obj.nDate1 == undefined) {
+                        var va = axdom("#" + obj.config.startTargetID).val().replace(/\D/gi, ""); //숫자 이외의 문자를 제거 합니다.
+                        if (va.search(/\d+/g) != -1) {
+                            if (va.length > 7) {
+                                var yy = va.left(4).number();
+                                var mm = va.substr(4, 2).number() - 1;
+                                var dd = va.substr(6, 2).number();
+                            }
+                            else if (va.length > 5) {
+                                var yy = va.left(4).number();
+                                var mm = va.substr(4, 2).number() - 1;
+                                var dd = 1;
+                            }
+                            else {
+                                var yy = va.left(4).number();
+                                var mm = nDate.getMonth();
+                                var dd = nDate.getDate();
+                            }
+                            if (yy == 0) needAlert = true;
+                            if (yy == 0) yy = nDate.getFullYear();
+                            if (yy < 1000) yy += 2000;
+                            obj.nDate1 = new Date(Date.UTC(yy, mm, dd, 12));
+                        }
+                    }
+                    if (obj.nDate2 == undefined) {
+                        obj.nDate2 = obj.nDate1;
+                        printDate = obj["nDate" + 2].print("yyyy" + separator + "mm" + separator + "dd");
+                        if (obj.config.expandTime) {
+                            if (obj["mycalendartime" + 2]) printDate += " " + obj["mycalendartime" + 2].getTime();
+                        }
+                        axdom("#" + objID).val(printDate);
+                    }
+                    
+                    if (obj.nDate1.diff(obj.nDate2) < 0) {
+                        if (seq == 1) {
+                            obj.nDate2 = obj.nDate1;
+                            printDate = obj["nDate" + 2].print("yyyy" + separator + "mm" + separator + "dd");
+                            if (obj.config.expandTime) {
+                                if (obj["mycalendartime" + 2]) printDate += " " + obj["mycalendartime" + 2].getTime();
+                            }
+                            axdom("#" + objID).val(printDate);
+                        }
+                        else {
+                            obj.nDate1 = obj.nDate2;
+                            printDate = obj["nDate" + 1].print("yyyy" + separator + "mm" + separator + "dd");
+                            if (obj.config.expandTime) {
+                                if (obj["mycalendartime" + 1]) printDate += " " + obj["mycalendartime" + 1].getTime();
+                            }
+                            axdom("#" + obj.config.startTargetID).val(printDate);
+                        }
+                    }
+                }
+            }
+        }
+        
+        if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
+        if (obj.config.onChange) {
+            obj.config.onChange.call({
+                event: event,
+                ST_objID: obj.config.startTargetID,
+                ED_objID: objID,
+                ST_value: axdom("#" + obj.config.startTargetID).val(),
+                ED_value: axdom("#" + objID).val()
+            });
+        }
+        /*
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        obj.bindTarget.trigger("change");
+        */
+
+        /* ie10 버그 픽스
+         axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_expandBox").remove(); // 개체 삭제 처리
+         
+         //비활성 처리후 메소드 종료
+         axdom(document).unbind("click.AXInput");
+         axdom("#" + objID).unbind("keydown.AXInput");
+         */
+        event.stopPropagation(); // disableevent
+        return;
+    },
+    
+    // checked
+    bindChecked: function (objID, objSeq) {
+        var cfg = this.config, _this = this;
+        var obj = this.objects[objSeq];
+        
+        if (!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+        if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+        //var tagName = obj.bindTarget.get(0).tagName.ucase();
+        obj.bindTarget.css({opacity: 0});
+        
+        var h = obj.bindAnchorTarget.data("height"),
+            marginWidth = obj.bindTarget.css("margin-left").number() + obj.bindTarget.css("margin-right").number(),
+            marginHeight = obj.bindTarget.css("margin-top").number() + obj.bindTarget.css("margin-bottom").number(),
+            chk_size = Math.max((h + marginWidth), (h + marginHeight)) - 1,
+            left = (obj.bindTarget.css("margin-left").number() - obj.bindTarget.css("margin-right").number()).abs(),
+            anchorHandle, linked_items = [];
+        
+        var onchange = function (e) {
+            if (obj.bindTarget.get(0).checked) {
+                anchorHandle.addClass("checked");
+            }
+            else {
+                anchorHandle.removeClass("checked");
+            }
+            if (linked_items.length > 0) {
+                for (var li = 0; li < linked_items.length; li++) {
+                    var aHandle = jQuery(linked_items[li]).next().find("." + cfg.anchorCheckedContainerClassName + "_radio");
+                    if (linked_items[li].checked) {
+                        aHandle.addClass("checked");
+                    }
+                    else {
+                        aHandle.removeClass("checked");
+                    }
+                }
+            }
+        };
+        
+        var po = [];
+        po.push('<div id="' + cfg.targetID + '_AX_' + objID + '_AX_HandleContainer"');
+        if (obj.bindTarget.attr("type") == "radio") {
+            po.push(' class="' + cfg.anchorCheckedContainerClassName + '_radio" ');
+        }
+        else {
+            po.push(' class="' + cfg.anchorCheckedContainerClassName + '" ');
+        }
+        
+        po.push(' style="left:' + left + 'px;top:0px;width:' + chk_size + 'px;height:' + chk_size + 'px;"');
+        po.push(' onselectstart="return false;">');
+        po.push('<a class="checked-icon"></a>')
+        po.push('</div>');
+        obj.bindAnchorTarget.append(po.join(''));
+        obj.bindAnchorTarget.show();
+        if (obj.bindTarget.attr("type") == "radio") {
+            anchorHandle = obj.bindAnchorTarget.find("." + cfg.anchorCheckedContainerClassName + "_radio");
+        }
+        else {
+            anchorHandle = obj.bindAnchorTarget.find("." + cfg.anchorCheckedContainerClassName);
+        }
+        
+        obj.bindTarget.unbind("change.AXInput").bind("change.AXInput", onchange);
+        anchorHandle.bind("click", function (e) {
+            obj.bindTarget.get(0).checked = !obj.bindTarget.get(0).checked;
+            obj.bindTarget.trigger("change");
+            _this.stopEvent(e);
+        });
+        if (obj.bindTarget.attr("type") == "radio") {
+            // 이름이 같은 라디오 아이템을 수집하여 링크 합니다.
+            var nm = obj.bindTarget.attr("name");
+            //trace(nm, objID);
+            jQuery("input[name=" + nm + "]").each(function () {
+                if (objID != this.id) {
+                    linked_items.push(this);
+                }
+            });
+        }
+        onchange();
+    }
 });
 
 var AXInput = new AXInputConverter();
-AXInput.setConfig({ targetID: "inputBasic" });
+AXInput.setConfig({targetID: "inputBasic"});
 
 /**
  * @method jQueryExtends.unbindInput
@@ -12730,12 +13607,12 @@ AXInput.setConfig({ targetID: "inputBasic" });
  ```
  **/
 axdom.fn.unbindInput = function (config) {
-	axf.each(this, function () {
-		if (config == undefined) config = {};
-		config.id = this.id;
-		AXInput.unbind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (config == undefined) config = {};
+        config.id = this.id;
+        AXInput.unbind(config);
+    });
+    return this;
 };
 
 /**
@@ -12749,14 +13626,14 @@ axdom.fn.unbindInput = function (config) {
  ```
  **/
 axdom.fn.bindSearch = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		if (config == undefined) config = {};
-		config.id = this.id;
-		config.bindType = "search";
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        if (config == undefined) config = {};
+        config.id = this.id;
+        config.bindType = "search";
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -12777,13 +13654,14 @@ axdom.fn.bindSearch = function (config) {
  ```
  **/
 axdom.fn.bindNumber = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "number";
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "number";
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -12801,13 +13679,14 @@ axdom.fn.bindNumber = function (config) {
  ```
  **/
 axdom.fn.bindMoney = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "money";
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "money";
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -12845,7 +13724,7 @@ axdom.fn.bindMoney = function (config) {
     },
     maxHeight   : {Number} [150] - selector panel height
 };
-
+ 
  // 서버에서 리턴하는 JSON 구문 예시
  // 아래 형식을 만족 시켜야 합니다.
  // desc 또는 optionDesc 값을 지정하면 option 라벨 뒤에 부가설명글로 표시됩니다.
@@ -12859,18 +13738,19 @@ axdom.fn.bindMoney = function (config) {
 		{optionValue:9, optionText:"Gwangju"}
 	]
 }
-
+ 
  axdom("#AXInputSelector").bindSelector(config);
  ```
  **/
 axdom.fn.bindSelector = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "selector";
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "selector";
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -12884,10 +13764,10 @@ axdom.fn.bindSelector = function (config) {
  ```
  **/
 axdom.fn.bindSelectorBlur = function (config) {
-	axf.each(this, function () {
-		AXInput.bindSelectorBlur(this.id);
-	});
-	return this;
+    axf.each(this, function () {
+        AXInput.bindSelectorBlur(this.id);
+    });
+    return this;
 };
 
 /**
@@ -12910,13 +13790,14 @@ axdom.fn.bindSelectorBlur = function (config) {
  ```
  **/
 axdom.fn.bindSlider = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "slider";
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "slider";
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -12940,13 +13821,14 @@ axdom.fn.bindSlider = function (config) {
  ```
  **/
 axdom.fn.bindTwinSlider = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "twinSlider";
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "twinSlider";
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -12967,13 +13849,14 @@ axdom.fn.bindTwinSlider = function (config) {
  ```
  **/
 axdom.fn.bindSwitch = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "switch";
-		AXInput.bind(config);
-		return this;
-	});
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "switch";
+        AXInput.bind(config);
+        return this;
+    });
 };
 
 /**
@@ -12999,13 +13882,14 @@ axdom.fn.bindSwitch = function (config) {
  ```
  **/
 axdom.fn.bindSegment = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "segment";
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "segment";
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -13033,13 +13917,14 @@ axdom.fn.bindSegment = function (config) {
  ```
  **/
 axdom.fn.bindDate = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "date";
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "date";
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -13053,11 +13938,12 @@ axdom.fn.bindDate = function (config) {
  ```
  **/
 axdom.fn.unbindDate = function (config) {
-	axf.each(this, function () {
-		config = config || {}; config.id = this.id;
-		AXInput.unbindDate(config);
-	});
-	return this;
+    axf.each(this, function () {
+        config = config || {};
+        config.id = this.id;
+        AXInput.unbindDate(config);
+    });
+    return this;
 };
 
 /**
@@ -13085,14 +13971,15 @@ axdom.fn.unbindDate = function (config) {
  ```
  **/
 axdom.fn.bindDateTime = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "date";
-		config.expandTime = true;
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "date";
+        config.expandTime = true;
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -13122,13 +14009,14 @@ axdom.fn.bindDateTime = function (config) {
  ```
  **/
 axdom.fn.bindTwinDate = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "twinDate";
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "twinDate";
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -13158,14 +14046,15 @@ axdom.fn.bindTwinDate = function (config) {
  ```
  **/
 axdom.fn.bindTwinDateTime = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "twinDateTime";
-		config.expandTime = true;
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "twinDateTime";
+        config.expandTime = true;
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -13179,13 +14068,14 @@ axdom.fn.bindTwinDateTime = function (config) {
  ```
  **/
 axdom.fn.bindPlaceHolder = function (config) {
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInput-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
-		config.bindType = "placeHolder";
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        if (!this.id) this.id = "AXInput-" + axf.getUniqueId();
+        config = config || {};
+        config.id = this.id;
+        config.bindType = "placeHolder";
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -13199,12 +14089,13 @@ axdom.fn.bindPlaceHolder = function (config) {
  ```
  **/
 axdom.fn.bindChecked = function (config) {
-	axf.each(this, function () {
-		config = config || {}; config.id = (this.id||(this.id="axchecked-"+axf.getUniqueId()));
-		config.bindType = "checked";
-		AXInput.bind(config);
-	});
-	return this;
+    axf.each(this, function () {
+        config = config || {};
+        config.id = (this.id || (this.id = "axchecked-" + axf.getUniqueId()));
+        config.bindType = "checked";
+        AXInput.bind(config);
+    });
+    return this;
 };
 
 /**
@@ -13218,10 +14109,10 @@ axdom.fn.bindChecked = function (config) {
  ```
  **/
 axdom.fn.setConfigInput = function (config) {
-	axf.each(this, function () {
-		AXInput.bindSetConfig(this.id, config);
-	});
-	return this;
+    axf.each(this, function () {
+        AXInput.bindSetConfig(this.id, config);
+    });
+    return this;
 };
 
 /**
@@ -13235,10 +14126,10 @@ axdom.fn.setConfigInput = function (config) {
  ```
  **/
 axdom.fn.setValueInput = function (value) {
-	axf.each(this, function () {
-		AXInput.bindSetValue(this.id, value);
-	});
-	return this;
+    axf.each(this, function () {
+        AXInput.bindSetValue(this.id, value);
+    });
+    return this;
 };
 
 /**
@@ -13252,18 +14143,18 @@ axdom.fn.setValueInput = function (value) {
  ```
  **/
 jQuery.fn.bindInputDisabled = function (Disabled) {
-	axf.each(this, function () {
-		AXInput.bindInputDisabled(this.id, Disabled);
-	});
-	return this;
+    axf.each(this, function () {
+        AXInput.bindInputDisabled(this.id, Disabled);
+    });
+    return this;
 };
 /* ---------------------------- */
 var AXInputConverterPro = Class.create(AXJ, {
-	initialize: function (AXJ_super) {
+	initialize: function(AXJ_super) {
 		AXJ_super();
 		this.objects = [];
 		this.inputTypes = [
-			{ type: "pattern", type: "tagSelector" }
+			{type: "pattern", type: "tagSelector"}
 		];
 		this.config.anchorClassName = "AXanchor";
 		this.config.anchorSelectorExpandBoxClassName = "AXanchorSelectorExpandBox";
@@ -13272,7 +14163,7 @@ var AXInputConverterPro = Class.create(AXJ, {
 		/* 모바일 반응 너비 */
 		this.config.responsiveMobile = AXConfig.mobile.responsiveWidth;
 	},
-	init: function () {
+	init: function() {
 		axdom(window).resize(this.alignAllAnchor.bind(this));
 
 		// 예약어 초기화
@@ -13282,27 +14173,27 @@ var AXInputConverterPro = Class.create(AXJ, {
 			optionText: (AXConfig.AXInput && AXConfig.AXInput.keyOptionText) || "optionText"
 		};
 	},
-	windowResize: function () {
+	windowResize: function() {
 		// 사용안함
 		var windowResizeApply = this.windowResizeApply.bind(this);
 		if (this.windowResizeObserver) clearTimeout(this.windowResizeObserver);
-		this.windowResizeObserver = setTimeout(function () {
+		this.windowResizeObserver = setTimeout(function() {
 			windowResizeApply();
 		}, 10);
 	},
-	windowResizeApply: function(){
+	windowResizeApply: function() {
 		// 사용안함
 		if (this.windowResizeObserver) clearTimeout(this.windowResizeObserver);
 		this.alignAllAnchor();
 	},
-	alignAllAnchor: function () {
-		for(var i=0;i<this.objects.length;i++){
+	alignAllAnchor: function() {
+		for (var i = 0; i < this.objects.length; i++) {
 			this.alignAnchor(this.objects[i].id, i);
 		}
 	},
-	bindSetConfig: function (objID, configs) {
+	bindSetConfig: function(objID, configs) {
 		var findIndex = null;
-		axf.each(this.objects, function (index, O) {
+		axf.each(this.objects, function(index, O) {
 			if (O.id == objID) {
 				findIndex = index;
 				return false;
@@ -13311,14 +14202,15 @@ var AXInputConverterPro = Class.create(AXJ, {
 		if (findIndex == null) {
 			//trace("바인드 된 오브젝트를 찾을 수 없습니다.");
 			return;
-		} else {
+		}
+		else {
 			var _self = this.objects[findIndex];
-			axf.each(configs, function (k, v) {
+			axf.each(configs, function(k, v) {
 				_self.config[k] = v;
 			});
 		}
 	},
-	bind: function (obj) {
+	bind: function(obj) {
 		var cfg = this.config;
 		if (!AXgetId(obj.id)) {
 			trace("bind 대상이 없어 bind 처리할 수 없습니다.");
@@ -13327,16 +14219,25 @@ var AXInputConverterPro = Class.create(AXJ, {
 
 		var objID = obj.id;
 		var objSeq = null;
-		for(var index = 0 ; index < this.objects.length ; index++){
-			if(this.objects[index].id == objID){ objSeq = index; break;}
+		for (var index = 0; index < this.objects.length; index++) {
+			if (this.objects[index].id == objID) {
+				objSeq = index;
+				break;
+			}
 		}
 
 		if (obj.href == undefined) obj.href = cfg.href;
 
 		if (objSeq == null) {
 			objSeq = this.objects.length;
-			this.objects.push({ id: objID, anchorID: cfg.targetID + "_AX_" + objID, config: obj, bindType: obj.bindType });
-		} else {
+			this.objects.push({
+				id: objID,
+				anchorID: cfg.targetID + "_AX_" + objID,
+				config: obj,
+				bindType: obj.bindType
+			});
+		}
+		else {
 			this.objects[objSeq].isDel = undefined;
 			this.objects[objSeq].config = obj;
 		}
@@ -13348,23 +14249,26 @@ var AXInputConverterPro = Class.create(AXJ, {
 
 		if (obj.bindType == "null") {
 
-		} else if (obj.bindType == "pattern") {
+		}
+		else if (obj.bindType == "pattern") {
 			this.bindPattern(objID, objSeq);
-		} else if (obj.bindType == "tagSelector") {
-			if(!this.objects[objSeq].config.reserveKeys){
+		}
+		else if (obj.bindType == "tagSelector") {
+			if (!this.objects[objSeq].config.reserveKeys) {
 				this.objects[objSeq].config.reserveKeys = axdom.extend({}, this.config.reserveKeys);
 			}
 			this.bindTagSelector(objID, objSeq);
 		}
 	},
-	unbind: function (obj) {
+	unbind: function(obj) {
 		var cfg = this.config;
 		var removeAnchorId;
 		var removeIdx;
-		axf.each(this.objects, function (idx, O) {
+		axf.each(this.objects, function(idx, O) {
 			if (O.id != obj.id) {
 				// collect.push(this);
-			} else {
+			}
+			else {
 				if (O.isDel != true) {
 					removeAnchorId = this.anchorID;
 					removeIdx = idx;
@@ -13397,7 +14301,7 @@ var AXInputConverterPro = Class.create(AXJ, {
 			}
 		}
 	},
-	appendAnchor: function (objID, objSeq, bindType) {
+	appendAnchor: function(objID, objSeq, bindType) {
 		var cfg = this.config;
 		var obj = this.objects[objSeq];
 		//trace("appendAnchor");
@@ -13423,35 +14327,37 @@ var AXInputConverterPro = Class.create(AXJ, {
 		w = iobj.outerWidth();
 		h = iobj.outerHeight();
 
-		var css = { left: l, top: t, width: w, height: 0 };
+		var css = {left: l, top: t, width: w, height: 0};
 		//trace(css);
 		obj.bindAnchorTarget.css(css);
 		obj.bindAnchorTarget.data("height", h);
 
 		var _this = this;
-		setTimeout(function () {
+		setTimeout(function() {
 			_this.alignAnchor(objID, objSeq);
 		}, 10);
 	},
-	alignAnchor: function (objID, objSeq) {
+	alignAnchor: function(objID, objSeq) {
 		var cfg = this.config;
 		var obj = this.objects[objSeq];
 
-		if (!AXgetId(objID)) return; /* 엘리먼트 존재 여부 확인 */
+		if (!AXgetId(objID)) return;
+		/* 엘리먼트 존재 여부 확인 */
 
-
-		if(obj.bindType == "tagSelector"){
-			if(obj.tagList.length > 0) obj.bindTarget.css({"padding-top":obj.tagContainer.height()});
-		}else{
+		if (obj.bindType == "tagSelector") {
+			if (obj.tagList.length > 0) obj.bindTarget.css({"padding-top": obj.tagContainer.height()});
+		}
+		else {
 			var iobjPosition = obj.bindTarget.position();
 			var l = iobjPosition.left, t = iobjPosition.top;
 			var w = obj.bindTarget.outerWidth();
 			var h = obj.bindTarget.outerHeight();
 			if (obj.bindTarget.css("display") == "none") {
 				h = obj.bindAnchorTarget.data("height");
-				var css = { width: w };
-			} else {
-				var css = { left: l, top: t, width: w, height: 0 };
+				var css = {width: w};
+			}
+			else {
+				var css = {left: l, top: t, width: w, height: 0};
 			}
 			//trace(css);
 			obj.bindAnchorTarget.css(css);
@@ -13459,7 +14365,8 @@ var AXInputConverterPro = Class.create(AXJ, {
 
 			if (obj.bindType == "null") {
 
-			} else if (obj.bindType == "pattern") {
+			}
+			else if (obj.bindType == "pattern") {
 
 			}
 		}
@@ -13470,32 +14377,32 @@ var AXInputConverterPro = Class.create(AXJ, {
 	 money, moneyint, date, datetime, bizno, phone, "USER String", [Function]
 	 */
 	// pattern
-	bindPattern: function(objID, objSeq){
+	bindPattern: function(objID, objSeq) {
 		var obj = this.objects[objSeq], cfg = this.config, _this = this;
-		if(!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+		if (!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+		if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
 
 		// TODO : 키 입력 제어 구문 시작점 (방법1)
-		if(obj.config.pattern == "_custom"){ // 커버 개체를 삽입하는 방식.. 실패..
+		if (obj.config.pattern == "_custom") { // 커버 개체를 삽입하는 방식.. 실패..
 
 			var h = obj.bindAnchorTarget.data("height");
-			obj.bindAnchorTarget.css({"height":h});
+			obj.bindAnchorTarget.css({"height": h});
 			var po = [];
 			var inputCoverClass = obj.bindTarget.attr("class");
 			//trace();
 			var inputCoverFont = obj.bindTarget.css("font-family");
-			po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_inputCover\" "+
-				"class=\"" + inputCoverClass + "\" "+
-				"style=\"background:transparent;cursor:text;font-family:"+ inputCoverFont +";white-space:nowrap;\""+
+			po.push("<div id=\"" + cfg.targetID + "_AX_" + objID + "_AX_inputCover\" " +
+				"class=\"" + inputCoverClass + "\" " +
+				"style=\"background:transparent;cursor:text;font-family:" + inputCoverFont + ";white-space:nowrap;\"" +
 				"></div>");
 
 			obj.bindAnchorTarget.append(po.join(''));
 			obj.bindAnchorTarget.show();
-			obj.bindTarget.css({color:obj.bindTarget.css("background-color")});
+			obj.bindTarget.css({color: obj.bindTarget.css("background-color")});
 
-			obj.bindTargetCover = obj.bindAnchorTarget.find("#"+ cfg.targetID + "_AX_" + objID + "_AX_inputCover");
+			obj.bindTargetCover = obj.bindAnchorTarget.find("#" + cfg.targetID + "_AX_" + objID + "_AX_inputCover");
 
-			obj.bindTargetCover.bind("click", function(){
+			obj.bindTargetCover.bind("click", function() {
 				obj.bindTarget.focus();
 			});
 
@@ -13506,18 +14413,18 @@ var AXInputConverterPro = Class.create(AXJ, {
 			obj.bindTarget.val(val);
 
 			obj.bindTarget.attr("onselectstart", "return false");
-			obj.bindTarget.unbind("keypress.AXInput").bind("keypress.AXInput", function (event) {
+			obj.bindTarget.unbind("keypress.AXInput").bind("keypress.AXInput", function(event) {
 				//obj.bindTargetCover.text(event.target.value);
 			});
-			obj.bindTarget.unbind("keyup.AXInput").bind("keyup.AXInput", function (event) {
-				obj.bindTargetCover.html( _this.bindPatternGetValue(objID, objSeq, event.target.value) + "<div class='edit-input-cursor'>|</div>");
+			obj.bindTarget.unbind("keyup.AXInput").bind("keyup.AXInput", function(event) {
+				obj.bindTargetCover.html(_this.bindPatternGetValue(objID, objSeq, event.target.value) + "<div class='edit-input-cursor'>|</div>");
 				//obj.bindTargetCover.val( _this.bindPatternGetValue(objID, objSeq, event.target.value) );
 			});
-			obj.bindTarget.unbind("focus.AXInput").bind("focus.AXInput", function (event) {
-				obj.bindTargetCover.html( _this.bindPatternGetValue(objID, objSeq, event.target.value) + "<div class='edit-input-cursor'>|</div>");
+			obj.bindTarget.unbind("focus.AXInput").bind("focus.AXInput", function(event) {
+				obj.bindTargetCover.html(_this.bindPatternGetValue(objID, objSeq, event.target.value) + "<div class='edit-input-cursor'>|</div>");
 				//obj.bindTargetCover.val( _this.bindPatternGetValue(objID, objSeq, event.target.value) );
 			});
-			obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function (event) {
+			obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function(event) {
 				obj.bindTargetCover.find(".edit-input-cursor").remove();
 			});
 
@@ -13525,19 +14432,20 @@ var AXInputConverterPro = Class.create(AXJ, {
 		}
 
 		// TODO : 키 입력 제어 구문 시작점 (방법2)
-		if(obj.config.pattern == "_custom") {
+		if (obj.config.pattern == "_custom") {
 
 			// KEY_BACKSPACE: 8, KEY_TAB: 9, KEY_RETURN: 13, KEY_ESC: 27, KEY_LEFT: 37, KEY_UP: 38, KEY_RIGHT: 39, KEY_DOWN: 40, KEY_DELETE: 46, KEY_HOME: 36, KEY_END: 35, KEY_PAGEUP: 33, KEY_PAGEDOWN: 34,
 			// KEY_INSERT: 45, KEY_SPACE: 32
 
-			obj.bindTarget.unbind("keypress.AXInput").bind("keypress.AXInput", function (event) {
+			obj.bindTarget.unbind("keypress.AXInput").bind("keypress.AXInput", function(event) {
 				var elem = event.target;
 				var elemFocusPosition, elemFocusEndPosition;
 				if ('selectionStart' in elem) {
 					// Standard-compliant browsers
 					elemFocusPosition = elem.selectionStart;
 					elemFocusEndPosition = elem.selectionEnd;
-				} else if (document.selection) {
+				}
+				else if (document.selection) {
 					// IE
 					//elem.focus();
 					var sel = document.selection.createRange();
@@ -13550,7 +14458,7 @@ var AXInputConverterPro = Class.create(AXJ, {
 				obj.DEP = elemFocusEndPosition;
 
 				//키 입력전 입력문자열;
-				if(elem.value == ""){
+				if (elem.value == "") {
 					obj.originalValue = ""; // 오리지널 밸류 초기화
 				}
 				obj.prevValue = event.target.value;
@@ -13558,15 +14466,15 @@ var AXInputConverterPro = Class.create(AXJ, {
 				//trace("D" + obj.DEP);
 			});
 
-
-			obj.bindTarget.unbind("keyup.AXInput").bind("keyup.AXInput", function (event) {
+			obj.bindTarget.unbind("keyup.AXInput").bind("keyup.AXInput", function(event) {
 				var elem = event.target;
 				var elemFocusPosition;
 				if ('selectionStart' in elem) {
 					// Standard-compliant browsers
 					elemFocusPosition = elem.selectionStart;
 					elemFocusEndPosition = elem.selectionEnd;
-				} else if (document.selection) {
+				}
+				else if (document.selection) {
 					// IE
 					//elem.focus();
 					var sel = document.selection.createRange();
@@ -13584,13 +14492,14 @@ var AXInputConverterPro = Class.create(AXJ, {
 
 				// case 1 : 한글자씩 타이핑 하는 경우
 
-				if(v1 != v2 && v1.length > v2.length){
+				if (v1 != v2 && v1.length > v2.length) {
 					// 추가입력
-					if( obj.DSP == obj.DEP && obj.USP == obj.UEP && obj.DSP+1 == obj.USP ) {
-						if(obj.USP == v1.length){
+					if (obj.DSP == obj.DEP && obj.USP == obj.UEP && obj.DSP + 1 == obj.USP) {
+						if (obj.USP == v1.length) {
 							//trace("끝에서 한글자 타이핑");
 							obj.originalValue += editedText;
-						}else if(obj.USP < v1.length){
+						}
+						else if (obj.USP < v1.length) {
 							//trace("중간에서 한글자 타이핑");
 							//var _v1 = obj.originalValue.split("");
 							//var _v2 = editedText.split("");
@@ -13599,48 +14508,57 @@ var AXInputConverterPro = Class.create(AXJ, {
 						}
 						// 입력된 문자열의 위치에 패턴을 처리 합니다.
 
-					}else {
-						if(obj.USP == v1.length){
+					}
+					else {
+						if (obj.USP == v1.length) {
 							//trace("끝에서 다중문자 타이핑");
 							obj.originalValue += editedText;
-						}else if(obj.USP < v1.length){
+						}
+						else if (obj.USP < v1.length) {
 							trace("중간에서 다중문자 타이핑");
 						}
 					}
-/*
-					trace({
-						nvalue: v1,
-						prevValue: v2,
-						nowText: editText,
-						editedText: editedText,
-						originalValue: obj.originalValue,
-						eD:[obj.DSP, obj.DEP],
-						eU:[obj.USP, obj.UEP]
-					});
-*/
-				}else if(v1 != v2 && v1.length < v2.length){
+					/*
+					 trace({
+					 nvalue: v1,
+					 prevValue: v2,
+					 nowText: editText,
+					 editedText: editedText,
+					 originalValue: obj.originalValue,
+					 eD:[obj.DSP, obj.DEP],
+					 eU:[obj.USP, obj.UEP]
+					 });
+					 */
+				}
+				else if (v1 != v2 && v1.length < v2.length) {
 					// 삭제 obj.originalValue의 삭제된 문자열 위치를 찾아 제거 합니다.
 
-					if( obj.DSP == obj.DEP && obj.USP == obj.UEP && obj.DSP-1 == obj.USP) {
-						if(obj.USP == v1.length) {
+					if (obj.DSP == obj.DEP && obj.USP == obj.UEP && obj.DSP - 1 == obj.USP) {
+						if (obj.USP == v1.length) {
 							trace("끝에서 한글자 삭제");
-						}else if(obj.USP < v1.length){
+						}
+						else if (obj.USP < v1.length) {
 							trace("중간에서 한글자 삭제");
 						}
-					}else{
-						if(obj.USP == v1.length){
+					}
+					else {
+						if (obj.USP == v1.length) {
 							trace("끝에서 다중문자 삭제");
-						}else if(obj.USP < v1.length){
+						}
+						else if (obj.USP < v1.length) {
 							trace("중간에서 다중문자 삭제");
 						}
 					}
-				}else{
+				}
+				else {
 					// 커서이동
-					if(obj.DSP == obj.DEP && obj.USP == obj.UEP && obj.DSP+1 == obj.USP){
+					if (obj.DSP == obj.DEP && obj.USP == obj.UEP && obj.DSP + 1 == obj.USP) {
 						trace("커서 우로 이동");
-					}else if(obj.DSP == obj.DEP && obj.USP == obj.UEP && obj.DSP == obj.USP+1){
+					}
+					else if (obj.DSP == obj.DEP && obj.USP == obj.UEP && obj.DSP == obj.USP + 1) {
 						trace("커서 좌로 이동");
-					}else if(obj.DSP == obj.DEP && obj.USP == obj.UEP && obj.DSP == obj.USP){
+					}
+					else if (obj.DSP == obj.DEP && obj.USP == obj.UEP && obj.DSP == obj.USP) {
 						trace("제자리");
 					}
 				}
@@ -13649,7 +14567,7 @@ var AXInputConverterPro = Class.create(AXJ, {
 		}
 		// TODO : 키 입력 제어 구문 끝점 (방법2)
 
-		var eventStop = function(event){
+		var eventStop = function(event) {
 			// 이벤트 중지 구문
 			if (event.preventDefault) event.preventDefault();
 			if (event.stopPropagation) event.stopPropagation();
@@ -13669,34 +14587,33 @@ var AXInputConverterPro = Class.create(AXJ, {
 
 		obj.bindTarget.val(val);
 
-		obj.bindTarget.unbind("focus.AXInput").bind("focus.AXInput", function (event) {
-			if(obj.config.pattern == "custom"){
-				if(typeof obj.originalValue === "undefined") obj.originalValue = event.target.value;
+		obj.bindTarget.unbind("focus.AXInput").bind("focus.AXInput", function(event) {
+			if (obj.config.pattern == "custom") {
+				if (typeof obj.originalValue === "undefined") obj.originalValue = event.target.value;
 				event.target.value = _this.bindPatternGetValue(objID, objSeq, (obj.originalValue), "keyup");
 			}
 		});
-
-
-		obj.bindTarget.unbind("keydown.AXInput").bind("keydown.AXInput", function (event) {
+		obj.bindTarget.unbind("keydown.AXInput").bind("keydown.AXInput", function(event) {
 			if (
 				event.which &&
 				(
-					event.which > 47 && event.which < 58  ||
-					event.which > 36 && event.which < 41  ||
+					event.which > 47 && event.which < 58 ||
+					event.which > 36 && event.which < 41 ||
 					event.which > 95 && event.which < 106 ||
-					event.which == axf.Event.KEY_BACKSPACE   ||
-					event.which == axf.Event.KEY_TAB         ||
-					event.which == axf.Event.KEY_RETURN      ||
-					event.which == axf.Event.KEY_DELETE      ||
+					event.which == axf.Event.KEY_BACKSPACE ||
+					event.which == axf.Event.KEY_TAB ||
+					event.which == axf.Event.KEY_RETURN ||
+					event.which == axf.Event.KEY_DELETE ||
 					event.which == axf.Event.NUMPAD_SUBTRACT ||
-					event.which == axf.Event.NUMPAD_DECIMAL  ||
-					event.which == axf.Event.KEY_MINUS       ||
-					event.which == axf.Event.KEY_EQUAL       ||
-					event.which == axf.Event.KEY_PERIOD      ||
-					event.which == axf.Event.KEY_HOME        ||
+					event.which == axf.Event.NUMPAD_DECIMAL ||
+					event.which == axf.Event.KEY_MINUS ||
+					event.which == axf.Event.KEY_EQUAL ||
+					event.which == axf.Event.KEY_PERIOD ||
+					event.which == axf.Event.KEY_HOME ||
 					event.which == axf.Event.KEY_END
 				)
-			) {
+			)
+			{
 
 				// 패턴에 따라 제어 소수점 허용안되는 경우 블락
 				var isStop = false;
@@ -13705,8 +14622,8 @@ var AXInputConverterPro = Class.create(AXJ, {
 					// 소수점 입력 막기
 					isStop = true;
 				}
-				else if (event.which == axf.Event.KEY_MINUS || event.which == axf.Event.KEY_EQUAL || event.which == axf.Event.KEY_PERIOD){
-					if(
+				else if (event.which == axf.Event.KEY_MINUS || event.which == axf.Event.KEY_EQUAL || event.which == axf.Event.KEY_PERIOD) {
+					if (
 						(
 							obj.config.pattern == "money" ||
 							obj.config.pattern == "moneyint" ||
@@ -13714,74 +14631,84 @@ var AXInputConverterPro = Class.create(AXJ, {
 							obj.config.pattern == "numberint"
 						) &&
 						obj.config.allow_minus
-					){
+					)
+					{
 
-					}else{
+					}
+					else {
 						isStop = true;
 					}
 				}
 				else if (
 					event.which == axf.Event.KEY_BACKSPACE ||
-					event.which == axf.Event.KEY_TAB       ||
-					event.which == axf.Event.KEY_RETURN    ||
-					event.which == axf.Event.KEY_LEFT      ||
-					event.which == axf.Event.KEY_RIGHT     ||
-					event.which == axf.Event.KEY_DELETE    ||
-					event.which == axf.Event.KEY_HOME      ||
-					event.which == axf.Event.KEY_END) { // 백스페이스, 탭, 리턴, 좌, 우, delete
+					event.which == axf.Event.KEY_TAB ||
+					event.which == axf.Event.KEY_RETURN ||
+					event.which == axf.Event.KEY_LEFT ||
+					event.which == axf.Event.KEY_RIGHT ||
+					event.which == axf.Event.KEY_DELETE ||
+					event.which == axf.Event.KEY_HOME ||
+					event.which == axf.Event.KEY_END)
+				{ // 백스페이스, 탭, 리턴, 좌, 우, delete
 
-					if(event.which == 13){
+					if (event.which == 13) {
 						obj.bindTarget.trigger("blur");
 					}
 				}
 				else {
 
 					if (obj.config.pattern.left(8) == "datetime") {
-						if (event.target.value.replace(/\D/g, "").length == 12) {
+						if (event.target.value.replace(/\D/g, "").length == 14) { // 초까지 입력되게 확장
 							isStop = true;
 						}
-					}else if (obj.config.pattern.left(4) == "date") {
+					}
+					else if (obj.config.pattern.left(4) == "date") {
 						if (event.target.value.replace(/\D/g, "").length == 8) {
 							isStop = true;
 						}
-					}else if (obj.config.pattern == "bizno") {
+					}
+					else if (obj.config.pattern == "bizno") {
 						if (event.target.value.replace(/\D/g, "").length == 10) {
 							isStop = true;
 						}
-					}else if (
+					}
+					else if (
 						obj.config.pattern == "money" ||
 						obj.config.pattern == "moneyint" ||
 						obj.config.pattern == "number" ||
 						obj.config.pattern == "numberint"
-					) {
+					)
+					{
 						// TODO : 숫자형 패턴에서 문자열의 길이 및, 소수점 자리수 제한 구현
-						if (Object.isNumber(obj.config.max_length)){
+						if (Object.isNumber(obj.config.max_length)) {
 
 							if (event.target.value.replace(/\D/g, "").length >= obj.config.max_length) {
 								isStop = true;
 							}
 						}
-						if (!isStop && Object.isNumber(obj.config.max_round)){
+						if (!isStop && Object.isNumber(obj.config.max_round)) {
 							var dotIndex = 0;
-							if((dotIndex = event.target.value.indexOf(".")) > -1){
-								if(event.target.value.substr(dotIndex+1).length >= obj.config.max_round){
+							if ((dotIndex = event.target.value.indexOf(".")) > -1) {
+								if (event.target.value.substr(dotIndex + 1).length >= obj.config.max_round) {
 									isStop = true;
 								}
 							}
 						}
-					}else if (Object.isNumber(obj.config.max_length)){
+					}
+					else if (Object.isNumber(obj.config.max_length)) {
 						if (event.target.value.replace(/[^A-Za-z0-9]/g, "").length == obj.config.max_length.number()) {
 							isStop = true;
 						}
 					}
 				}
 
-				if(isStop) eventStop(event);
+				if (isStop) eventStop(event);
 
-			} else {
-				if ( (event.ctrlKey || event.metaKey) ) {
+			}
+			else {
+				if ((event.ctrlKey || event.metaKey)) {
 					obj.bindTarget.data("ctrlKey", "T");
-				}else {
+				}
+				else {
 					obj.bindTarget.data("ctrlKey", "F");
 
 					//trace('block', event.which);
@@ -13789,13 +14716,14 @@ var AXInputConverterPro = Class.create(AXJ, {
 				}
 			}
 		});
-		obj.bindTarget.unbind("keyup.AXInput").bind("keyup.AXInput", function (event) {
+		obj.bindTarget.unbind("keyup.AXInput").bind("keyup.AXInput", function(event) {
 			var elem = obj.bindTarget.get(0);
 			var elemFocusPosition;
 			if ('selectionStart' in elem) {
 				// Standard-compliant browsers
 				elemFocusPosition = elem.selectionStart;
-			} else if (document.selection) {
+			}
+			else if (document.selection) {
 				// IE
 				//elem.focus();
 				var sel = document.selection.createRange();
@@ -13811,86 +14739,92 @@ var AXInputConverterPro = Class.create(AXJ, {
 
 			var event = window.event || event;
 			// ignore tab & shift key 스킵 & ctrl
-			if (!event.keyCode || event.keyCode ==axf.Event.KEY_TAB|| event.keyCode == 16 || event.keyCode == 17||
+			if (!event.keyCode || event.keyCode == axf.Event.KEY_TAB || event.keyCode == 16 || event.keyCode == 17 ||
 				event.which == axf.Event.KEY_HOME ||
 				event.which == axf.Event.KEY_END) return;
 
 			if ((obj.bindTarget.data("ctrlKey") == "T") && (event.keyCode == 65 || event.keyCode == 91)) return;
 			if (event.keyCode != AXUtil.Event.KEY_DELETE && event.keyCode != AXUtil.Event.KEY_BACKSPACE && event.keyCode != AXUtil.Event.KEY_LEFT && event.keyCode != AXUtil.Event.KEY_RIGHT) {
 				bindPatternCheck(objID, objSeq, "keyup");
-			} else if (event.keyCode == AXUtil.Event.KEY_DELETE || event.keyCode == AXUtil.Event.KEY_BACKSPACE) {
+			}
+			else if (event.keyCode == AXUtil.Event.KEY_DELETE || event.keyCode == AXUtil.Event.KEY_BACKSPACE) {
 				bindPatternCheck(objID, objSeq, "keyup");
 			}
 		});
-		obj.bindTarget.unbind("change.AXInput").bind("change.AXInput", function (event) {
+		obj.bindTarget.unbind("change.AXInput").bind("change.AXInput", function(event) {
 			//bindPatternCheck(objID, objSeq, "change");
 		});
-		obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function (event) {
+		obj.bindTarget.unbind("blur.AXInput").bind("blur.AXInput", function(event) {
 			bindPatternCheck(objID, objSeq, "blur");
 		});
 	},
-	bindPatternCheck: function(objID, objSeq, eventType){
+	bindPatternCheck: function(objID, objSeq, eventType) {
 		var obj = this.objects[objSeq];
 		var val, nval;
 		// callback 함수 대소문자 지원
 		if (!obj.config.onBlur) obj.config.onBlur = obj.config.onBlur;
 		if (!obj.config.onChange) obj.config.onChange = obj.config.onchange;
 
-		if(eventType == "blur"){
+		if (eventType == "blur") {
 
 			val = obj.bindTarget.val();
 			//trace(val);
 			nval = this.bindPatternGetValue(objID, objSeq, val, eventType);
 			// 패턴 적용
 			obj.bindTarget.val(nval);
-			if(val != nval) obj.bindTarget.trigger("change");
+			if (val != nval) obj.bindTarget.trigger("change");
 
 			if (Object.isFunction(obj.config.onBlur)) {
-				obj.config.onBlur.call({ objID: objID, objSeq: objSeq, value: nval });
+				obj.config.onBlur.call({objID: objID, objSeq: objSeq, value: nval});
 			}
 
-		}else{
+		}
+		else {
 
 			val = obj.bindTarget.val();
 			nval = this.bindPatternGetValue(objID, objSeq, val, eventType);
 			// 패턴 적용
 			obj.bindTarget.val(nval);
-			if(val != nval) obj.bindTarget.trigger("change");
+			if (val != nval) obj.bindTarget.trigger("change");
 
-			if( !axf.isEmpty( obj.bindTarget.data("focusPosition") ) ){
+			if (!axf.isEmpty(obj.bindTarget.data("focusPosition"))) {
 				obj.bindTarget.setCaret(
 					obj.bindTarget.data("focusPosition").number() + ( obj.bindTarget.val().length - obj.bindTarget.data("prevLen") )
 				);
 			}
 			if (Object.isFunction(obj.config.onChange)) {
-				obj.config.onChange.call({ objID: objID, objSeq: objSeq, value: nval });
+				obj.config.onChange.call({objID: objID, objSeq: objSeq, value: nval});
 			}
 
 		}
 	},
-	bindPatternGetValue: function(objID, objSeq, val, eventType){
+	bindPatternGetValue: function(objID, objSeq, val, eventType) {
 		var obj = this.objects[objSeq];
 		var regExpPattern, returnValue = "";
 
-		var getFormatterDate = function(_val, _pattern, ynm, mnd, dnt, tnt){
+		var getFormatterDate = function(_val, _pattern, ynm, mnd, dnt, tnt) {
 			var returnValue = "";
-			if(_val == ""){
+			if (_val == "") {
 
-			}else if(eventType == "blur") { // 타이핑 완료
+			}
+			else if (eventType == "blur") { // 타이핑 완료
 				var nDate = new Date(), needAlert = false;
 				if (_val.length > 7) {
 					var yy = _val.left(4).number();
 					var mm = _val.substr(4, 2).number() - 1;
 					var dd = _val.substr(6, 2).number();
-				} else if (_val.length > 4) {
+				}
+				else if (_val.length > 4) {
 					var yy = "20" + _val.substr(0, 2);
 					var mm = _val.substr(2, 2).number() - 1;
 					var dd = _val.substr(4, 2).number();
-				} else if (_val.length > 2) {
+				}
+				else if (_val.length > 2) {
 					var yy = nDate.getFullYear();
 					var mm = _val.substr(0, 2).number() - 1;
 					var dd = _val.substr(2, 2).number();
-				} else {
+				}
+				else {
 					var yy = nDate.getFullYear(); //va.left(4).number();
 					var mm = nDate.getMonth();
 					var dd = _val.substr(0, 2).number();
@@ -13902,31 +14836,39 @@ var AXInputConverterPro = Class.create(AXJ, {
 
 				if (nDate.getFullYear() != yy.number()
 					|| nDate.getMonth() != mm.number()
-					|| nDate.getDate() != dd.number()) {
+					|| nDate.getDate() != dd.number())
+				{
 					needAlert = true;
 					nDate = new Date();
 				}
 
 				printDate = nDate.print("yyyy" + ynm + "mm" + mnd + "dd");
 
-				if(dnt != " "){
+				if (dnt != " ") {
 					printDate += dnt;
 				}
 
-				if(_pattern.left(8) == "datetime") {
-					if(dnt == " ") printDate += dnt;
-					var hh, mm;
+				if (_pattern.left(8) == "datetime") {
+					if (dnt == " ") printDate += dnt;
+					var hh, mm, ss = null;
 					if (_val.length > 11) { // hh,mm
 						hh = _val.substr(8, 2).number().setDigit(2);
 						mm = _val.substr(10, 2).number().setDigit(2);
-					} else if (_val.length > 8) {
+						ss = _val.substr(12, 2).number().setDigit(2);
+					}
+					else if (_val.length > 8) {
 						hh = _val.substr(8, 2).number().setDigit(2);
 						mm = "00";
-					} else {
+					}
+					else {
 						hh = "12";
 						mm = "00";
 					}
-					printDate += hh + tnt + mm;
+					printDate += hh + tnt + mm + (function() {
+							if (ss != null) {
+								return tnt + ss;
+							}
+						})();
 				}
 
 				if (needAlert) {
@@ -13934,42 +14876,58 @@ var AXInputConverterPro = Class.create(AXJ, {
 				}
 				returnValue = printDate;
 
-			}else{ // 타이핑 중
-				if(_val.length < 5){
+			}
+			else { // 타이핑 중
+				if (_val.length < 5) {
 					returnValue = _val;
-				}else if(_val.length < 7){
+				}
+				else if (_val.length < 7) {
 					returnValue = _val.substr(0, 4) + ynm + _val.substr(4);
-				}else if(_val.length < 9){
+				}
+				else if (_val.length < 9) {
 					returnValue = _val.substr(0, 4) + ynm + _val.substr(4, 2) + mnd + _val.substr(6, 2);
-					if(dnt != " "){
+					if (dnt != " ") {
 						returnValue += dnt;
 					}
-				}else if(_val.length < 11 && _pattern.left(8) == "datetime"){
+				}
+				else if (_val.length < 11 && _pattern.left(8) == "datetime") {
 					returnValue = _val.substr(0, 4) + ynm + _val.substr(4, 2) + mnd + _val.substr(6, 2) + dnt + _val.substr(8, 2);
-				}else{
-					if(_pattern.left(8) == "datetime") returnValue = _val.substr(0, 4) + ynm + _val.substr(4, 2) + mnd + _val.substr(6, 2) + dnt + _val.substr(8, 2) + tnt + _val.substr(10, 2);
-					else returnValue = _val.substr(0, 4) + ynm + _val.substr(4, 2) + mnd + _val.substr(6, 2);
+				}
+				else {
+					if (_pattern.left(8) == "datetime") {
+						returnValue = _val.substr(0, 4) + ynm + _val.substr(4, 2) + mnd + _val.substr(6, 2) + dnt + _val.substr(8, 2) + tnt + _val.substr(10, 2) + (function() {
+								if (_val.substr(12, 2) != "") {
+									return tnt + _val.substr(12, 2);
+								}
+								else {
+									return "";
+								}
+							})();
+					}
+					else {
+						returnValue = _val.substr(0, 4) + ynm + _val.substr(4, 2) + mnd + _val.substr(6, 2);
+					}
 				}
 			}
 			return returnValue;
 		};
-		var getNumberApplyConfig = function(_val, valType){
-			if(valType == "float"){
+		var getNumberApplyConfig = function(_val, valType) {
+			if (valType == "float") {
 				if (Object.isNumber(obj.config.max_round)) {
 					var dotIndex = 0;
-					if((dotIndex = _val.indexOf(".")) > -1){
-						_val = _val.substring(0, dotIndex+1) +
-							_val.substr(dotIndex+1).replace(/\D/g, "").left(obj.config.max_round);
+					if ((dotIndex = _val.indexOf(".")) > -1) {
+						_val = _val.substring(0, dotIndex + 1) +
+							_val.substr(dotIndex + 1).replace(/\D/g, "").left(obj.config.max_round);
 					}
 				}
 			}
 			var __val = _val.replace(/\D/g, "");
 			if (Object.isNumber(obj.config.max_length)) {
 				if (__val.length > obj.config.max_length) {
-					if(obj.config.allow_minus && val.left(1) == "-"){
+					if (obj.config.allow_minus && val.left(1) == "-") {
 						_val = "-" + __val.left(obj.config.max_length);
 					}
-					else{
+					else {
 						_val = __val.left(obj.config.max_length);
 					}
 				}
@@ -13977,63 +14935,70 @@ var AXInputConverterPro = Class.create(AXJ, {
 			__val = null;
 			return _val;
 		};
-		var getFormatterTime = function(_val, _pattern, tnt){
+		var getFormatterTime = function(_val, _pattern, tnt) {
 			var returnValue = "";
-			if(_val == ""){
+			if (_val == "") {
 
-			}else if(eventType == "blur") { // 타이핑 완료
+			}
+			else if (eventType == "blur") { // 타이핑 완료
 				var nDate = new Date(), needAlert = false;
 				if (_val.length > 2) {
 					var hh = _val.substr(0, 2).number();
 					var mi = _val.substr(2, 2).number();
-				} else if (_val.length > 0) {
+				}
+				else if (_val.length > 0) {
 					var hh = _val.substr(0, 2).number();
 					var mi = 0;
-				} else {
+				}
+				else {
 					var hh = 0;
 					var mi = 0;
 				}
 
-				if(hh > 23) hh = 23;
-				if(mi > 59) mi = 59;
+				if (hh > 23) hh = 23;
+				if (mi > 59) mi = 59;
 
 				returnValue = hh.setDigit(2) + tnt + mi.setDigit(2);
-			}else{ // 타이핑 중
-				if(_val.length < 3){
+			}
+			else { // 타이핑 중
+				if (_val.length < 3) {
 					returnValue = _val;
-				}else{
+				}
+				else {
 					returnValue = _val.substr(0, 2) + tnt + _val.substr(2, 2);
 				}
 			}
 			return returnValue;
 		};
 
-		if(
+		if (
 			obj.config.pattern == "money" ||
 			obj.config.pattern == "moneyint" ||
 			obj.config.pattern == "number" ||
 			obj.config.pattern == "numberint"
-		){
+		)
+		{
 
-			if(obj.config.pattern == "moneyint") { // 소수점 포함안함
+			if (obj.config.pattern == "moneyint") { // 소수점 포함안함
 				//val = val.replace(/[\D,]/g, "");
 				val = val.replace(/[^0-9^\-]/g, "");
 
-				if(eventType == "blur") {
+				if (eventType == "blur") {
 					val = getNumberApplyConfig(val, "int");
 				}
 
-				if(val == ""){
+				if (val == "") {
 					returnValue = "";
-				}else{
+				}
+				else {
 					returnValue = Math.ceil(val).money();
 				}
 			}
-			else if(obj.config.pattern == "money") { // 소수점 포함
+			else if (obj.config.pattern == "money") { // 소수점 포함
 				//val = val.replace(/[^0-9^\.]/g, "");
 				val = val.replace(/[^0-9^\.^\-]/g, "");
 
-				if(eventType == "blur") {
+				if (eventType == "blur") {
 					val = getNumberApplyConfig(val, "float");
 				}
 
@@ -14046,159 +15011,173 @@ var AXInputConverterPro = Class.create(AXJ, {
 					arrNumber[0] = arrNumber[0].replace(regExpPattern, '$1,$2');
 				} while (regExpPattern.test(arrNumber[0]));
 				if (arrNumber.length > 1) {
-					if(Object.isNumber(obj.config.max_round)){
+					if (Object.isNumber(obj.config.max_round)) {
 						returnValue = arrNumber[0] + arrNumber[1].left(obj.config.max_round);
-					}else{
+					}
+					else {
 						returnValue = arrNumber.join('');
 					}
-				} else {
+				}
+				else {
 					returnValue = arrNumber[0].split('.')[0];
 				}
 				if (eventType == "blur") {
 					if (returnValue.right(1) == ".") returnValue = returnValue.replace(/\./g, "");
 				}
 			}
-			else if(obj.config.pattern == "numberint") { // 통화표시 없이 숫자 형태로 입력
+			else if (obj.config.pattern == "numberint") { // 통화표시 없이 숫자 형태로 입력
 				//val = val.replace(/[\D]/g, "");
 				val = val.replace(/[^0-9^\-]/g, "");
 
-				if(eventType == "blur") {
+				if (eventType == "blur") {
 					val = getNumberApplyConfig(val, "int");
 				}
 
 				if (val == "") {
 					returnValue = "";
-				} else {
+				}
+				else {
 					returnValue = Math.ceil(val);
 				}
 			}
-			else if(obj.config.pattern == "number"){ // 통화표시 없이 숫자 형태로 입력
+			else if (obj.config.pattern == "number") { // 통화표시 없이 숫자 형태로 입력
 				//val = val.replace(/[^0-9^\.]/g, "");
 				val = val.replace(/[^0-9^\.^\-]/g, "");
 
-				if(eventType == "blur") {
+				if (eventType == "blur") {
 					val = getNumberApplyConfig(val, "float");
 				}
 
 				var arrNumber = val.split('.');
 				arrNumber[0] += '.';
 				if (arrNumber.length > 1) {
-					if(Object.isNumber(obj.config.max_round)){
+					if (Object.isNumber(obj.config.max_round)) {
 						returnValue = arrNumber[0] + arrNumber[1].left(obj.config.max_round);
-					}else{
+					}
+					else {
 						returnValue = arrNumber.join('');
 					}
-				} else {
+				}
+				else {
 					returnValue = arrNumber[0].split('.')[0];
 				}
 				if (eventType == "blur") {
 					if (returnValue.right(1) == ".") returnValue = returnValue.replace(/\./g, "");
 				}
 			}
-			if(obj.config.allow_minus){
+			if (obj.config.allow_minus) {
 				// 첫번째 문자열을 제외하고
 				returnValue = returnValue.toString().substring(0, 1) + returnValue.toString().substr(1).replace(/\-/g, "");
-			}else{
+			}
+			else {
 				returnValue = returnValue.toString().replace(/\-/g, "");
 			}
 		}
-		else if( obj.config.pattern == "bizno" ){
+		else if (obj.config.pattern == "bizno") {
 			val = val.replace(/\D/g, "");
 			regExpPattern = /^([0-9]{3})\-?([0-9]{1,2})?\-?([0-9]{1,5})?.*$/;
-			returnValue = val.replace(regExpPattern, function(a, b){
+			returnValue = val.replace(regExpPattern, function(a, b) {
 				var nval = [arguments[1]];
-				if(arguments[2]) nval.push(arguments[2]);
-				if(arguments[3]) nval.push(arguments[3]);
+				if (arguments[2]) nval.push(arguments[2]);
+				if (arguments[3]) nval.push(arguments[3]);
 				return nval.join("-");
 			});
 		}
-		else if(obj.config.pattern == "phone"){
+		else if (obj.config.pattern == "phone") {
 
 			val = val.replace(/\D/g, "");
 			regExpPattern = /^(010|011|016|017|018|019)(\d+)*$/;
 			var regExpPattern2 = /^(070|080|060|050|02|031|032|033|041|042|043|051|052|053|054|055|061|062|063|064)(\d+)*$/;
 
-			if( regExpPattern.test(val) ){ // 휴대전화일 경우
-				returnValue = val.replace(regExpPattern, function(a, b){
+			if (regExpPattern.test(val)) { // 휴대전화일 경우
+				returnValue = val.replace(regExpPattern, function(a, b) {
 					var nval = [arguments[1]];
-					if(arguments[2]) {
-						if(arguments[2].length < 4) {
-							nval.push( arguments[2] );
-						}else if(arguments[2].length < 8){
-							nval.push( arguments[2].substring(0, 3) + "-" + arguments[2].substr(3) );
-						}else if(arguments[2].length > 8){
-							nval.push( arguments[2].substring(0, 4) + "-" + arguments[2].substr(4, 4) + ", " + arguments[2].substr(8) );
-						}else{
-							nval.push( arguments[2].substring(0, 4) + "-" + arguments[2].substr(4, 4) );
+					if (arguments[2]) {
+						if (arguments[2].length < 4) {
+							nval.push(arguments[2]);
 						}
-					}
-					return nval.join("-");
-				});
-			} else if ( regExpPattern2.test(val) ) { // 일반전화일 경우
-				returnValue = val.replace(regExpPattern2, function(a, b){
-					var nval = [arguments[1]];
-					if(arguments[2]) {
-						if(arguments[2].length < 4) {
-							nval.push( arguments[2] );
-						}else if(arguments[2].length < 8) {
+						else if (arguments[2].length < 8) {
 							nval.push(arguments[2].substring(0, 3) + "-" + arguments[2].substr(3));
-						}else if(arguments[2].length > 8){
-							nval.push( arguments[2].substring(0, 4) + "-" + arguments[2].substr(4, 4) + ", " + arguments[2].substr(8) );
-						}else{
-							nval.push( arguments[2].substring(0, 4) + "-" + arguments[2].substr(4, 4) );
+						}
+						else if (arguments[2].length > 8) {
+							nval.push(arguments[2].substring(0, 4) + "-" + arguments[2].substr(4, 4) + ", " + arguments[2].substr(8));
+						}
+						else {
+							nval.push(arguments[2].substring(0, 4) + "-" + arguments[2].substr(4, 4));
 						}
 					}
 					return nval.join("-");
 				});
-			} else { // 확인안됨.
-				var regExpPattern3 = /^([0-9]{3})\-?([0-9]{1,4})?\-?([0-9]{1,4})?\-?([0-9]{1,4})?\-?([0-9]{1,4})?/;
-				returnValue = val.replace(regExpPattern3, function(a, b){
+			}
+			else if (regExpPattern2.test(val)) { // 일반전화일 경우
+				returnValue = val.replace(regExpPattern2, function(a, b) {
 					var nval = [arguments[1]];
-					if(arguments[2]) nval.push(arguments[2]);
-					if(arguments[3]) nval.push(arguments[3]);
-					if(arguments[4]) nval.push(arguments[4]);
-					if(arguments[5]) nval.push(arguments[5]);
+					if (arguments[2]) {
+						if (arguments[2].length < 4) {
+							nval.push(arguments[2]);
+						}
+						else if (arguments[2].length < 8) {
+							nval.push(arguments[2].substring(0, 3) + "-" + arguments[2].substr(3));
+						}
+						else if (arguments[2].length > 8) {
+							nval.push(arguments[2].substring(0, 4) + "-" + arguments[2].substr(4, 4) + ", " + arguments[2].substr(8));
+						}
+						else {
+							nval.push(arguments[2].substring(0, 4) + "-" + arguments[2].substr(4, 4));
+						}
+					}
+					return nval.join("-");
+				});
+			}
+			else { // 확인안됨.
+				var regExpPattern3 = /^([0-9]{3})\-?([0-9]{1,4})?\-?([0-9]{1,4})?\-?([0-9]{1,4})?\-?([0-9]{1,4})?/;
+				returnValue = val.replace(regExpPattern3, function(a, b) {
+					var nval = [arguments[1]];
+					if (arguments[2]) nval.push(arguments[2]);
+					if (arguments[3]) nval.push(arguments[3]);
+					if (arguments[4]) nval.push(arguments[4]);
+					if (arguments[5]) nval.push(arguments[5]);
 					return nval.join("-");
 				});
 			}
 
 		}
-		else if( obj.config.pattern == "date" ){
+		else if (obj.config.pattern == "date") {
 			val = val.replace(/\D/g, "");
 			returnValue = getFormatterDate(val, obj.config.pattern, "-", "-", " ", ":");
 		}
-		else if( obj.config.pattern == "date(/)" ){
+		else if (obj.config.pattern == "date(/)") {
 			val = val.replace(/\D/g, "");
 			returnValue = getFormatterDate(val, obj.config.pattern, "/", "/", " ", ":");
 		}
-		else if( obj.config.pattern == "date(년월일)" ){
+		else if (obj.config.pattern == "date(년월일)") {
 			val = val.replace(/\D/g, "");
 			returnValue = getFormatterDate(val, obj.config.pattern, "년", "월", "일", ":");
 		}
-		else if( obj.config.pattern == "datetime" ){
+		else if (obj.config.pattern == "datetime") {
 			val = val.replace(/\D/g, "");
 			returnValue = getFormatterDate(val, obj.config.pattern, "-", "-", " ", ":");
 		}
-		else if( obj.config.pattern == "datetime(/)" ){
+		else if (obj.config.pattern == "datetime(/)") {
 			val = val.replace(/\D/g, "");
 			returnValue = getFormatterDate(val, obj.config.pattern, "/", "/", " ", ":");
 		}
-		else if( obj.config.pattern == "datetime(년월일)" ){
+		else if (obj.config.pattern == "datetime(년월일)") {
 			val = val.replace(/\D/g, "");
 			returnValue = getFormatterDate(val, obj.config.pattern, "년", "월", "일", "시");
 		}
-		else if( obj.config.pattern == "time" ){
+		else if (obj.config.pattern == "time") {
 			val = val.replace(/\D/g, "");
 			returnValue = getFormatterTime(val, obj.config.pattern, ":");
 		}
-		else if( obj.config.pattern == "custom" ){
+		else if (obj.config.pattern == "custom") {
 			// Z, 9, X
 			val = val.replace(/[^0-9^a-z^A-Z]/g, "");
 			var ess = val.split("");
 			//trace(ess);
 			var pss = obj.config.patternString.split("");
 
-			if(eventType == "blur") {
+			if (eventType == "blur") {
 				obj.originalValue = val; // 암호화 되기 전 문자열 저장
 				//trace(val);
 			}
@@ -14207,31 +15186,37 @@ var AXInputConverterPro = Class.create(AXJ, {
 			// TODO : 패턴 문자열의 인덱스와 원본 문자열 인덱스 분리
 			// TODO : 포커스 되면 암호화된 문자열 원래 문자열로 변환, 블러되면 문자열 암호화 하고 originalValue 에 저장 -> 나중에 getText 에 이용
 			var eidx = 0, pidx = 0;
-			while(ess[eidx]){
-				if(pss[pidx] == "9"){
+			while (ess[eidx]) {
+				if (pss[pidx] == "9") {
 					newText += ess[eidx].number();
 					pidx++;
 					eidx++;
-				}else if(pss[pidx] == "Z") {
-					if(ess[eidx] > 0){
+				}
+				else if (pss[pidx] == "Z") {
+					if (ess[eidx] > 0) {
 						newText += ess[eidx];
-					}else{
+					}
+					else {
 						newText += "1";
 					}
 					pidx++;
 					eidx++;
-				}else if(pss[pidx] == "X") {
-					if(eventType == "blur") {
+				}
+				else if (pss[pidx] == "X") {
+					if (eventType == "blur") {
 						newText += "*";
-					}else{
+					}
+					else {
 						newText += ess[eidx];
 					}
 					pidx++;
 					eidx++;
-				}else if(typeof pss[pidx] != "undefined"){
+				}
+				else if (typeof pss[pidx] != "undefined") {
 					newText += pss[pidx];
 					pidx++;
-				}else{
+				}
+				else {
 					newText += ess[eidx];
 					eidx++;
 				}
@@ -14243,20 +15228,19 @@ var AXInputConverterPro = Class.create(AXJ, {
 			 */
 			return newText;
 
-
 		}
-		else if(Object.isFunction(obj.config.pattern)){
-			returnValue = obj.config.pattern.call({val:val, objID: objID, config:obj.config}, val);
+		else if (Object.isFunction(obj.config.pattern)) {
+			returnValue = obj.config.pattern.call({val: val, objID: objID, config: obj.config}, val);
 		}
-		else{
+		else {
 			returnValue = val;
 		}
 
 		return returnValue;
 	},
-	bindPatternGetText: function(objID, objSeq){
+	bindPatternGetText: function(objID, objSeq) {
 
-		if(!Object.isNumber(objSeq)) {
+		if (!Object.isNumber(objSeq)) {
 			/*
 			 axf.each(this.objects, function (index, O) {
 			 if (O.id == objID) {
@@ -14265,41 +15249,53 @@ var AXInputConverterPro = Class.create(AXJ, {
 			 }
 			 });
 			 */
-			for(var index = 0 ; index < this.objects.length ; index++){
-				if(this.objects[index].id == objID){ objSeq = index; break;}
+			for (var index = 0; index < this.objects.length; index++) {
+				if (this.objects[index].id == objID) {
+					objSeq = index;
+					break;
+				}
 			}
 		}
-		if(!Object.isNumber(objSeq)) return;
+		if (!Object.isNumber(objSeq)) return;
 		var obj = this.objects[objSeq], val = obj.bindTarget.val();
 
 		var regExpPattern, returnValue = "";
-		if(obj.config.pattern == "moneyint") { // 소수점 포함안함
+		if (obj.config.pattern == "moneyint") { // 소수점 포함안함
 			returnValue = val.replace(/[\D]/g, "");
-		}else if(obj.config.pattern == "money"){ // 소수점 포함
+		}
+		else if (obj.config.pattern == "money") { // 소수점 포함
 			returnValue = (val == "") ? "" : val.number();
-		}else if(obj.config.pattern == "bizno"){
+		}
+		else if (obj.config.pattern == "bizno") {
 			returnValue = val.replace(/\D/g, "");
-		}else if(obj.config.pattern == "phone"){
+		}
+		else if (obj.config.pattern == "phone") {
 			returnValue = val.replace(/\D/g, "");
-		}else if(obj.config.pattern == "date" || obj.config.pattern == "date(/)" || obj.config.pattern == "date(년월일)"){
+		}
+		else if (obj.config.pattern == "date" || obj.config.pattern == "date(/)" || obj.config.pattern == "date(년월일)") {
 			returnValue = val.replace(/\D/g, "");
-		}else if(obj.config.pattern == "datetime" || obj.config.pattern == "datetime(/)" || obj.config.pattern == "datetime(년월일)"){
+		}
+		else if (obj.config.pattern == "datetime" || obj.config.pattern == "datetime(/)" || obj.config.pattern == "datetime(년월일)") {
 			returnValue = val.replace(/\D/g, "");
-		}else if(obj.config.pattern == "time"){
+		}
+		else if (obj.config.pattern == "time") {
 			returnValue = val.replace(/\D/g, "");
-		}else if( obj.config.pattern == "custom" ){
+		}
+		else if (obj.config.pattern == "custom") {
 			returnValue = obj.originalValue;
-		}else if(Object.isFunction(obj.config.depattern)){
-			returnValue = obj.config.depattern.call({val:val, objID: objID, config:obj.config}, val);
-		}else{
+		}
+		else if (Object.isFunction(obj.config.depattern)) {
+			returnValue = obj.config.depattern.call({val: val, objID: objID, config: obj.config}, val);
+		}
+		else {
 			returnValue = val;
 		}
 
 		return returnValue;
 	},
-	bindPatternGetDisplayText: function(objID, objSeq){
+	bindPatternGetDisplayText: function(objID, objSeq) {
 
-		if(!Object.isNumber(objSeq)) {
+		if (!Object.isNumber(objSeq)) {
 			/*
 			 axf.each(this.objects, function (index, O) {
 			 if (O.id == objID) {
@@ -14308,24 +15304,28 @@ var AXInputConverterPro = Class.create(AXJ, {
 			 }
 			 });
 			 */
-			for(var index = 0 ; index < this.objects.length ; index++){
-				if(this.objects[index].id == objID){ objSeq = index; break; }
+			for (var index = 0; index < this.objects.length; index++) {
+				if (this.objects[index].id == objID) {
+					objSeq = index;
+					break;
+				}
 			}
 		}
-		if(!Object.isNumber(objSeq)) return;
+		if (!Object.isNumber(objSeq)) return;
 		var obj = this.objects[objSeq], val = obj.bindTarget.val();
 
 		var regExpPattern, returnValue = "";
-		if(Object.isFunction(obj.config.depattern)){
-			returnValue = obj.config.depattern.call({val:val, objID: objID, config:obj.config}, val);
-		}else{
+		if (Object.isFunction(obj.config.depattern)) {
+			returnValue = obj.config.depattern.call({val: val, objID: objID, config: obj.config}, val);
+		}
+		else {
 			returnValue = val;
 		}
 
 		return returnValue;
 	},
-	bindPatternSetText: function(objID, objSeq, val){
-		if(!Object.isNumber(objSeq)) {
+	bindPatternSetText: function(objID, objSeq, val) {
+		if (!Object.isNumber(objSeq)) {
 			/*
 			 axf.each(this.objects, function (index, O) {
 			 if (O.id == objID) {
@@ -14334,29 +15334,32 @@ var AXInputConverterPro = Class.create(AXJ, {
 			 }
 			 });
 			 */
-			for(var index = 0 ; index < this.objects.length ; index++){
-				if(this.objects[index].id == objID){ objSeq = index; break;}
+			for (var index = 0; index < this.objects.length; index++) {
+				if (this.objects[index].id == objID) {
+					objSeq = index;
+					break;
+				}
 			}
 		}
-		if(!Object.isNumber(objSeq)) return;
+		if (!Object.isNumber(objSeq)) return;
 		var obj = this.objects[objSeq];
-		obj.bindTarget.val( this.bindPatternGetValue(objID, objSeq, val, "blur") );
+		obj.bindTarget.val(this.bindPatternGetValue(objID, objSeq, val, "blur"));
 		obj.bindTarget.trigger("change");
 	},
 
 	/**
 	 * bindTagSelector
 	 */
-	bindTagSelector: function(objID, objSeq){
+	bindTagSelector: function(objID, objSeq) {
 		var _this = this, cfg = this.config,
-		    obj = this.objects[objSeq], po, h;
+			obj = this.objects[objSeq], po, h;
 
 		if (!obj.config.onchange) obj.config.onchange = obj.config.onChange;
-		if(!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
-		if(!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
-		if(!obj.bindTarget_paddingTop) obj.bindTarget_paddingTop = obj.bindTarget.css("padding-top");
+		if (!obj.bindAnchorTarget) obj.bindAnchorTarget = axdom("#" + cfg.targetID + "_AX_" + objID);
+		if (!obj.bindTarget) obj.bindTarget = axdom("#" + objID);
+		if (!obj.bindTarget_paddingTop) obj.bindTarget_paddingTop = obj.bindTarget.css("padding-top");
 
-		obj.bindTarget.css({"box-sizing":"content-box","padding":obj.bindTarget_paddingTop});
+		obj.bindTarget.css({"box-sizing": "content-box", "padding": obj.bindTarget_paddingTop});
 
 		// 저장된 태그 리스트
 		obj.tagList = [];
@@ -14366,33 +15369,31 @@ var AXInputConverterPro = Class.create(AXJ, {
 		h = obj.bindAnchorTarget.data("height") - 2;
 
 		po = [];
-		po.push('<div id="'+ cfg.targetID + '_AX_' + objID + '_AX_tagContainer" class="AXTag-selector-tagcontainer">');
+		po.push('<div id="' + cfg.targetID + '_AX_' + objID + '_AX_tagContainer" class="AXTag-selector-tagcontainer">');
 		po.push('</div>');
 		obj.bindAnchorTarget.html(po.join(''));
-		obj.tagContainer = obj.bindAnchorTarget.find('#' + cfg.targetID + '_AX_' + objID +'_AX_tagContainer');
+		obj.tagContainer = obj.bindAnchorTarget.find('#' + cfg.targetID + '_AX_' + objID + '_AX_tagContainer');
 
 		// 태그 컨테이너 클릭 이벤트 연결
 
-		obj.tagContainer.bind("click", (function(e){
+		obj.tagContainer.bind("click", (function(e) {
 			var event_type = "";
 			e = e || window.event;
-			var target = axf.get_event_target(e.target, function(el){
-				if(axdom(el).hasClass("AXTag-selector-tagitem-remove")){
+			var target = axf.get_event_target(e.target, function(el) {
+				if (axdom(el).hasClass("AXTag-selector-tagitem-remove")) {
 					event_type = "remove";
 					return true;
 				}
-				else
-				if(axdom(el).hasClass("AXTag-selector-tagitem")){
+				else if (axdom(el).hasClass("AXTag-selector-tagitem")) {
 					event_type = "item";
 					return true;
 				}
 			});
 
-			if(target && event_type == "remove") {
+			if (target && event_type == "remove") {
 				this.bindTagSelector_removeItem(objID, objSeq, axdom(target).attr("data-tag-index"));
 			}
-			else
-			if(!target) obj.bindTarget.focus();
+			else if (!target) obj.bindTarget.focus();
 
 		}).bind(this));
 
@@ -14400,74 +15401,75 @@ var AXInputConverterPro = Class.create(AXJ, {
 		obj.tagExpandBoxId = cfg.targetID + "_AX_" + objID + "_AX_expandBox";
 
 		obj.bindTarget.unbind("focus.AXTagSelector").bind("focus.AXTagSelector", function(event) {
-			if(obj.keydownTimer) clearTimeout(obj.keydownTimer);
-			obj.keydownTimer = setTimeout((function(event){
-				if(event.target.value != "") _this.bindTagSelector_onkeydown(event, objID, objSeq);
+			if (obj.keydownTimer) clearTimeout(obj.keydownTimer);
+			obj.keydownTimer = setTimeout((function(event) {
+				if (event.target.value != "") _this.bindTagSelector_onkeydown(event, objID, objSeq);
 			}).bind(_this, event), 100);
 		});
-		obj.bindTarget.unbind("keydown.AXTagSelector").bind("keydown.AXTagSelector", function(event){
-			if(obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") return false;
+		obj.bindTarget.unbind("keydown.AXTagSelector").bind("keydown.AXTagSelector", function(event) {
+			if (obj.bindAnchorTarget.attr("disable") == "disable" || obj.bindTarget.attr("disable") == "disable") return false;
 
-			if(obj.keydownTimer) clearTimeout(obj.keydownTimer);
-			obj.keydownTimer = setTimeout((function(event){
+			if (obj.keydownTimer) clearTimeout(obj.keydownTimer);
+			obj.keydownTimer = setTimeout((function(event) {
 				_this.bindTagSelector_onkeydown(event, objID, objSeq);
 			}).bind(_this, event), 100);
 		});
 	},
-	bindTagSelector_onkeydown: function(e, objID, objSeq){
+	bindTagSelector_onkeydown: function(e, objID, objSeq) {
 		var _this = this, cfg = this.config,
-		    obj = this.objects[objSeq], po,
-		    anchorWidth, anchorHeight, styles, focusedIndex;
+			obj = this.objects[objSeq], po,
+			anchorWidth, anchorHeight, styles, focusedIndex;
 
-		if(e.type == "keydown"){
-			if(e.target.value == "" && e.keyCode == axf.Event.KEY_BACKSPACE){
-				if(obj.tagList.length > 0) {
-					if(obj.ready_backspace){
+		if (e.type == "keydown") {
+			if (e.target.value == "" && e.keyCode == axf.Event.KEY_BACKSPACE) {
+				if (obj.tagList.length > 0) {
+					if (obj.ready_backspace) {
 						this.bindTagSelector_removeItem(objID, objSeq, obj.tagList.length - 1);
 						this.bindTagSelector_close(objID, objSeq);
 						obj.config.focusedIndex = undefined;
 						delete obj.ready_backspace;
-					}else{
+					}
+					else {
 						obj.ready_backspace = true;
 					}
 				}
 				return this;
-			}else{
+			}
+			else {
 				delete obj.ready_backspace;
 			}
 
-			if(
+			if (
 				e.keyCode == axf.Event.KEY_RETURN ||
 				e.keyCode == axf.Event.KEY_DOWN ||
 				e.keyCode == axf.Event.KEY_UP
-			) {
+			)
+			{
 				if (!AXgetId(obj.tagExpandBoxId)) return this;
-				if(e.keyCode == axf.Event.KEY_RETURN) {
-					if(typeof obj.config.focusedIndex !== "undefined"){
+				if (e.keyCode == axf.Event.KEY_RETURN) {
+					if (typeof obj.config.focusedIndex !== "undefined") {
 						this.bindTagSelector_addItem(objID, objSeq, obj.config.focusedIndex);
 						this.bindTagSelector_close(objID, objSeq);
 						obj.config.focusedIndex = undefined;
 					}
 				}
-				else
-				if(e.keyCode == axf.Event.KEY_DOWN) {
+				else if (e.keyCode == axf.Event.KEY_DOWN) {
 					focusedIndex = 0;
 					if (typeof obj.config.focusedIndex !== "undefined") {
 						axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + obj.config.focusedIndex + "_AX_option").removeClass("on");
 						focusedIndex = Number(obj.config.focusedIndex) + 1;
-						if(obj.config.options.length <= focusedIndex) focusedIndex = obj.config.options.length-1;
+						if (obj.config.options.length <= focusedIndex) focusedIndex = obj.config.options.length - 1;
 					}
 					axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + focusedIndex + "_AX_option").addClass("on");
 					obj.config.focusedIndex = focusedIndex;
 					obj.myUIScroll.focusElement(cfg.targetID + "_AX_" + objID + "_AX_" + focusedIndex + "_AX_option"); //focus
 				}
-				else
-				if(e.keyCode == axf.Event.KEY_UP) {
+				else if (e.keyCode == axf.Event.KEY_UP) {
 					focusedIndex = 0;
 					if (typeof obj.config.focusedIndex !== "undefined") {
 						axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + obj.config.focusedIndex + "_AX_option").removeClass("on");
 						focusedIndex = Number(obj.config.focusedIndex) - 1;
-						if(0 > focusedIndex) focusedIndex = 0;
+						if (0 > focusedIndex) focusedIndex = 0;
 					}
 					axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + focusedIndex + "_AX_option").addClass("on");
 					obj.config.focusedIndex = focusedIndex;
@@ -14499,7 +15501,7 @@ var AXInputConverterPro = Class.create(AXJ, {
 			obj.tagExpandBox = axdom("#" + obj.tagExpandBoxId);
 			obj.tagExpandBoxScroll = obj.tagExpandBox.find("#" + cfg.targetID + "_AX_" + objID + "_AX_expandScroll");
 			if (obj.config.positionFixed) {
-				obj.tagExpandBox.css({ "position": "fixed" });
+				obj.tagExpandBox.css({"position": "fixed"});
 			}
 			var expBoxHeight = obj.tagExpandBox.outerHeight();
 			var offset = (obj.config.positionFixed) ? obj.bindAnchorTarget.position() : obj.bindAnchorTarget.offset();
@@ -14519,26 +15521,26 @@ var AXInputConverterPro = Class.create(AXJ, {
 			obj.tagExpandBox.css(css);
 
 			// 다른 영역을 클릭했는가?
-			axdom(document.body).unbind("click.AXTagSelector").bind("click.AXTagSelector", (function(e){
-				if(obj.blurTimer) clearTimeout(obj.blurTimer);
-				obj.blurTimer = setTimeout(function(){
-					_this.bindTagSelector_onclick(e||window.event, objID, objSeq);
+			axdom(document.body).unbind("click.AXTagSelector").bind("click.AXTagSelector", (function(e) {
+				if (obj.blurTimer) clearTimeout(obj.blurTimer);
+				obj.blurTimer = setTimeout(function() {
+					_this.bindTagSelector_onclick(e || window.event, objID, objSeq);
 				}, 100);
 			}).bind(this));
 			obj.bindTarget.unbind("blur.AXTagSelector").bind("blur.AXTagSelector", (function(e) {
-				if(obj.blurTimer) clearTimeout(obj.blurTimer);
-				obj.blurTimer = setTimeout(function(){
-					_this.bindTagSelector_onclick(e||window.event, objID, objSeq);
+				if (obj.blurTimer) clearTimeout(obj.blurTimer);
+				obj.blurTimer = setTimeout(function() {
+					_this.bindTagSelector_onclick(e || window.event, objID, objSeq);
 				}, 700);
 			}).bind(this));
 		}
 		this.bindTagSelector_setOptions(objID, objSeq, obj.bindTarget.val());
 	},
-	bindTagSelector_setOptions: function(objID, objSeq, kword){
+	bindTagSelector_setOptions: function(objID, objSeq, kword) {
 		var _this = this, cfg = this.config,
-		    obj = this.objects[objSeq], po,
-		    maxHeight = obj.config.maxHeight || 130,
-		    next_fn;
+			obj = this.objects[objSeq], po,
+			maxHeight = obj.config.maxHeight || 130,
+			next_fn;
 
 		obj.deletedTagList = [];
 		next_fn = function() {
@@ -14556,9 +15558,9 @@ var AXInputConverterPro = Class.create(AXJ, {
 			if (obj.myUIScroll) obj.myUIScroll.unbind();
 			obj.myUIScroll = new AXScroll();
 			obj.myUIScroll.setConfig({
-				CT_className  : "AXScrollSmall",
-				targetID      : cfg.targetID + "_AX_" + objID + "_AX_expandBox",
-				scrollID      : cfg.targetID + "_AX_" + objID + "_AX_expandScroll",
+				CT_className: "AXScrollSmall",
+				targetID: cfg.targetID + "_AX_" + objID + "_AX_expandBox",
+				scrollID: cfg.targetID + "_AX_" + objID + "_AX_expandScroll",
 				touchDirection: false
 			});
 			obj.myUIScroll.scrollTop(0);
@@ -14601,17 +15603,18 @@ var AXInputConverterPro = Class.create(AXJ, {
 					obj.config.focusedIndex = ix;
 					obj.myUIScroll.focusElement(cfg.targetID + "_AX_" + objID + "_AX_" + ix + "_AX_option"); //focus
 				}
-			} else {
+			}
+			else {
 				if (obj.config.focusedIndex != undefined) {
 					axdom("#" + cfg.targetID + "_AX_" + objID + "_AX_" + obj.config.focusedIndex + "_AX_option").removeClass("on");
 				}
 			}
 		};
 
-		var get_options = function(options){
+		var get_options = function(options) {
 			var npo = [];
-			for(var i=0,l=options.length;i<l;i++){
-				var O =options[i];
+			for (var i = 0, l = options.length; i < l; i++) {
+				var O = options[i];
 				// options의 optionText, optionDesc의 참조값을 디코딩해서 디코딩은 한 번만 사용하도록 변경
 				O[obj.config.reserveKeys.optionText] = (O[obj.config.reserveKeys.optionText] ? O[obj.config.reserveKeys.optionText].dec() : "");
 				O.desc = (O.desc ? O.desc.dec() : "");
@@ -14621,20 +15624,20 @@ var AXInputConverterPro = Class.create(AXJ, {
 				if (descStr != "") descStr = "<span>" + descStr + "</span>";
 
 				styles = "";
-				for(var ti=0,tl=obj.tagList.length, tag;ti<tl;ti++) {
+				for (var ti = 0, tl = obj.tagList.length, tag; ti < tl; ti++) {
 					tag = obj.tagList[ti];
 					//trace(tag[obj.config.reserveKeys.optionValue] == O[obj.config.reserveKeys.optionValue]);
-					if(tag[obj.config.reserveKeys.optionValue] == O[obj.config.reserveKeys.optionValue]){
+					if (tag[obj.config.reserveKeys.optionValue] == O[obj.config.reserveKeys.optionValue]) {
 						styles = ' style="text-decoration: line-through;"';
 					}
 				}
-				npo.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_" + i + "_AX_option\" class=\"bindSelectorNodes\" "+ styles +">"
+				npo.push("<a " + obj.config.href + " id=\"" + cfg.targetID + "_AX_" + objID + "_AX_" + i + "_AX_option\" class=\"bindSelectorNodes\" " + styles + ">"
 					+ O[obj.config.reserveKeys.optionText] + descStr + "</a>");
 			}
 			return npo;
 		};
 
-		if(obj.config.ajaxUrl && kword != ""){
+		if (obj.config.ajaxUrl && kword != "") {
 
 			obj.inProgress = true; //진행중 상태 변경
 			var url = obj.config.ajaxUrl;
@@ -14656,10 +15659,12 @@ var AXInputConverterPro = Class.create(AXJ, {
 
 			var selectorName = obj.config.selectorName || obj.bindTarget.attr("name");
 			if (pars == "") {
-				pars = selectorName + "=" + (kword||"").enc();
-			} else if ((typeof pars).toLowerCase() == "string") {
+				pars = selectorName + "=" + (kword || "").enc();
+			}
+			else if ((typeof pars).toLowerCase() == "string") {
 				pars += "&" + selectorName + "=" + kword.enc();
-			} else if ((typeof pars).toLowerCase() == "object") {
+			}
+			else if ((typeof pars).toLowerCase() == "object") {
 				pars[selectorName] = kword.enc();
 			}
 
@@ -14672,7 +15677,7 @@ var AXInputConverterPro = Class.create(AXJ, {
 				async: _async,
 				debug: ((typeof obj.config.debug !== "undefined") ? obj.config.debug : false),
 				pars: pars,
-				onsucc: function (res) {
+				onsucc: function(res) {
 
 					if (!res.error) {
 
@@ -14681,16 +15686,16 @@ var AXInputConverterPro = Class.create(AXJ, {
 						po = get_options(obj.config.options);
 						next_fn.call(_this);
 
-					} else {
+					}
+					else {
 						axf.alert(res.error);
 					}
 					obj.inProgress = false;
 				}
 			});
 
-
 		}
-		else if(obj.config.onsearch){
+		else if (obj.config.onsearch) {
 			var res = obj.config.onsearch.call(
 				{
 					id: objID,
@@ -14698,7 +15703,7 @@ var AXInputConverterPro = Class.create(AXJ, {
 				},
 				objID,
 				kword,
-				(function(res){
+				(function(res) {
 					obj.config.options = res;
 					obj.config.focusedIndex = undefined;
 					po = get_options(obj.config.options);
@@ -14706,10 +15711,9 @@ var AXInputConverterPro = Class.create(AXJ, {
 				}).bind(this)
 			);
 		}
-		else
-		{
+		else {
 			//var optionPrintLength = obj.config.optionPrintLength || 100;
-			if (!obj.config.options){
+			if (!obj.config.options) {
 				console.log("config.options is not defined");
 				return this;
 			}
@@ -14720,63 +15724,59 @@ var AXInputConverterPro = Class.create(AXJ, {
 			next_fn.call(this);
 		}
 	},
-	bindTagSelector_onclick: function(e, objID, objSeq){
+	bindTagSelector_onclick: function(e, objID, objSeq) {
 		var _this = this, cfg = this.config,
-		    obj = this.objects[objSeq];
+			obj = this.objects[objSeq];
 
-		if(e.type == "blur"){
+		if (e.type == "blur") {
 			this.bindTagSelector_close(objID, objSeq);
 		}
-		else
-		if(e.type == "click"){
+		else if (e.type == "click") {
 			var click_type = "";
-			var target = axf.get_event_target(e.target, function(el){
-				if(axdom(el).hasClass("bindSelectorNodes")){
+			var target = axf.get_event_target(e.target, function(el) {
+				if (axdom(el).hasClass("bindSelectorNodes")) {
 					click_type = "option";
 					return true;
 				}
-				else
-				if(el.id == objID){
+				else if (el.id == objID) {
 					click_type = "input";
 					return true;
 				}
 			});
 
-			if(target){
+			if (target) {
 				//console.log(target, click_type);
-				if(click_type == "option") {
+				if (click_type == "option") {
 					// get option index
 					var ids = target.id.split(/_AX_/g);
-					var optionIndex = ids[ids.length-2];
+					var optionIndex = ids[ids.length - 2];
 					this.bindTagSelector_addItem(objID, objSeq, optionIndex);
 					this.bindTagSelector_close(objID, objSeq);
 				}
-				else
-				if(click_type == "input") {
+				else if (click_type == "input") {
 					// 입풋을 누르다니..
 				}
 			}
-			else
-			{
+			else {
 				this.bindTagSelector_close(objID, objSeq);
 			}
 		}
 		//trace(e.type);
 		//trace(objID, objSeq);
 	},
-	bindTagSelector_close: function(objID, objSeq){
+	bindTagSelector_close: function(objID, objSeq) {
 		var _this = this, cfg = this.config,
-		    obj = this.objects[objSeq];
+			obj = this.objects[objSeq];
 
-		if(obj.tagExpandBox) obj.tagExpandBox.remove();
+		if (obj.tagExpandBox) obj.tagExpandBox.remove();
 		axdom(document.body).unbind("click.AXTagSelector");
 		obj.bindTarget.unbind("blur.AXTagSelector");
 	},
-	bindTagSelector_addItem: function(objID, objSeq, optionIndex){
+	bindTagSelector_addItem: function(objID, objSeq, optionIndex) {
 		var _this = this, cfg = this.config,
-		    obj = this.objects[objSeq], objName, po, addOption, pass_add;
+			obj = this.objects[objSeq], objName, po, addOption, pass_add;
 
-		if(isNaN(Number(optionIndex))) {
+		if (isNaN(Number(optionIndex))) {
 			console.log("optionIndex is NaN");
 			return this;
 		}
@@ -14784,99 +15784,104 @@ var AXInputConverterPro = Class.create(AXJ, {
 		//obj.tagList 태그저장리스트
 		addOption = obj.config.options[optionIndex];
 		pass_add = true; // 등록 허용
-		for(var i=0,l=obj.tagList.length, tag;i<l;i++){
+		for (var i = 0, l = obj.tagList.length, tag; i < l; i++) {
 			tag = obj.tagList[i];
-			if(tag[obj.config.reserveKeys.optionValue] == addOption[obj.config.reserveKeys.optionValue]){
+			if (tag[obj.config.reserveKeys.optionValue] == addOption[obj.config.reserveKeys.optionValue]) {
 				pass_add = false; // 이미 등록된 값이 존재함.
 				break;
 			}
 		}
-		if(pass_add){
+		if (pass_add) {
 			objName = obj.bindTarget.attr("name");
 			po = [];
-			if(!obj.config.optionValue_inputName) obj.config.optionValue_inputName = objName;
+			if (!obj.config.optionValue_inputName) obj.config.optionValue_inputName = objName;
 			po.push('<span class="AXTag-selector-tagitem" data-option-value="' + addOption[obj.config.reserveKeys.optionValue] + '">');
-			if(obj.config.optionValue_inputName) po.push('<input type="hidden" name="' + obj.config.optionValue_inputName + '" value="' + addOption[obj.config.reserveKeys.optionValue] + '" />');
-			if(obj.config.optionText_inputName) po.push('<input type="hidden" name="' + obj.config.optionText_inputName + '" value="' + addOption[obj.config.reserveKeys.optionText] + '" />');
+			if (obj.config.optionValue_inputName) po.push('<input type="hidden" name="' + obj.config.optionValue_inputName + '" value="' + addOption[obj.config.reserveKeys.optionValue] + '" />');
+			if (obj.config.optionText_inputName) po.push('<input type="hidden" name="' + obj.config.optionText_inputName + '" value="' + addOption[obj.config.reserveKeys.optionText] + '" />');
 
-			po.push( addOption[obj.config.reserveKeys.optionText] );
-			po.push('<span class="AXTag-selector-tagitem-remove" data-tag-index="'+ obj.tagList.length +'"></span>');
+			po.push(addOption[obj.config.reserveKeys.optionText]);
+			po.push('<span class="AXTag-selector-tagitem-remove" data-tag-index="' + obj.tagList.length + '"></span>');
 			po.push('</span>');
-			obj.tagContainer.append( po.join('') );
+			obj.tagContainer.append(po.join(''));
 			obj.tagList.push(addOption);
 			//
-			obj.bindTarget.css({"padding-top":obj.tagContainer.height()}).val('');
+			obj.bindTarget.css({"padding-top": obj.tagContainer.height()}).val('');
 			obj.bindAnchorTarget.data("height", obj.bindTarget.outerHeight());
 			axdom(window).resize();
 		}
 	},
-	bindTagSelector_removeItem: function(objID, objSeq, tagIndex){
+	bindTagSelector_removeItem: function(objID, objSeq, tagIndex) {
 		var _this = this, cfg = this.config,
-		    obj = this.objects[objSeq], po, objName = obj.bindTarget.attr("name");;
+			obj = this.objects[objSeq], po, objName = obj.bindTarget.attr("name");
+		;
 
-		if(typeof tagIndex !== "undefined") {
+		if (typeof tagIndex !== "undefined") {
 			obj.tagContainer.find('[data-tag-index="' + tagIndex + '"]').remove();
 			obj.deletedTagList.push(obj.tagList[tagIndex]);
 			obj.tagList.splice(tagIndex, 1);
 		}
 
 		po = [];
-		for(var i=0,l=obj.tagList.length, tag;i<l;i++) {
+		for (var i = 0, l = obj.tagList.length, tag; i < l; i++) {
 			tag = obj.tagList[i];
 			po.push('<span class="AXTag-selector-tagitem" data-option-value="' + tag[obj.config.reserveKeys.optionValue] + '">');
 			po.push('<input type="hidden" name="' + objName + '" value="' + tag[obj.config.reserveKeys.optionValue] + '" />');
-			po.push( tag[obj.config.reserveKeys.optionText] );
-			po.push('<span class="AXTag-selector-tagitem-remove" data-tag-index="'+ i +'"></span>');
+			po.push(tag[obj.config.reserveKeys.optionText]);
+			po.push('<span class="AXTag-selector-tagitem-remove" data-tag-index="' + i + '"></span>');
 			po.push('</span>');
 		}
-		obj.tagContainer.html( po.join('') );
+		obj.tagContainer.html(po.join(''));
 
-		if(obj.tagList.length == 0){
+		if (obj.tagList.length == 0) {
 			obj.bindTarget.css({"padding-top": obj.bindTarget_paddingTop}).val('');
 		}
-		else
-		{
+		else {
 			obj.bindTarget.css({"padding-top": obj.tagContainer.height()}).val('');
 		}
 
 		obj.bindAnchorTarget.data("height", obj.bindTarget.outerHeight());
 		axdom(window).resize();
 	},
-	bindTagSelector_setItem: function(objID, tags){
+	bindTagSelector_setItem: function(objID, tags) {
 		var cfg = this.config,
-		    objSeq = null, obj;
-		for(var i=0, l=this.objects.length;i<l;i++){
-			if(this.objects[i].id === objID) {objSeq = i;break;}
+			objSeq = null, obj;
+		for (var i = 0, l = this.objects.length; i < l; i++) {
+			if (this.objects[i].id === objID) {
+				objSeq = i;
+				break;
+			}
 		}
 		obj = this.objects[objSeq];
 		obj.deletedTagList = [];
 
-		if(Object.isArray(tags)){
+		if (Object.isArray(tags)) {
 			obj.tagList = [];
-			for(var i=0, l=tags.length, tag;i<l;i++){
+			for (var i = 0, l = tags.length, tag; i < l; i++) {
 				var tag = tags[i];
-				if(typeof tag[obj.config.reserveKeys.optionValue] === "undefined") tag[obj.config.reserveKeys.optionValue] = tag.toString();
-				if(typeof tag[obj.config.reserveKeys.optionText] === "undefined") tag[obj.config.reserveKeys.optionText] = tag.toString();
+				if (typeof tag[obj.config.reserveKeys.optionValue] === "undefined") tag[obj.config.reserveKeys.optionValue] = tag.toString();
+				if (typeof tag[obj.config.reserveKeys.optionText] === "undefined") tag[obj.config.reserveKeys.optionText] = tag.toString();
 				obj.tagList.push(tag);
 			}
 			this.bindTagSelector_removeItem(objID, objSeq);
 		}
 		return this;
 	},
-	bindTagSelector_getItem: function(objID){
+	bindTagSelector_getItem: function(objID) {
 		var cfg = this.config,
-		    objSeq = null, obj;
-		for(var i=0, l=this.objects.length;i<l;i++){
-			if(this.objects[i].id === objID) {objSeq = i;break;}
+			objSeq = null, obj;
+		for (var i = 0, l = this.objects.length; i < l; i++) {
+			if (this.objects[i].id === objID) {
+				objSeq = i;
+				break;
+			}
 		}
 		obj = this.objects[objSeq];
-		return {list:obj.tagList, deletedList:obj.deletedTagList};
+		return {list: obj.tagList, deletedList: obj.deletedTagList};
 	}
 });
 
 var AXInputPro = new AXInputConverterPro();
-AXInputPro.setConfig({ targetID: "inputBasic" });
-
+AXInputPro.setConfig({targetID: "inputBasic"});
 
 /**
  * @method jQueryFns.bindPattern
@@ -14898,10 +15903,11 @@ AXInputPro.setConfig({ targetID: "inputBasic" });
 });
  ```
  */
-axdom.fn.bindPattern = function(config){
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInputPro-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
+axdom.fn.bindPattern = function(config) {
+	axf.each(this, function() {
+		if (!this.id) this.id = "AXInputPro-" + axf.getUniqueId();
+		config = config || {};
+		config.id = this.id;
 		config.bindType = "pattern";
 		AXInputPro.bind(config);
 	});
@@ -14921,8 +15927,8 @@ axdom.fn.bindPattern = function(config){
  });
  ```
  */
-axdom.fn.bindPatternSetConfig = function(config){
-	axf.each(this, function () {
+axdom.fn.bindPatternSetConfig = function(config) {
+	axf.each(this, function() {
 		AXInputPro.bindSetConfig(this.id, config);
 	});
 	return this;
@@ -14938,17 +15944,19 @@ axdom.fn.bindPatternSetConfig = function(config){
  var text = $("#id").bindPatternGetText();
  ```
  */
-axdom.fn.bindPatternGetText = function(){
+axdom.fn.bindPatternGetText = function() {
 	var returnVals = "";
-	axf.each(this, function () {
+	axf.each(this, function() {
 		var getVal = AXInputPro.bindPatternGetText(this.id);
-		if(returnVals == ""){
+		if (returnVals == "") {
 			returnVals = getVal;
-		}else{
-			if(Object.isString(returnVals)){
+		}
+		else {
+			if (Object.isString(returnVals)) {
 				returnVals = [returnVals]; // 형변환
 				returnVals.push(getVal);
-			}else if(Object.isArray(returnVals)){
+			}
+			else if (Object.isArray(returnVals)) {
 				returnVals.push(getVal);
 			}
 		}
@@ -14966,9 +15974,9 @@ axdom.fn.bindPatternGetText = function(){
  $("#id").bindPatternSetText("12345.123");
  ```
  */
-axdom.fn.bindPatternSetText = function(val){
-	axf.each(this, function () {
-		AXInputPro.bindPatternSetText(this.id, null,  val);
+axdom.fn.bindPatternSetText = function(val) {
+	axf.each(this, function() {
+		AXInputPro.bindPatternSetText(this.id, null, val);
 	});
 	return this;
 };
@@ -14984,17 +15992,19 @@ axdom.fn.bindPatternSetText = function(val){
  ```
  */
 
-axdom.fn.bindPatternGetDisplayText = function(){
+axdom.fn.bindPatternGetDisplayText = function() {
 	var returnVals = "";
-	axf.each(this, function () {
+	axf.each(this, function() {
 		var getVal = AXInputPro.bindPatternGetDisplayText(this.id);
-		if(returnVals == ""){
+		if (returnVals == "") {
 			returnVals = getVal;
-		}else{
-			if(Object.isString(returnVals)){
+		}
+		else {
+			if (Object.isString(returnVals)) {
 				returnVals = [returnVals]; // 형변환
 				returnVals.push(getVal);
-			}else if(Object.isArray(returnVals)){
+			}
+			else if (Object.isArray(returnVals)) {
 				returnVals.push(getVal);
 			}
 		}
@@ -15016,10 +16026,11 @@ axdom.fn.bindPatternGetDisplayText = function(){
  * });
  * ```
  */
-axdom.fn.bindTagSelector = function(config){
-	axf.each(this, function () {
-		if(!this.id) this.id = "AXInputPro-" + axf.getUniqueId();
-		config = config || {}; config.id = this.id;
+axdom.fn.bindTagSelector = function(config) {
+	axf.each(this, function() {
+		if (!this.id) this.id = "AXInputPro-" + axf.getUniqueId();
+		config = config || {};
+		config.id = this.id;
 		config.bindType = "tagSelector";
 		AXInputPro.bind(config);
 	});
@@ -15040,8 +16051,8 @@ axdom.fn.bindTagSelector = function(config){
  * ]);
  * ```
  */
-axdom.fn.bindTagSelector_setItem = function(list){
-	axf.each(this, function () {
+axdom.fn.bindTagSelector_setItem = function(list) {
+	axf.each(this, function() {
 		AXInputPro.bindTagSelector_setItem(this.id, list);
 	});
 	return this;
@@ -15057,8 +16068,8 @@ axdom.fn.bindTagSelector_setItem = function(list){
  * $("#ax-bind-pattern-custom-target").bindTagSelector_getItem();
  * ```
  */
-axdom.fn.bindTagSelector_getItem = function(){
-	if(this[0])
+axdom.fn.bindTagSelector_getItem = function() {
+	if (this[0])
 		return AXInputPro.bindTagSelector_getItem(this[0].id);
 }
 
@@ -16109,7 +17120,8 @@ var AXSelectConverter = Class.create(AXJ, {
 			var cfg = this.config;
 
 			if (obj.selectedIndex != undefined) {
-				return { optionValue: AXgetId(objID).options[ obj.selectedIndex ].value, optionText: AXgetId(objID).options[ obj.selectedIndex ].text };
+				var options = AXgetId(objID).options[obj.selectedIndex];
+				return { optionValue: options.value, optionText: options.text, optionData:options.getAttribute("data-option") };
 			}else{
 				return { optionValue: null, optionText: null };
 			}
@@ -17355,622 +18367,702 @@ myMobileMenu.setConfig({
 });
 /* ---------------------------- */
 var AXTopDownMenu = Class.create(AXJ, {
-	initialize: function(AXJ_super){
-		AXJ_super();
+    initialize: function (AXJ_super) {
+        AXJ_super();
 
-		this.tree = [];
-		this.poi = "";
-		this.config.easing = {
-			open:{duraing:200, easing:"expoOut"},
-			close:{duration:200, easing:"expoOut"}
-		};
-		//this.config.menuBoxID = "menuBox";
-		this.config.parentMenu = {
-								className:"parentMenu"
-							};
-		this.config.childMenu = {
-								className:"childMenu",
-								arrowClassName:"varrow",
-								align:"center",
-								valign:"top",
-								margin:{top:10, left:0, bottom:0},
-								arrowMargin:{top:10, left:0, bottom:0}
-							};
-		this.config.childsMenu = {
-								className:"childsMenu",
-								arrowClassName:"harrow",
-								align:"left",
-								valign:"top",
-								margin:{top:10, left:0, bottom:0},
-								arrowMargin:{top:10, left:0, bottom:0}
-							};
-		this.config.parentOutResetChild = true;
-		this.config.childOutClose = true;
-		this.config.childOutCloseTime = 700;
-	},
-	init: function(){
-		var cfg = this.config;
-		
-		if(cfg.menuBoxID){
-			this.menuBox = axdom("#"+cfg.menuBoxID);
+        this.tree = [];
+        this.poi = "";
+        this.config.openType = "over";
+        this.config.easing = {
+            open: {duraing: 200, easing: "expoOut"},
+            close: {duration: 200, easing: "expoOut"}
+        };
+        //this.config.menuBoxID = "menuBox";
+        this.config.parentMenu = {
+            className: "parentMenu"
+        };
+        this.config.childMenu = {
+            className: "childMenu",
+            arrowClassName: "varrow",
+            align: "center",
+            valign: "top",
+            margin: {top: 10, left: 0, bottom: 0},
+            arrowMargin: {top: 10, left: 0, bottom: 0}
+        };
+        this.config.childsMenu = {
+            className: "childsMenu",
+            arrowClassName: "harrow",
+            align: "left",
+            valign: "top",
+            margin: {top: 10, left: 0, bottom: 0},
+            arrowMargin: {top: 10, left: 0, bottom: 0}
+        };
+        this.config.parentOutResetChild = true;
+        this.config.childOutClose = true;
+        this.config.childOutCloseTime = 700;
+    },
+    init: function () {
+        var cfg = this.config;
 
-			//서브 메뉴를 숨김 처리 합니다.
-			this.menuBox.find("."+cfg.childMenu.className).hide();
-			this.menuBox.find("."+cfg.childsMenu.className).hide();
+        if (cfg.menuBoxID) {
+            this.menuBox = axdom("#" + cfg.menuBoxID);
 
-			this.initParents();
-			this.initChild();
-			if(cfg.onComplete) cfg.onComplete.call(this);
-		}else if(cfg.targetID){
+            //서브 메뉴를 숨김 처리 합니다.
+            this.menuBox.find("." + cfg.childMenu.className).hide();
+            this.menuBox.find("." + cfg.childsMenu.className).hide();
 
-		}
-		axdom(window).bind("resize", this.windowResize.bind(this));
-	},
-	windowResizeApply: function(){
-		var cfg = this.config, menuBoxWidth = 0;
-		axf.each(this.tree, function(){
-			this.width = axdom("#" + this.id).outerWidth();
-			this.height = axdom("#" + this.id).outerHeight();
-			menuBoxWidth += axdom("#" + this.id).parent().outerWidth().number() + 2;
-		});
-		//trace(menuBoxWidth);
-		//this.menuBox.css({width:menuBoxWidth});
-	},
-/**
- * @method AXTopDownMenu.setTree
- * @param {jsObject} obj - example code 참고
- * @description
- * 메뉴타겟 엘리먼트 아이디 안에 메뉴 대상 HTML 엘리먼트가 있는 경우 자동으로 메뉴를 구성합니다. setTree 메소드는 타겟을 빈 노드로 선언하고 setTree 메소드를 통해 동적으로 메뉴를 구성하는 메소드입니다.
- * @example
- ```
-var sampleTreeItem = {
+            this.initParents();
+            this.initChild();
+            if (cfg.onComplete) cfg.onComplete.call(this);
+        }
+        else if (cfg.targetID) {
+
+        }
+        axdom(window).bind("resize", this.windowResize.bind(this));
+    },
+    windowResizeApply: function () {
+        var cfg = this.config, menuBoxWidth = 0;
+        axf.each(this.tree, function () {
+            this.width = axdom("#" + this.id).outerWidth();
+            this.height = axdom("#" + this.id).outerHeight();
+            menuBoxWidth += axdom("#" + this.id).parent().outerWidth().number() + 2;
+        });
+        //trace(menuBoxWidth);
+        //this.menuBox.css({width:menuBoxWidth});
+    },
+    /**
+     * @method AXTopDownMenu.setTree
+     * @param {jsObject} obj - example code 참고
+     * @description
+     * 메뉴타겟 엘리먼트 아이디 안에 메뉴 대상 HTML 엘리먼트가 있는 경우 자동으로 메뉴를 구성합니다. setTree 메소드는 타겟을 빈 노드로 선언하고 setTree 메소드를 통해 동적으로 메뉴를 구성하는 메소드입니다.
+     * @example
+     ```
+     var sampleTreeItem = {
     label: "Bottom Menu",			//{string} - 메뉴의 라벨
     url: "http://www.axisj.com", 	//{string} - 연결URL
     addClass: "myMenuClass", 		//{string} - 메뉴아이템에 추가할 CSS 클래스
     cn: [sampleTreeItem, ...., sampleTreeItem]	//[array] - 자식 메뉴 Array
 };
 
-var myMenu = new AXTopDownMenu();
+     var myMenu = new AXTopDownMenu();
 
-var tree = [
-    {label:"Bottom Menu", url:"http://www.axisj.com", cn:[
-        {label:"valign - bottom", url:"http://www.axisj.com"},
-        {label:"margin - bootom", url:"http://www.axisj.com"},
-        {label:"margin - top X", url:"http://www.axisj.com"}
-    ]},
-    {label:"Script Control Way", url:"http://www.axisj.com", cn:[
-         {label:"Script Way Use setTree", url:"abhttp://www.axisj.comc"},
-         {label:"setHighLightMenu", url:"http://www.axisj.com", cn:[
-             {label:"first : String", url:"http://www.axisj.com"},
-             {label:"second : Array", url:"http://www.axisj.com"},
-             {label:"third : setHighLightOriginID", url:"http://www.axisj.com"}
-         ]},
-        {label:"myMenu2", url:"http://www.axisj.com"}
-    ]},
+     var tree = [
+     {label:"Bottom Menu", url:"http://www.axisj.com", cn:[
+       {label:"valign - bottom", url:"http://www.axisj.com"},
+       {label:"margin - bootom", url:"http://www.axisj.com"},
+       {label:"margin - top X", url:"http://www.axisj.com"}
+   ]},
+     {label:"Script Control Way", url:"http://www.axisj.com", cn:[
+        {label:"Script Way Use setTree", url:"abhttp://www.axisj.comc"},
+        {label:"setHighLightMenu", url:"http://www.axisj.com", cn:[
+            {label:"first : String", url:"http://www.axisj.com"},
+            {label:"second : Array", url:"http://www.axisj.com"},
+            {label:"third : setHighLightOriginID", url:"http://www.axisj.com"}
+        ]},
+       {label:"myMenu2", url:"http://www.axisj.com"}
+   ]},
      {label:"no Expand Menu", url:"http://www.axisj.combc"},
      {label:"no Expand Menu", url:"http://www.axisj.com"},
      {label:"no Expand Menu", url:"http://www.axisj.com"}
-];
-myMenu.setTree(Tree);
+     ];
+     myMenu.setTree(Tree);
 
- ```
- */
-	setTree: function(tree){
-		var cfg = this.config;
-		cfg.menuBoxID = cfg.targetID, _this = this;
+     ```
+     */
+    setTree: function (tree) {
+        var cfg = this.config;
+        cfg.menuBoxID = cfg.targetID, _this = this;
 
-		if(!this.menuBox) this.menuBox = axdom("#"+cfg.menuBoxID);
+        if (!this.menuBox) this.menuBox = axdom("#" + cfg.menuBoxID);
 
-		var po = [];
-		
-		var treeFn = function(subTree){
-			axdom.each(subTree, function(pi, T){
-				po.push("<li>");
-				var addClass = (T.cn && T.cn.length > 0 ) ? " class = \"" + cfg.childsMenu.hasChildClassName + "\"" : "";
-				po.push("<a href=\"" + (T.url||cfg.href) + "\""+addClass+" id=\""+ (T._id||"") +"\">"+ (T.label||"").dec() + "</a>");
-				if(T.cn && T.cn.length > 0 ){
-					po.push("<div class=\""+cfg.childsMenu.className+"\">");
-					po.push("	<ul>");
-					po.push(treeFn(T.cn));
-					po.push("	</ul>");
-					po.push("</div>");
-				}
-				po.push("</li>");
-			});
-		};
-		
-		po.push("<ul>");
-		axdom.each(tree, function(pi, T){
-			var addClass = [];
-			if(T.addClass){
-				addClass.push(T.addClass);
-			}
-			po.push("<li>");
-			po.push("	<div class=\"" + cfg.parentMenu.className + " " + addClass.join(" ") + "\">");
-				var addClass = (T.cn) ? " class = \"" + cfg.childMenu.hasChildClassName + "\"" : "";
-				po.push("<a href=\"" + (T.url||cfg.href) + "\""+addClass+" id=\""+ (T._id||"") +"\">"+ (T.label||"").dec() + "</a>");
-				if(T.cn){
-					po.push("<div class=\""+cfg.childMenu.className+"\">");
-					po.push("	<ul>");
-					po.push(treeFn(T.cn));
-					po.push("	</ul>");
-					po.push("</div>");
-				}
-			po.push("	</div>");
-			po.push("</li>");
-		});
-		po.push("</ul>");
-		po.push("<div class=\"clear\"></div>");
+        var po = [];
 
-		this.menuBox.empty();
-		this.menuBox.append(po.join(''));
-		
-		//서브 메뉴를 숨김 처리 합니다.
-		this.menuBox.find("."+cfg.childMenu.className).hide();
-		this.menuBox.find("."+cfg.childsMenu.className).hide();
+        var treeFn = function (subTree) {
+            axdom.each(subTree, function (pi, T) {
+                po.push("<li>");
+                var addClass = (T.cn && T.cn.length > 0 ) ? " class = \"" + cfg.childsMenu.hasChildClassName + "\"" : "";
+                if (cfg.onclick) {
+                    po.push("<a data-href=\"" + (T.url || cfg.href) + "\"" + addClass + " data-id=\"" + (T._id || "") + "\" id=\"" + (T._id || "") + "\" data-label=\"" + (T.label || "").dec().delHtml() + "\">" + (T.label || "").dec() + "</a>");
+                }
+                else {
+                    po.push("<a href=\"" + (T.url || cfg.href) + "\"" + addClass + " id=\"" + (T._id || "") + "\">" + (T.label || "").dec() + "</a>");
+                }
+                if (T.cn && T.cn.length > 0) {
+                    po.push("<div class=\"" + cfg.childsMenu.className + "\">");
+                    po.push("	<ul>");
+                    po.push(treeFn(T.cn));
+                    po.push("	</ul>");
+                    po.push("</div>");
+                }
+                po.push("</li>");
+            });
+        };
 
-        setTimeout(function(){
+        po.push("<ul>");
+        axdom.each(tree, function (pi, T) {
+            var addClass = [];
+            if (T.addClass) {
+                addClass.push(T.addClass);
+            }
+            po.push("<li>");
+            po.push("	<div class=\"" + cfg.parentMenu.className + " " + addClass.join(" ") + "\">");
+            var addClass = (T.cn) ? " class = \"" + cfg.childMenu.hasChildClassName + "\"" : "";
+
+            if (cfg.onclick) {
+                po.push("<a data-href=\"" + (T.url || cfg.href) + "\"" + addClass + " data-id=\"" + (T._id || "") + "\" id=\"" + (T._id || "") + "\" data-label=\"" + (T.label || "").dec().delHtml() + "\">" + (T.label || "").dec() + "</a>");
+            }
+            else {
+                po.push("<a href=\"" + (T.url || cfg.href) + "\"" + addClass + " id=\"" + (T._id || "") + "\">" + (T.label || "").dec() + "</a>");
+            }
+
+            if (T.cn && T.cn.length > 0) {
+                po.push("<div class=\"" + cfg.childMenu.className + "\">");
+                po.push("	<ul>");
+                po.push(treeFn(T.cn));
+                po.push("	</ul>");
+                po.push("</div>");
+            }
+            po.push("	</div>");
+            po.push("</li>");
+        });
+        po.push("</ul>");
+        po.push("<div class=\"clear\"></div>");
+
+        this.menuBox.empty();
+        this.menuBox.append(po.join(''));
+
+        if (cfg.onclick) {
+            this.menuBox.find('[data-href]').bind("click", function () {
+                cfg.onclick({
+                    id: this.getAttribute("data-id"),
+                    href: this.getAttribute("data-href"),
+                    label: this.getAttribute("data-label")
+                });
+
+                if (this.getAttribute("data-href") != "#") {
+                    _this.outChild();
+                }
+            });
+        }
+
+        //서브 메뉴를 숨김 처리 합니다.
+        this.menuBox.find("." + cfg.childMenu.className).hide();
+        this.menuBox.find("." + cfg.childsMenu.className).hide();
+
+        setTimeout(function () {
             _this.initParents();
             _this.initChild();
-	        if(cfg.onComplete) cfg.onComplete.call(this);
+            if (cfg.onComplete) cfg.onComplete.call(this);
         }, 300);
-	},
-	initParents: function(){
-		var cfg = this.config;
-		var parents = [], menuBoxWidth = 0;
-		this.menuBox.find("." + cfg.parentMenu.className).each(function(pi, EL){
-			EL.id = cfg.menuBoxID + "_PM_" + pi;
-			var _id = "";
+    },
+    initParents: function () {
+        var cfg = this.config;
+        var parents = [], menuBoxWidth = 0;
+        this.menuBox.find("." + cfg.parentMenu.className).each(function (pi, EL) {
+            EL.id = cfg.menuBoxID + "_PM_" + pi;
+            var _id = "";
 
-			var ELA = axdom(EL).children("A");
+            var ELA = axdom(EL).children("A");
 
-			if(ELA.get(0).id) _id = axdom(EL).children("A").get(0).id;
-			ELA.get(0).id = cfg.menuBoxID + "_PMA_" + pi;
-			ELA.attr("data-axmenuid", _id);
+            if (ELA.get(0).id) _id = axdom(EL).children("A").get(0).id;
+            ELA.get(0).id = cfg.menuBoxID + "_PMA_" + pi;
+            ELA.attr("data-axmenuid", _id);
 
-			parents.push({
-				_id:_id,
-				id:EL.id,
-				width:axdom(EL).outerWidth(),
-				height:axdom(EL).outerHeight(),
-				cn:[],
-				coi:""
-			});
-			menuBoxWidth += axdom(EL).parent().outerWidth().number() + 2;
-		});
-		this.tree = parents;
-		//this.menuBox.css({width:menuBoxWidth});
+            parents.push({
+                _id: _id,
+                id: EL.id,
+                width: axdom(EL).outerWidth(),
+                height: axdom(EL).outerHeight(),
+                cn: [],
+                coi: ""
+            });
+            menuBoxWidth += axdom(EL).parent().outerWidth().number() + 2;
+        });
+        this.tree = parents;
+        //this.menuBox.css({width:menuBoxWidth});
 
-		//trace(this.menuBox.find("." + cfg.parentMenu.className + ">a"));
-		this.menuBox.find("." + cfg.parentMenu.className + ">a").bind("mouseover", this.onoverParent.bind(this));
-		this.menuBox.find("." + cfg.parentMenu.className + ">a").bind("focus", this.onoverParent.bind(this));
-		this.menuBox.find("." + cfg.parentMenu.className + ">a").bind("click", this.onclickParent.bind(this));
-		
-		if(cfg.childOutClose){
-			var onoutChild = this.onoutChild.bind(this);
-			this.menuBox.find("." + cfg.parentMenu.className + ">a").bind("mouseout", onoutChild);
-		}
-	},
-	onoverParent: function(event){
-		if (this.childObserver) clearTimeout(this.childObserver); //닫기 명령 제거
-		var cfg = this.config;
-		
-		var target = axf.get_event_target(event.target, {tagname:"a"});
-		var poi = target.id.split(/\_/g).last();
-		if(this.poi != "" && this.poi != poi){
-			axdom("#" + cfg.menuBoxID + "_PMA_" + this.poi).removeClass("on");
-			axdom("#" + cfg.menuBoxID + "_PMC_" + this.poi).slideUp(
-				{
-					duration:cfg.easing.close.duration,
-					easing:cfg.easing.close.easing,
-					complete:function(){
-						
-					}
-		    	}
-		    );
-		    if(cfg.parentOutResetChild) this.closeSubMenu(this.tree[this.poi]);
-		}
+        if (cfg.openType == "over") {
+            this.menuBox.find("." + cfg.parentMenu.className + ">a").bind("mouseover", this.onoverParent.bind(this));
+            this.menuBox.find("." + cfg.parentMenu.className + ">a").bind("focus", this.onoverParent.bind(this));
+            this.menuBox.find("." + cfg.parentMenu.className + ">a").bind("click", this.onclickParent.bind(this));
 
-		//slideDown check
-		if(this.dfPoi != undefined) axdom("#" + cfg.menuBoxID + "_PMA_" + this.dfPoi).removeClass("on");
-		axdom("#" + cfg.menuBoxID + "_PMA_" + poi).addClass("on");
-		//trace("#" + cfg.menuBoxID + "_PMC_" + poi);
-		
-		var tgDiv = axdom("#" + cfg.menuBoxID + "_PMC_" + poi);
-		if(this.tree[poi] && !this.tree[poi].divDim){
-			tgDiv.show();
-			this.tree[poi].divDim = {width:tgDiv.outerWidth(), height:tgDiv.outerHeight()};
-			if(this.tree[poi].height == null){
-				for(var index = 0;index < this.tree.length;index++){
-					this.tree[index].height = axdom("#" + this.tree[index].id).outerHeight();
-				}
-				//trace(poi, this.tree[poi]);
-			}
-			var topDim = {width:this.tree[poi].width, height:this.tree[poi].height};
+            if (cfg.childOutClose) {
+                var onoutChild = this.onoutChild.bind(this);
+                this.menuBox.find("." + cfg.parentMenu.className + ">a").bind("mouseout", onoutChild);
+            }
+        }
+        else if (cfg.openType == "click") {
+            this.menuBox.find("." + cfg.parentMenu.className + ">a").bind("mouseover", this.onoverParent.bind(this));
+            this.menuBox.find("." + cfg.parentMenu.className + ">a").bind("click", this.onclickParent.bind(this));
+        }
+    },
+    onoverParent: function (event) {
+        if (!this.active && this.config.openType == "click") return this;
 
-			/* subMenu positioning */
-			if(cfg.childMenu.align == "center"){
-				var posLeft = topDim.width / 2 - this.tree[poi].divDim.width / 2 + cfg.childMenu.margin.left;
-			}else if(cfg.childMenu.align == "left"){
-				var posLeft = 0 + cfg.childMenu.margin.left;
-			}else if(cfg.childMenu.align == "right"){
-				var posLeft = topDim.width - this.tree[poi].divDim.width + cfg.childMenu.margin.left;
-			}
-			if(cfg.childMenu.valign == "top"){
-				var posTop = topDim.height + cfg.childMenu.margin.top;
-				if(cfg.childMenu.float){
-					tgDiv.css({top:posTop, left:posLeft});
-				}else{
-					tgDiv.css({top:posTop, left:posLeft, width:this.tree[poi].divDim.width});
-				}
-			}else if(cfg.childMenu.valign == "bottom"){
-				var posTop = topDim.height + cfg.childMenu.margin.bottom;
-				if(cfg.childMenu.float){
-					tgDiv.css({top:posTop, left:posLeft});
-				}else{
-					tgDiv.css({top:"auto", bottom:posTop, left:posLeft, width:this.tree[poi].divDim.width});
-				}
-			}
-			/* -------------------- */
+        if (this.childObserver) clearTimeout(this.childObserver); //닫기 명령 제거
+        var _this = this, cfg = this.config;
 
-			/* subMenu Arrow positioning */
-			if(cfg.childMenu.arrowClassName){
-				var arrow = tgDiv.find("."+cfg.childMenu.arrowClassName);
-				if(cfg.childMenu.align == "center"){
-					var aLeft = tgDiv.outerWidth() / 2 - arrow.outerWidth() / 2 + cfg.childMenu.arrowMargin.left;
-				}else if(cfg.childMenu.align == "left"){
-					var aLeft = 0 + cfg.childMenu.arrowMargin.left;
-				}else if(cfg.childMenu.align == "right"){
-					var aLeft = tgDiv.outerWidth() - arrow.outerWidth() + cfg.childMenu.arrowMargin.left;
-				}
-				if(cfg.childMenu.valign == "top"){
-					var aTop = -arrow.outerHeight() + cfg.childMenu.arrowMargin.top;
-					arrow.css({top:aTop, left:aLeft});
-				}else if(cfg.childMenu.valign == "bottom"){
-					var aTop = -arrow.outerHeight() + cfg.childMenu.arrowMargin.bottom;
-					arrow.css({bottom:aTop, left:aLeft});
-				}
-			}
-			/* -------------------- */
+        var target = axf.get_event_target(event.target, {tagname: "a"});
+        var poi = target.id.split(/\_/g).last();
+        if (this.poi != "" && this.poi != poi) {
+            axdom("#" + cfg.menuBoxID + "_PMA_" + this.poi).removeClass("on");
+            axdom("#" + cfg.menuBoxID + "_PMC_" + this.poi).hide();
+            if (cfg.parentOutResetChild) this.closeSubMenu(this.tree[this.poi]);
+        }
 
-			tgDiv.hide();
-			topDim = null;
-			posTop = null;
-			posLeft = null;
-		}
+        //slideDown check
+        if (this.dfPoi != undefined) axdom("#" + cfg.menuBoxID + "_PMA_" + this.dfPoi).removeClass("on");
+        axdom("#" + cfg.menuBoxID + "_PMA_" + poi).addClass("on");
+        //trace("#" + cfg.menuBoxID + "_PMC_" + poi);
 
-		tgDiv.fadeIn(
-			{
-				duration:cfg.easing.open.duration,
-				easing:cfg.easing.open.easing,
-				complete:function(){
-				}
-	    	}
-	    );
+        var tgDiv = axdom("#" + cfg.menuBoxID + "_PMC_" + poi);
+        if (this.tree[poi] && !this.tree[poi].divDim) {
+            tgDiv.show();
+            this.tree[poi].divDim = {width: tgDiv.outerWidth(), height: tgDiv.outerHeight()};
+            if (this.tree[poi].height == null) {
+                for (var index = 0; index < this.tree.length; index++) {
+                    this.tree[index].height = axdom("#" + this.tree[index].id).outerHeight();
+                }
+                //trace(poi, this.tree[poi]);
+            }
+            var topDim = {width: this.tree[poi].width, height: this.tree[poi].height};
 
-		this.poi = poi;
-	},
-	onclickParent: function(event){
-		var cfg = this.config;
-		var poi = event.target.id.split(/\_/g).last();
+            /* subMenu positioning */
+            if (cfg.childMenu.align == "center") {
+                var posLeft = topDim.width / 2 - this.tree[poi].divDim.width / 2 + cfg.childMenu.margin.left;
+            }
+            else if (cfg.childMenu.align == "left") {
+                var posLeft = 0 + cfg.childMenu.margin.left;
+            }
+            else if (cfg.childMenu.align == "right") {
+                var posLeft = topDim.width - this.tree[poi].divDim.width + cfg.childMenu.margin.left;
+            }
+            if (cfg.childMenu.valign == "top") {
+                var posTop = topDim.height + cfg.childMenu.margin.top;
+                if (cfg.childMenu.float) {
+                    tgDiv.css({top: posTop, left: posLeft});
+                }
+                else {
+                    tgDiv.css({top: posTop, left: posLeft, width: this.tree[poi].divDim.width});
+                }
+            }
+            else if (cfg.childMenu.valign == "bottom") {
+                var posTop = topDim.height + cfg.childMenu.margin.bottom;
+                if (cfg.childMenu.float) {
+                    tgDiv.css({top: posTop, left: posLeft});
+                }
+                else {
+                    tgDiv.css({top: "auto", bottom: posTop, left: posLeft, width: this.tree[poi].divDim.width});
+                }
+            }
+            /* -------------------- */
 
-		//trace(this.tree[poi]);
-	},
-	initChild: function(){
-		var cfg = this.config;
-		var initChilds = this.initChilds.bind(this);
-		var tree = this.tree;
-		this.menuBox.find("." + cfg.parentMenu.className).each(function(pi, EL){
-			var child = axdom(EL).children("."+cfg.childMenu.className).get(0);
-			if(child){
-				child.id = cfg.menuBoxID + "_PMC_" + pi;
-				if(cfg.childMenu.arrowClassName){
-					var arrow = axdom("<div class=\""+cfg.childMenu.arrowClassName+"\"></div>");
-					axdom(child).prepend(arrow);
-				}
-				initChilds(child.id, tree[pi]);
-			}else{
-				
-			}
-		});
-	},
-	initChilds: function(cid, rTree){
-		var initChilds = this.initChilds.bind(this);
-		var cfg = this.config;
-		var tree = rTree.cn;
+            /* subMenu Arrow positioning */
+            if (cfg.childMenu.arrowClassName) {
+                var arrow = tgDiv.find("." + cfg.childMenu.arrowClassName);
+                if (cfg.childMenu.align == "center") {
+                    var aLeft = tgDiv.outerWidth() / 2 - arrow.outerWidth() / 2 + cfg.childMenu.arrowMargin.left;
+                }
+                else if (cfg.childMenu.align == "left") {
+                    var aLeft = 0 + cfg.childMenu.arrowMargin.left;
+                }
+                else if (cfg.childMenu.align == "right") {
+                    var aLeft = tgDiv.outerWidth() - arrow.outerWidth() + cfg.childMenu.arrowMargin.left;
+                }
+                if (cfg.childMenu.valign == "top") {
+                    var aTop = -arrow.outerHeight() + cfg.childMenu.arrowMargin.top;
+                    arrow.css({top: aTop, left: aLeft});
+                }
+                else if (cfg.childMenu.valign == "bottom") {
+                    var aTop = -arrow.outerHeight() + cfg.childMenu.arrowMargin.bottom;
+                    arrow.css({bottom: aTop, left: aLeft});
+                }
+            }
+            /* -------------------- */
 
-		var onoverChild = this.onoverChild.bind(this);
-		var onoutChild = this.onoutChild.bind(this);
-		//trace(cid);
-		axdom("#"+cid+">ul>li").each(function(pi, EL){
-			var linkA = axdom(EL).children("A");
-			var _id = "";
-			if(linkA.get(0).id) _id = linkA.get(0).id;
-			linkA.get(0).id = cid.replace("PMC", "PMA") + "_" + pi;
-			linkA.attr("data-axmenuid", _id);
-			linkA.bind("mouseover", onoverChild);
-			if(cfg.childOutClose){
-				linkA.bind("mouseout", onoutChild);
-			}
+            tgDiv.hide();
+            topDim = null;
+            posTop = null;
+            posLeft = null;
+        }
 
-			//axdom(EL).children("A").html(cid.replace("PMC", "PMA") + "_" + pi);
-			var childDiv = axdom(EL).children("."+cfg.childsMenu.className).get(0);
-			if(childDiv){
-				childDiv.id = cid+"_"+pi;
+        _this.overParentAnimate = true;
+        tgDiv.show();
+        /*
+         tgDiv.fadeIn(
+         {
+         duration: cfg.easing.open.duration,
+         easing: cfg.easing.open.easing,
+         complete: function() {
+         _this.overParentAnimate = false;
+         }
+         }
+         );
+         */
 
-				if(cfg.childsMenu.arrowClassName){
-					var arrow = axdom("<div class=\""+cfg.childsMenu.arrowClassName+"\"></div>");
-					axdom(childDiv).prepend(arrow);
-				}
+        this.poi = poi;
+    },
+    onclickParent: function (event) {
+        var cfg = this.config;
+        var target = axf.get_event_target(event.target, {tagname: "a"});
+        var poi = target.id.split(/\_/g).last();
 
-				tree.push({
-					_id:_id,
-					id:	cid+"_"+pi,
-					cn:[],
-					coi:""
-				});
-				initChilds(cid+"_"+pi, tree[pi]);
-			}else{
-				tree.push({
-					_id:_id,
-					id:	cid+"_"+pi,
-					cn:[],
-					coi:""
-				});
-			}
-		});
-	},
-	closeSubMenu: function(pitem){
-		if(!pitem) return;
-		if(pitem.coi == "") return;
-		var cfg = this.config;
-		axdom("#" + pitem.coi).slideUp(
-			{
-				duration:cfg.easing.close.duration,
-				easing:cfg.easing.close.easing,
-				complete:function(){
-				}
-	    	}
-	    );
-	    pitem.coi = "";
-	    //하위 자식들의 poi 모두 닫기
+        if (!this.active) {
 
-		var closeAllSubMenu = function(stree){
-			axdom.each(stree, function(){
-				if(this.coi != ""){
-					axdom("#" + this.coi).hide();
-				}
-				closeAllSubMenu(this.cn);
-			});
-		};
-	    closeAllSubMenu(pitem.cn);
-	},
-	onoverChild: function(event){
-		if (this.childObserver) clearTimeout(this.childObserver); //닫기 명령 제거
-		var cfg = this.config;
-		var target = axf.get_event_target(event.target, {tagname:"a"});
-		var eid = target.id;
-		var ids = target.id.split(/\_/g);
-		var tree = this.tree;
-		var item = {};
-		var pitem = {};
-		for(var a=2;a<ids.length;a++){
-			if(a == ids.length-2){
-				pitem = tree[ids[a]];
-			}
-			if(tree[ids[a]]){
-				if(tree[ids[a]].cn){
-					item = tree[ids[a]];
-					tree = tree[ids[a]].cn;
-				}
-			}
-		}
-		
-		if(pitem){
-			if(pitem.coi != "" && pitem.coi != item.id){
-				this.closeSubMenu(pitem);
-			}
-		}
+            this.active = true;
+            this.activePoi = poi;
+            this.onoverParent(event);
 
-		if(item){
-			if(item.id){
+        } else {
+            if (poi != this.activePoi) {
+                this.active = true;
+                this.activePoi = poi;
+                this.onoverParent(event);
+                return this;
+            }
 
-				var tgDiv = axdom("#" + item.id);
+            this.active = false;
+            axdom("#" + cfg.menuBoxID + "_PMA_" + this.poi).removeClass("on");
+            axdom("#" + cfg.menuBoxID + "_PMC_" + this.poi).hide();
 
-				//slideDown check
-				if(!item.divDim){
-					axdom("#" + item.id).show();
-					item.divDim = {width:tgDiv.outerWidth(), height:tgDiv.outerHeight()};
-					var pDim = {width:axdom("#"+eid).outerWidth(), height:axdom("#"+eid).outerHeight(), pos:axdom("#"+eid).position()};
+        }
 
-					if(cfg.childsMenu.align == "left"){
-						var posLeft = pDim.width + cfg.childsMenu.margin.left;
-					}else{
-						var posLeft = -item.divDim.width + cfg.childsMenu.margin.left;
-					}
+    },
+    initChild: function () {
+        var cfg = this.config;
+        var initChilds = this.initChilds.bind(this);
+        var tree = this.tree;
+        this.menuBox.find("." + cfg.parentMenu.className).each(function (pi, EL) {
+            var child = axdom(EL).children("." + cfg.childMenu.className).get(0);
+            if (child) {
+                child.id = cfg.menuBoxID + "_PMC_" + pi;
+                if (cfg.childMenu.arrowClassName) {
+                    var arrow = axdom("<div class=\"" + cfg.childMenu.arrowClassName + "\"></div>");
+                    axdom(child).prepend(arrow);
+                }
+                initChilds(child.id, tree[pi]);
+            }
+            else {
 
-					if(cfg.childsMenu.valign == "top"){
-						var posTop = pDim.pos.top + cfg.childsMenu.margin.top;
-						tgDiv.css({top:posTop, left:posLeft, width:item.divDim.width});
-					}else{
-						var posTop = (pitem.divDim.height - pDim.pos.top) - pDim.height + cfg.childsMenu.margin.bottom;
-						tgDiv.css({bottom:posTop, left:posLeft, width:item.divDim.width});
-					}
+            }
+        });
+    },
+    initChilds: function (cid, rTree) {
+        var initChilds = this.initChilds.bind(this);
+        var cfg = this.config;
+        var tree = rTree.cn;
 
-					/* subMenu Arrow positioning */
-					if(cfg.childsMenu.arrowClassName){
+        var onoverChild = this.onoverChild.bind(this);
+        var onoutChild = this.onoutChild.bind(this);
+        //trace(cid);
+        axdom("#" + cid + ">ul>li").each(function (pi, EL) {
+            var linkA = axdom(EL).children("A");
+            var _id = "";
+            if (linkA.get(0).id) _id = linkA.get(0).id;
+            linkA.get(0).id = cid.replace("PMC", "PMA") + "_" + pi;
+            linkA.attr("data-axmenuid", _id);
+            linkA.bind("mouseover", onoverChild);
+            if (cfg.childOutClose && cfg.openType == "over") {
+                linkA.bind("mouseout", onoutChild);
+            }
 
-						var arrow = tgDiv.find("."+cfg.childsMenu.arrowClassName);
-						if(cfg.childsMenu.align == "left"){
-							var aLeft =  - arrow.outerWidth() + cfg.childsMenu.arrowMargin.left;
-						}else{
-							var aLeft = tgDiv.outerWidth() - arrow.outerWidth() + cfg.childsMenu.arrowMargin.left;
-						}
-						if(cfg.childsMenu.valign == "top"){
-							var aTop = 0 + cfg.childsMenu.arrowMargin.top;
-							arrow.css({top:aTop, left:aLeft});
-						}else if(cfg.childsMenu.valign == "bottom"){
-							var aTop = 0 + cfg.childsMenu.arrowMargin.bottom;
-							arrow.css({bottom:aTop, left:aLeft});
-						}
-					}
-					/* -------------------- */
+            //axdom(EL).children("A").html(cid.replace("PMC", "PMA") + "_" + pi);
+            var childDiv = axdom(EL).children("." + cfg.childsMenu.className).get(0);
+            if (childDiv) {
+                childDiv.id = cid + "_" + pi;
 
-					tgDiv.hide();
-					pDim = null;
-					posTop = null;
-					posLeft = null;
-				}
+                if (cfg.childsMenu.arrowClassName) {
+                    var arrow = axdom("<div class=\"" + cfg.childsMenu.arrowClassName + "\"></div>");
+                    axdom(childDiv).prepend(arrow);
+                }
 
+                tree.push({
+                    _id: _id,
+                    id: cid + "_" + pi,
+                    cn: [],
+                    coi: ""
+                });
+                initChilds(cid + "_" + pi, tree[pi]);
+            }
+            else {
+                tree.push({
+                    _id: _id,
+                    id: cid + "_" + pi,
+                    cn: [],
+                    coi: ""
+                });
+            }
+        });
+    },
+    closeSubMenu: function (pitem) {
+        if (!pitem) return;
+        if (pitem.coi == "") return;
+        var cfg = this.config;
+        axdom("#" + pitem.coi).slideUp(
+            {
+                duration: cfg.easing.close.duration,
+                easing: cfg.easing.close.easing,
+                complete: function () {
+                }
+            }
+        );
+        pitem.coi = "";
+        //하위 자식들의 poi 모두 닫기
 
-				tgDiv.fadeIn(
-					{
-						duration:cfg.easing.open.duration,
-						easing:cfg.easing.open.easing,
-						complete:function(){
-						}
-			    	}
-			    );
-			    if(pitem) pitem.coi = item.id.replace("PMA", "PMC");
-			}
+        var closeAllSubMenu = function (stree) {
+            axdom.each(stree, function () {
+                if (this.coi != "") {
+                    axdom("#" + this.coi).hide();
+                }
+                closeAllSubMenu(this.cn);
+            });
+        };
+        closeAllSubMenu(pitem.cn);
+    },
+    onoverChild: function (event) {
+        if (this.childObserver) clearTimeout(this.childObserver); //닫기 명령 제거
+        var cfg = this.config;
+        var target = axf.get_event_target(event.target, {tagname: "a"});
+        var eid = target.id;
+        var ids = target.id.split(/\_/g);
+        var tree = this.tree;
+        var item = {};
+        var pitem = {};
+        for (var a = 2; a < ids.length; a++) {
+            if (a == ids.length - 2) {
+                pitem = tree[ids[a]];
+            }
+            if (tree[ids[a]]) {
+                if (tree[ids[a]].cn) {
+                    item = tree[ids[a]];
+                    tree = tree[ids[a]].cn;
+                }
+            }
+        }
 
-		}
+        if (pitem) {
+            if (pitem.coi != "" && pitem.coi != item.id) {
+                this.closeSubMenu(pitem);
+            }
+        }
 
-	},
-	onoutChild: function(event){
-		var cfg = this.config;
-		var outChild = this.outChild.bind(this);
-		this.childObserver = setTimeout(function() {
-	       outChild();
-	    }, cfg.childOutCloseTime);
-	},
-	outChild: function(){
-		var cfg = this.config;
-		this.closeSubMenu(this.tree[this.poi]);
+        if (item) {
+            if (item.id) {
 
-		axdom("#" + cfg.menuBoxID + "_PMA_" + this.poi).removeClass("on");
-		if(this.dfPoi != undefined) axdom("#" + cfg.menuBoxID + "_PMA_" + this.dfPoi).addClass("on");
-		axdom("#" + cfg.menuBoxID + "_PMC_" + this.poi).slideUp(
-			{
-				duration:cfg.easing.close.duration,
-				easing:cfg.easing.close.easing,
-				complete:function(){
-				}
-	    	}
-	    );
-	},
-	setHighLightMenu: function(poi){
-		var cfg = this.config;
-		this.menuBox.find(".parentMenu").removeClass("on");
-		this.menuBox.find(".parentMenu a").removeClass("on");
-		this.menuBox.find(".childMenu a").removeClass("on");
+                var tgDiv = axdom("#" + item.id);
 
-		if(axdom.isArray(poi)){
-			this.poi = this.dfPoi = poi;
-			var tree = this.tree;
-			axdom.each(poi, function(idx, T){
-				if(idx == 0) tree = tree[T.number()];
-				else  tree = tree.cn[T.number()];
-				if(tree){
-					if(idx == 0){
-						axdom("#" + tree.id).addClass("on");
-						axdom("#" + tree.id).children("A").addClass("on");
-					}else{
-						axdom("#" + tree.id.replace("_PMC_", "_PMA_")).addClass("on");
-					}
-				}
-			});
-		}else{
-			this.poi = this.dfPoi = poi;
-			axdom("#" + cfg.menuBoxID + "_PMA_" + this.dfPoi).addClass("on");
-		}
-	},
-/**
- * @method AXTopDownMenu.setHighLightOriginID
- * @param {string} - 메뉴 엘리먼트에 사용자가 정의한 ID
- * @description
- * 타겟 엘리먼트안에 Html 엘리먼트로 메뉴를 정의한 경우 엘리먼트 안에 사용자가 정의해 둔 아이디로 메뉴의 하이라이트를 처리해줍니다.
- * @example
- ```
- myMenu.setHighLightOriginID("ID1245");
- ```
- */
+                //slideDown check
+                if (!item.divDim) {
+                    axdom("#" + item.id).show();
+                    item.divDim = {width: tgDiv.outerWidth(), height: tgDiv.outerHeight()};
+                    var pDim = {
+                        width: axdom("#" + eid).outerWidth(),
+                        height: axdom("#" + eid).outerHeight(),
+                        pos: axdom("#" + eid).position()
+                    };
 
-	setHighLightOriginID: function(_id){
-		var cfg = this.config;
-		var tree = this.tree;
-		var findedID = "";
+                    if (cfg.childsMenu.align == "left") {
+                        var posLeft = pDim.width + cfg.childsMenu.margin.left;
+                    }
+                    else {
+                        var posLeft = -item.divDim.width + cfg.childsMenu.margin.left;
+                    }
 
-		var treeFn = function(subTree){
-			axdom.each(subTree, function(idx, T){
-				if(T._id == _id){
-					findedID = T.id;
-					return false;
-				}else{
-					if(T.cn) treeFn(T.cn);
-				}
-			});
-		};
+                    if (cfg.childsMenu.valign == "top") {
+                        var posTop = pDim.pos.top + cfg.childsMenu.margin.top;
+                        tgDiv.css({top: posTop, left: posLeft, width: item.divDim.width});
+                    }
+                    else {
+                        var posTop = (pitem.divDim.height - pDim.pos.top) - pDim.height + cfg.childsMenu.margin.bottom;
+                        tgDiv.css({bottom: posTop, left: posLeft, width: item.divDim.width});
+                    }
 
-		axdom.each(this.tree, function(idx, T){
-			if(T._id == _id){
-				findedID = T.id;
-				return false;
-			}else{
-				if(T.cn) treeFn(T.cn);
-			}
-		});
+                    /* subMenu Arrow positioning */
+                    if (cfg.childsMenu.arrowClassName) {
 
-		if(findedID){
-			this.findedID = findedID;
-			var pos = findedID.split(/_PM[C]?_/g).last();
-			var selectedMenus = pos.split(/_/g);
-			this.setHighLightMenu(selectedMenus);
-			return selectedMenus;
-		}
+                        var arrow = tgDiv.find("." + cfg.childsMenu.arrowClassName);
+                        if (cfg.childsMenu.align == "left") {
+                            var aLeft = -arrow.outerWidth() + cfg.childsMenu.arrowMargin.left;
+                        }
+                        else {
+                            var aLeft = tgDiv.outerWidth() - arrow.outerWidth() + cfg.childsMenu.arrowMargin.left;
+                        }
+                        if (cfg.childsMenu.valign == "top") {
+                            var aTop = 0 + cfg.childsMenu.arrowMargin.top;
+                            arrow.css({top: aTop, left: aLeft});
+                        }
+                        else if (cfg.childsMenu.valign == "bottom") {
+                            var aTop = 0 + cfg.childsMenu.arrowMargin.bottom;
+                            arrow.css({bottom: aTop, left: aLeft});
+                        }
+                    }
+                    /* -------------------- */
 
-	},
+                    tgDiv.hide();
+                    pDim = null;
+                    posTop = null;
+                    posLeft = null;
+                }
 
-/**
- * @method AXTopDownMenu.setHighLightID
- * @param {array} - [0, 1] 와 같이 각 뎁스의 순번을 전달합니다.
- * @description
- * 메뉴의 포지션 값으로 포지션에 해당하는 메뉴를 하이라이트 처리해 줍니다.
- * @example
- ```
- myMenu.setHighLightMenu([2, 1]); // 3번째 아이템(1depth)의 2번째 아이템(2depth)을 하이라이트 처리합니다.
- ```
- */
-    setHighLightID: function(_id){
-		var cfg = this.config;
-		var tree = this.tree;
-		var findedID = "";
+                tgDiv.fadeIn(
+                    {
+                        duration: cfg.easing.open.duration,
+                        easing: cfg.easing.open.easing,
+                        complete: function () {
+                        }
+                    }
+                );
+                if (pitem) pitem.coi = item.id.replace("PMA", "PMC");
+            }
 
-		var treeFn = function(subTree){
-			axdom.each(subTree, function(idx, T){
-				if(T.id == _id){
-					findedID = T.id;
-					return false;
-				}else{
-					if(T.cn) treeFn(T.cn);
-				}
-			});
-		};
-		axdom.each(tree, function(idx, T){
-			if(T.id == _id){
-				findedID = T.id;
-				return false;
-			}else{
-				if(T.cn) treeFn(T.cn);
-			}
-		});
+        }
 
-		if(findedID){
-			this.findedID = findedID;
-			var pos = findedID.split(/_PM[C]?_/g).last();
-			var selectedMenus = pos.split(/_/g);
-			this.setHighLightMenu(selectedMenus);
-			return selectedMenus;
-		}
-	}
+    },
+    onoutChild: function (event) {
+        var cfg = this.config;
+        var outChild = this.outChild.bind(this);
+        this.childObserver = setTimeout(function () {
+            outChild();
+        }, cfg.childOutCloseTime);
+    },
+    outChild: function () {
+        this.active = false;
+        var cfg = this.config;
+        this.closeSubMenu(this.tree[this.poi]);
+
+        axdom("#" + cfg.menuBoxID + "_PMA_" + this.poi).removeClass("on");
+        if (this.dfPoi != undefined) axdom("#" + cfg.menuBoxID + "_PMA_" + this.dfPoi).addClass("on");
+        axdom("#" + cfg.menuBoxID + "_PMC_" + this.poi).slideUp(
+            {
+                duration: cfg.easing.close.duration,
+                easing: cfg.easing.close.easing,
+                complete: function () {
+                }
+            }
+        );
+    },
+    setHighLightMenu: function (poi) {
+        var cfg = this.config;
+        this.menuBox.find(".parentMenu").removeClass("on");
+        this.menuBox.find(".parentMenu a").removeClass("on");
+        this.menuBox.find(".childMenu a").removeClass("on");
+
+        if (axdom.isArray(poi)) {
+            this.poi = this.dfPoi = poi;
+            var tree = this.tree;
+            axdom.each(poi, function (idx, T) {
+                if (idx == 0) tree = tree[T.number()];
+                else  tree = tree.cn[T.number()];
+                if (tree) {
+                    if (idx == 0) {
+                        axdom("#" + tree.id).addClass("on");
+                        axdom("#" + tree.id).children("A").addClass("on");
+                    }
+                    else {
+                        axdom("#" + tree.id.replace("_PMC_", "_PMA_")).addClass("on");
+                    }
+                }
+            });
+        }
+        else {
+            this.poi = this.dfPoi = poi;
+            axdom("#" + cfg.menuBoxID + "_PMA_" + this.dfPoi).addClass("on");
+        }
+    },
+    /**
+     * @method AXTopDownMenu.setHighLightOriginID
+     * @param {string} - 메뉴 엘리먼트에 사용자가 정의한 ID
+     * @description
+     * 타겟 엘리먼트안에 Html 엘리먼트로 메뉴를 정의한 경우 엘리먼트 안에 사용자가 정의해 둔 아이디로 메뉴의 하이라이트를 처리해줍니다.
+     * @example
+     ```
+     myMenu.setHighLightOriginID("ID1245");
+     ```
+     */
+
+    setHighLightOriginID: function (_id) {
+        var cfg = this.config;
+        var tree = this.tree;
+        var findedID = "";
+
+        var treeFn = function (subTree) {
+            axdom.each(subTree, function (idx, T) {
+                if (T._id == _id) {
+                    findedID = T.id;
+                    return false;
+                }
+                else {
+                    if (T.cn) treeFn(T.cn);
+                }
+            });
+        };
+
+        axdom.each(this.tree, function (idx, T) {
+            if (T._id == _id) {
+                findedID = T.id;
+                return false;
+            }
+            else {
+                if (T.cn) treeFn(T.cn);
+            }
+        });
+
+        if (findedID) {
+            this.findedID = findedID;
+            var pos = findedID.split(/_PM[C]?_/g).last();
+            var selectedMenus = pos.split(/_/g);
+            this.setHighLightMenu(selectedMenus);
+            return selectedMenus;
+        } else {
+            this.menuBox.find(".parentMenu").removeClass("on");
+            this.menuBox.find(".parentMenu a").removeClass("on");
+            this.menuBox.find(".childMenu a").removeClass("on");
+        }
+
+    },
+
+    /**
+     * @method AXTopDownMenu.setHighLightID
+     * @param {array} - [0, 1] 와 같이 각 뎁스의 순번을 전달합니다.
+     * @description
+     * 메뉴의 포지션 값으로 포지션에 해당하는 메뉴를 하이라이트 처리해 줍니다.
+     * @example
+     ```
+     myMenu.setHighLightMenu([2, 1]); // 3번째 아이템(1depth)의 2번째 아이템(2depth)을 하이라이트 처리합니다.
+     ```
+     */
+    setHighLightID: function (_id) {
+        var cfg = this.config;
+        var tree = this.tree;
+        var findedID = "";
+
+        var treeFn = function (subTree) {
+            axdom.each(subTree, function (idx, T) {
+                if (T.id == _id) {
+                    findedID = T.id;
+                    return false;
+                }
+                else {
+                    if (T.cn) treeFn(T.cn);
+                }
+            });
+        };
+        axdom.each(tree, function (idx, T) {
+            if (T.id == _id) {
+                findedID = T.id;
+                return false;
+            }
+            else {
+                if (T.cn) treeFn(T.cn);
+            }
+        });
+
+        if (findedID) {
+            this.findedID = findedID;
+            var pos = findedID.split(/_PM[C]?_/g).last();
+            var selectedMenus = pos.split(/_/g);
+            this.setHighLightMenu(selectedMenus);
+            return selectedMenus;
+        }
+    }
 });

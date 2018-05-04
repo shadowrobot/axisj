@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
 
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1.0, minimum-scale=1" />
     <title>AXGrid(colHead) - AXISJ</title>
@@ -50,8 +50,10 @@
                 targetID : "AXGridTarget",
                 theme : "AXGrid",
                 colHeadAlign: "center", // 헤드의 기본 정렬 값
+                fixedColSeq: 1,
                 colGroup : [
-                    {key:"no", label:"번호", width:"50", align:"right"}, 
+                    {key:"no", label:"번호", width:"50", align:"right", valign:"middle"},
+                    {key:"no", label:"번호", width:"50", align:"right", valign:"middle"},
                     {key:"title", label:"제목", width:"*", formatter:function(){
                         return "<u>"+this.item.title+"</u>";
                     }},
@@ -66,11 +68,12 @@
                 ],
                 
                 colHead : {
-	                //heights: [30,30],
+	                heights: [40,30],
                     rows: [
                         [
                             {key:"no", rowspan:2},
-                            {colSeq:null, colspan:3, label:"표현식", align:"center"}, 
+                            {key:"no", rowspan:2},
+                            {colSeq:null, colspan:3, label:"표현식", align:"center", valign:"middle"},
                             {key:"price", rowspan:2},
                             {key:"amount", rowspan:2},
                             {key:"cost", rowspan:2},

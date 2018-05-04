@@ -65,17 +65,19 @@
   top: 0px;
   height: 10px;
   /*background: @stop;*/
-  background-image: -webkit-linear-gradient(#eeeeee, #ffffff);
+  background-image: -webkit-linear-gradient(#eee, #fff);
   /* For Safari */
-  background-image: -o-linear-gradient(#eeeeee, #ffffff);
+  background-image: -o-linear-gradient(#eee, #fff);
   /* For Opera 11.1 to 12.0 */
-  background-image: -moz-linear-gradient(#eeeeee, #ffffff);
+  background-image: -moz-linear-gradient(#eee, #fff);
   /* For Firefox 3.6 to 15 */
-  background-image: linear-gradient(#eeeeee, #ffffff);
+  background-image: linear-gradient(#eee, #fff);
   /* Standard syntax */
-  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#eeeeee, endColorstr=#ffffff);
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#eee, endColorstr=#fff);
   /*For IE7-8-9*/
-  border: 1px solid #dddddd;
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#eee, endColorstr=#fff);
+  /*For IE7-8-9*/
+  border: 1px solid #ddd;
   border-radius: 5px;
   overflow: hidden;
 }
@@ -95,6 +97,8 @@
   background-image: linear-gradient(#98c87b, #79aa5a);
   /* Standard syntax */
   filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#98c87b, endColorstr=#79aa5a);
+  /*For IE7-8-9*/
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#98c87b, endColorstr=#79aa5a);
   /*For IE7-8-9*/
   -webkit-border-radius: 0px 4px 4px 0px;
   -moz-border-radius: 0px 4px 4px 0px;
